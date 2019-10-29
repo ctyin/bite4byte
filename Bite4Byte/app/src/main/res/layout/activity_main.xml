@@ -32,7 +32,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Login" />
+            android:text="Login"
+            android:onClick="onLoginClick"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -45,7 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Create Account" />
+            android:text="Create Account"
+            android:onClick="onCreateAccClick" />
 
     </LinearLayout>
 
