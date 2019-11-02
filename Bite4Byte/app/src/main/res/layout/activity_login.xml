@@ -12,15 +12,6 @@
         android:orientation="vertical"
         android:gravity="start">
 
-        <Button
-            android:id="@+id/login_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:textSize="20sp"
-            android:text="Back"
-            android:onClick="onLoginBackClick"/>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
