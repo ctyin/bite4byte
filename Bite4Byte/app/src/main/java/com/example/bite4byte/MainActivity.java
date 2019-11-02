@@ -10,6 +10,9 @@ import com.example.bite4byte.account.CreateAccountActivity;
 import com.example.bite4byte.account.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int LoginActivityActivity_ID = 1;
+    public static final int CreateAccountActivity_ID = 2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -19,12 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onLoginClick(View view) {
         Intent i = new Intent(this, LoginActivity.class);
-        startActivity(i);
+        startActivityForResult(i, LoginActivityActivity_ID);
     }
 
     public void onCreateAccClick(View view) {
         Intent i = new Intent(this, CreateAccountActivity.class);
-        startActivity(i);
+        startActivityForResult(i, CreateAccountActivity_ID);
     }
 
 }
