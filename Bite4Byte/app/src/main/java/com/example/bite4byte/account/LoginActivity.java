@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bite4byte.MainActivity;
 import com.example.bite4byte.R;
 
-import static com.example.bite4byte.R.layout.activity_login;
-
 public class LoginActivity extends AppCompatActivity {
 
     @Override
