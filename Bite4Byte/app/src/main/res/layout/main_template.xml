@@ -33,16 +33,16 @@
                 android:text="Feed" />
 
             <Button
-                android:id="@+id/messaging"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:text="DM's" />
-
-            <Button
                 android:id="@+id/map"
                 android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:text="Map" />
+
+            <Button
+                android:id="@+id/messaging"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:text="DM's" />
 
             <Button
                 android:id="@+id/profile"
