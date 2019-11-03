@@ -14,6 +14,11 @@ var Account = require('./Account.js');
 
 /***************************************/
 
+app.post('/login', (req, res) => {
+	var name = req.body.name;
+	console.log(name);
+})
+
 // route for creating a new person
 // this is the action of the "create new person" form
 app.use('/create', (req, res) => {
