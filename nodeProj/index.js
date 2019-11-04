@@ -36,9 +36,13 @@ app.use('/register', (req, res) => {
 	// save the account to the database
 	newAccount.save( (err) => { 
 		if (err) {
-		    res.type('html').status(200);
-		    res.write('uh oh: ' + err);
-		    console.log(err);
+		    //res.type('html').status(200);
+		    //res.write('uh oh: ' + err);
+		    if (err.message.includes("duplicate")) {
+		    	console.log("Username already exists.")
+		    } else {
+		    	console.log(err);
+		    }
 		    res.end();
 		}
 		else {
