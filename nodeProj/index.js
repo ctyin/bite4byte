@@ -1,6 +1,8 @@
 // set up Express
 var express = require('express');
 var app = express();
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/myDatabase');
 
 // set up EJS
 app.set('view engine', 'ejs');
@@ -15,8 +17,25 @@ var Account = require('./Account.js');
 /***************************************/
 
 app.post('/login', (req, res) => {
-	var name = req.body.name;
+	var name = req.body.username;
 	var password = req.body.password;
+	Account.findOne({username: name}, function (err, account) {
+		if (err || account == null) {		//Account doesn't exist
+			console.log("Invalid Username");
+		} else {
+			console.log(account);
+			if (password == account.password) { //Account exists and pswd matches
+				console.log("Welcome Back!");
+			} else {							//Accoutn exists but incorrect pswd
+				console.log("Incorrect password");
+			}
+		}
+	})
+	/* Code block print all documents to the console
+	Account.find(function (err, accounts) {
+	  	if (err) return console.error(err);
+	  	console.log(accounts);
+	})*/ 
 	console.log(name + " " + password);
 })
 
