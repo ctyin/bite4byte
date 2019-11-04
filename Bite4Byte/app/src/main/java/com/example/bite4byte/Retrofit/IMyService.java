@@ -12,8 +12,9 @@ public interface IMyService {
     // arbitrary end point based on the YouTube Tutorial
     @POST("register")
     @FormUrlEncoded
-    Observable<String> registerUser(@Field("email") String email,
-                                    @Field("name") String name,
+    Observable<String> registerUser(@Field("username") String username,
+                                    @Field("firstname") String firstname,
+                                    @Field("lastname") String lastname,
                                     @Field("password") String password);
 
     // Body HTTP example requires single json object
@@ -22,6 +23,6 @@ public interface IMyService {
 
     @POST("login")
     @FormUrlEncoded
-    Observable<String> loginUser(@Field("name") String name,
+    Observable<String> loginUser(@Field("username") String username,
                                  @Field("password") String password);
 }

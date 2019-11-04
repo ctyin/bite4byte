@@ -47,13 +47,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSubmitClick(View view) {
-        EditText nameView = (EditText) findViewById(R.id.login_username);
-        String name = nameView.getText().toString();
+        EditText usernameView = (EditText) findViewById(R.id.login_username);
+        String username = usernameView.getText().toString();
 
         EditText passView = (EditText) findViewById(R.id.login_password);
         String pass = passView.getText().toString();
 
-        compositeDisposable.add(iMyService.loginUser(name, pass)
+        compositeDisposable.add(iMyService.loginUser(username, pass)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {

@@ -7,7 +7,7 @@ mongoose.connect('mongodb://localhost:27017/myDatabase');
 var Schema = mongoose.Schema;
 
 var accountSchema = new Schema({
-	username: {type: String, required: true; unique: true},
+	username: {type: String, required: true, unique: true},
 	lastname: {type: String, required: true, unique: false},
 	firstname: {type: String, required: true, unique: false},
 	password: {type: String, required: true, unique: false}

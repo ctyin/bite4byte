@@ -16,19 +16,22 @@ var Account = require('./Account.js');
 
 app.post('/login', (req, res) => {
 	var name = req.body.name;
-	console.log(name);
+	var password = req.body.password;
+	console.log(name + " " + password);
 })
 
 // route for creating a new person
 // this is the action of the "create new person" form
-app.use('/create', (req, res) => {
+app.use('/register', (req, res) => {
 	// construct the Person from the form data which is in the request body
 	var newAccount = new Account ({
-		userName: req.body.username,
-		lastName: req.body.lastname,
-		firstName: req.body.firstname,
+		username: req.body.username,
+		lastname: req.body.lastname,
+		firstname: req.body.firstname,
 		password: req.body.password,
 	    });
+
+	console.log(newAccount.username + " " + newAccount.firstname + " " + newAccount.lastname + " "  + newAccount.password);
 
 	// save the account to the database
 	newAccount.save( (err) => { 
@@ -40,7 +43,7 @@ app.use('/create', (req, res) => {
 		}
 		else {
 		    // display the "successfull created" page using EJS
-		    res.render('created', {account : newAccount});
+		    //res.render('created', {account : newAccount});
 		}
 	    } ); 
     }
