@@ -52,12 +52,22 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         EditText firstnameView = (EditText) findViewById(R.id.create_acc_firstname);
         String firstname = firstnameView.getText().toString();
+        firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase();
 
         EditText lastnameView = (EditText) findViewById(R.id.create_acc_lastname);
         String lastname = lastnameView.getText().toString();
+        lastname = lastname.substring(0, 1).toUpperCase() + lastname.substring(1).toLowerCase();
 
         EditText passView = (EditText) findViewById(R.id.create_acc_password);
         String password = passView.getText().toString();
+
+        EditText passConfirmView = (EditText) findViewById(R.id.create_acc_password_confirm);
+        String pwConfirm = passConfirmView.getText().toString();
+
+        if (!password.equals(pwConfirm)) {
+            Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         compositeDisposable.add(iMyService.registerUser(username, firstname, lastname, password)
                 .subscribeOn(Schedulers.io())
