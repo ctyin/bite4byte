@@ -41,11 +41,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         iMyService = retrofitClient.create(IMyService.class);
     }
 
-    public void onCreateAccBackClick(View view) {
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-    }
-
     public void onCreateAccSubmitClick(View view) {
         EditText usernameView = (EditText) findViewById(R.id.create_acc_username);
         String username = usernameView.getText().toString();
@@ -81,6 +76,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 }));
+
+        Intent i = new Intent(this, CreateAccPreferencesActivity.class);
+        i.putExtra("username", username);
+        startActivity(i);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.example.bite4byte.Retrofit;
 
+import java.util.Set;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -16,6 +18,12 @@ public interface IMyService {
                                     @Field("firstname") String firstname,
                                     @Field("lastname") String lastname,
                                     @Field("password") String password);
+
+    @POST("food_preferences")
+    @FormUrlEncoded
+    Observable<String> foodPref(@Field("username") String username,
+                                        @Field("preferences") Set<String> preferences,
+                                        @Field("allergies") Set<String> allergies);
 
     // Body HTTP example requires single json object
 //    @POST("example")

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".account.CreateAccountActivity">
+    tools:context=".account.CreateAccPreferencesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,80 +30,114 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="Preferences" />
+
+        <CheckBox
+            android:id="@+id/pescatarian_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
             android:textSize="20sp"
-            android:text="Username:" />
+            android:text="Pescatarian" />
 
-        <EditText
-            android:id="@+id/create_acc_username"
+        <CheckBox
+            android:id="@+id/vegan_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:layout_gravity="center" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="left"
             android:textSize="20sp"
-            android:text="First Name:" />
+            android:text="Vegan" />
 
-        <EditText
-            android:id="@+id/create_acc_firstname"
+        <CheckBox
+            android:id="@+id/vegetarian_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:layout_gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="left"
             android:textSize="20sp"
-            android:text="Last Name:" />
-
-        <EditText
-            android:id="@+id/create_acc_lastname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:layout_gravity="center" />
+            android:text="Vegetarian" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="Allergies" />
+
+        <CheckBox
+            android:id="@+id/peanut_allergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
             android:textSize="20sp"
-            android:text="Password:" />
+            android:text="Peanut" />
 
-        <EditText
-            android:id="@+id/create_acc_password"
+        <CheckBox
+            android:id="@+id/milk_allergy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:layout_gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="left"
             android:textSize="20sp"
-            android:text="Confirm Password:" />
+            android:text="Milk" />
 
-        <EditText
-            android:id="@+id/create_acc_password_confirm"
+        <CheckBox
+            android:id="@+id/gluten_allergy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:layout_gravity="center" />
+            android:gravity="left"
+            android:textSize="20sp"
+            android:text="Gluten" />
+
+        <CheckBox
+            android:id="@+id/egg_allergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:text="Egg" />
+
+        <CheckBox
+            android:id="@+id/wheat_allergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:text="Wheat" />
+
+        <CheckBox
+            android:id="@+id/soy_allergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:text="Soy" />
+
+        <CheckBox
+            android:id="@+id/fish_allergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:text="Fish" />
+
+        <CheckBox
+            android:id="@+id/shellfish_allergy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textSize="20sp"
+            android:text="Shellfish" />
 
         <Button
-            android:id="@+id/create_acc_submit"
+            android:id="@+id/create_pref_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="20sp"
             android:text="Submit"
-            android:onClick="onCreateAccSubmitClick"/>
+            android:onClick="onCreatePrefSubmitClick"/>
+
 
     </LinearLayout>
 

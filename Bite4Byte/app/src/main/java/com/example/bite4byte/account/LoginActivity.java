@@ -41,11 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         iMyService = retrofitClient.create(IMyService.class);
     }
 
-    public void onLoginBackClick(View view) {
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-    }
-
     public void onLoginSubmitClick(View view) {
         EditText usernameView = (EditText) findViewById(R.id.login_username);
         String username = usernameView.getText().toString();

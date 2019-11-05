@@ -47,7 +47,7 @@ app.use('/register', (req, res) => {
 		username: req.body.username,
 		lastname: req.body.lastname,
 		firstname: req.body.firstname,
-		password: req.body.password,
+		password: req.body.password
 	    });
 
 	console.log(newAccount.username + " " + newAccount.firstname + " " + newAccount.lastname + " "  + newAccount.password);
@@ -71,6 +71,32 @@ app.use('/register', (req, res) => {
 	    } ); 
     }
     );
+
+app.post('/food_preferences', (req, res) => {
+	var name = req.body.username;
+
+	Account.findOne({username: name}, function (err, account) {
+		if (err || account == null) {		//Account doesn't exist
+			console.log("Invalid Username");
+		} else {
+			account.add({
+				preferences: req.body.preferences,
+				allergies: req.body.allergies
+			});
+
+			console.log(account.username + " " + account.preferences + " " + account.allergies);
+
+			account.save( (err) => {
+				if (err) {
+					console.log(err);
+					res.end();
+				} else {
+					//preferences successfully updated
+				}
+			});
+		}
+	})
+})
 
 // route for showing all the people
 /*
