@@ -85,6 +85,21 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
             allergies.add("wheat");
         }
 
+        CheckBox soyCheck = (CheckBox) findViewById(R.id.soy_allergy);
+        if (soyCheck.isChecked()) {
+            allergies.add("soy");
+        }
+
+        CheckBox fishCheck = (CheckBox) findViewById(R.id.fish_allergy);
+        if (fishCheck.isChecked()) {
+            allergies.add("fish");
+        }
+
+        CheckBox shellfishCheck = (CheckBox) findViewById(R.id.shellfish_allergy);
+        if (shellfishCheck.isChecked()) {
+            allergies.add("shellfish");
+        }
+
         //have to implement the rest of the checkboxes.
 
 
