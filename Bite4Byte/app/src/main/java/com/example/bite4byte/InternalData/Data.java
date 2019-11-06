@@ -24,10 +24,15 @@ public class Data {
     * "preferences"
     * "allergies"
     */
+    private Data instance = new Data();
     Map<String, JSONObject> accountMap;
     String accountFileName = "Accounts.json";
 
-    public Data() throws IOException, ParseException {
+    public Data getInstance() {
+        return instance;
+    }
+
+    private Data() throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         JSONArray viols = (JSONArray)parser.parse(new FileReader(accountFileName));
 
@@ -43,11 +48,16 @@ public class Data {
         }
     }
 
-    //returns true if account is successfully created and false if username is already in use
-    public boolean createAccount(String username, String firstname, String lastname, String password, String[] preferences, String[] allergies) {
+    //for initial validation of username when account is created
+    public boolean createUser(String username, String firstname, String lastname, String password) {
         if (accountMap.containsKey(username)) {
             return false;
         }
+        return true;
+    }
+
+    //returns true if account is successfully created
+    public boolean createAccount(String username, String firstname, String lastname, String password, String[] preferences, String[] allergies) {
         JSONObject newAccount = new JSONObject();
         newAccount.put("username", username);
         newAccount.put("firstname", firstname);

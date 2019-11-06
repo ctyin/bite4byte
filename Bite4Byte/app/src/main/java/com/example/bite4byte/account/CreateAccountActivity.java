@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.MainActivity;
 import com.example.bite4byte.R;
 
@@ -24,6 +25,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
+    Data manageData;
 
     @Override
     public void onStop() {
@@ -79,6 +81,9 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         Intent i = new Intent(this, CreateAccPreferencesActivity.class);
         i.putExtra("username", username);
+        i.putExtra("firstname", firstname);
+        i.putExtra("lastname", lastname);
+        i.putExtra("password", password);
         startActivity(i);
     }
 
