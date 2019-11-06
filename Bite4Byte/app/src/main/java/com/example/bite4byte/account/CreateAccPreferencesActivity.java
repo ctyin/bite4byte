@@ -30,13 +30,13 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         compositeDisposable.clear();
-        username = getIntent().getStringExtra("username");
         super.onStop();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        username = getIntent().getStringExtra("username");
         setContentView(R.layout.activity_create_acc_preferences);
 
         // init singleton service, don't need to implement yet
@@ -102,8 +102,21 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
 
         //have to implement the rest of the checkboxes.
 
+        String[] preferenceArr = new String[preferences.size()];
+        int i = 0;
+        for (String s : preferences) {
+            preferenceArr[i] = s;
+            i++;
+        }
 
-        compositeDisposable.add(iMyService.foodPref(username, preferences, allergies)
+        String[] allergyArr = new String[allergies.size()];
+        i = 0;
+        for (String s : allergies) {
+            allergyArr[i] = s;
+            i++;
+        }
+
+        compositeDisposable.add(iMyService.foodPref(username, preferenceArr, allergyArr)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {

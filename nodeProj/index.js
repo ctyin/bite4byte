@@ -30,14 +30,14 @@ app.post('/login', (req, res) => {
 				console.log("Incorrect password");
 			}
 		}
-	})
+	});
 	/* Code block print all documents to the console
 	Account.find(function (err, accounts) {
 	  	if (err) return console.error(err);
 	  	console.log(accounts);
 	})*/ 
 	console.log(name + " " + password);
-})
+});
 
 // route for creating a new person
 // this is the action of the "create new person" form
@@ -74,15 +74,18 @@ app.use('/register', (req, res) => {
 
 app.post('/food_preferences', (req, res) => {
 	var name = req.body.username;
+	var preferenceArr = [].concat(req.body.preferences);
+	var allergyArr = [].concat(req.body.allergies);
+	console.log(name + " " + preferenceArr);
 
 	Account.findOne({username: name}, function (err, account) {
+		console.log("reached");
 		if (err || account == null) {		//Account doesn't exist
 			console.log("Invalid Username");
 		} else {
-			account.add({
-				preferences: req.body.preferences,
-				allergies: req.body.allergies
-			});
+			console.log("reached");
+			account.preferences = preferenceArr;
+			account.allergies = allergyArr;
 
 			console.log(account.username + " " + account.preferences + " " + account.allergies);
 
@@ -95,8 +98,8 @@ app.post('/food_preferences', (req, res) => {
 				}
 			});
 		}
-	})
-})
+	});
+});
 
 // route for showing all the people
 /*
