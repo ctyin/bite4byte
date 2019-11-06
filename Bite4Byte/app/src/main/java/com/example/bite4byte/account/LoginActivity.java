@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText passView = (EditText) findViewById(R.id.login_password);
         String pass = passView.getText().toString();
 
-        compositeDisposable.add(iMyService.loginUser(username, pass)
+        /*compositeDisposable.add(iMyService.loginUser(username, pass)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
@@ -65,13 +65,14 @@ public class LoginActivity extends AppCompatActivity {
                                 ""+response,
                                 Toast.LENGTH_SHORT).show();
                     }
-                }));
+                }));*/
 
         //get current account - will return null if invalid username or password
         JSONObject currentAccount = manageData.login(username, pass);
         if (currentAccount == null) {
             System.out.println("Invalid Username/Password");
-            return;
+        } else {
+            System.out.println("Welcome" + " " + (String) currentAccount.get("firstname"));
         }
 
 

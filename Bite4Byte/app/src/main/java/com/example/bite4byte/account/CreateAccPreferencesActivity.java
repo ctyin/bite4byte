@@ -43,6 +43,9 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         manageData = (Data) getIntent().getSerializableExtra("manageData");
         username = getIntent().getStringExtra("username");
+        firstname = getIntent().getStringExtra("firstname");
+        lastname = getIntent().getStringExtra("lastname");
+        password = getIntent().getStringExtra("password");
         setContentView(R.layout.activity_create_acc_preferences);
 
         // init singleton service, don't need to implement yet
@@ -135,7 +138,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
                     }
                 }));
 
-        manageData.createAccount(username, firstname, lastname, password, preferenceArr, allergyArr);
+        manageData.createAccount(this, username, firstname, lastname, password, preferenceArr, allergyArr);
 
 
     }
