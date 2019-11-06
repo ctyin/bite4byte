@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
@@ -26,6 +27,10 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
     HashSet<String> preferences = new HashSet<String>();
     HashSet<String> allergies = new HashSet<String>();
     String username;
+    String firstname;
+    String lastname;
+    String password;
+    Data manageData;
 
     @Override
     public void onStop() {
@@ -36,6 +41,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        manageData = (Data) getIntent().getSerializableExtra("manageData");
         username = getIntent().getStringExtra("username");
         setContentView(R.layout.activity_create_acc_preferences);
 
@@ -128,6 +134,8 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 }));
+
+        manageData.createAccount(username, firstname, lastname, password, preferenceArr, allergyArr);
 
 
     }

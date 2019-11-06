@@ -38,6 +38,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_acc);
 
+        manageData = (Data) getIntent().getSerializableExtra("manageData");
+
         // init singleton service, don't need to implement yet
         Retrofit retrofitClient = new RetrofitClient().getInstance();
         iMyService = retrofitClient.create(IMyService.class);
@@ -79,11 +81,17 @@ public class CreateAccountActivity extends AppCompatActivity {
                     }
                 }));
 
+        if (!manageData.verifyAvailableUsername(username)) {
+            System.out.println("Username taken");
+            return;
+        }
+
         Intent i = new Intent(this, CreateAccPreferencesActivity.class);
         i.putExtra("username", username);
         i.putExtra("firstname", firstname);
         i.putExtra("lastname", lastname);
         i.putExtra("password", password);
+        i.putExtra("manageData", manageData);
         startActivity(i);
     }
 

@@ -8,10 +8,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.MainActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
+
+import org.json.simple.JSONObject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -24,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
 
+    Data manageData;
+
     @Override
     public void onStop() {
         compositeDisposable.clear();
@@ -35,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        manageData = (Data) getIntent().getSerializableExtra("manageData");
 
         // init singleton service, don't need to implement yet
         Retrofit retrofitClient = new RetrofitClient().getInstance();
@@ -60,6 +66,15 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 }));
+
+        //get current account - will return null if invalid username or password
+        JSONObject currentAccount = manageData.login(username, pass);
+        if (currentAccount == null) {
+            System.out.println("Invalid Username/Password");
+            return;
+        }
+
+
     }
 
 }
