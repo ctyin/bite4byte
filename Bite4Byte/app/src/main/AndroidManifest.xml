@@ -26,6 +26,7 @@
         <activity android:name=".account.CreateAccountActivity"/>
         <activity android:name=".account.CreateAccPreferencesActivity"/>
         <activity android:name=".account.UserProfileActivity" android:exported="true"/>
+        <activity android:name=".account.EditAccountActivity"/>
         <activity android:name=".Feed.UserFeedActivity" android:exported="true"/>
         <activity android:name=".Feed.PostActivity"/>
         <activity android:name=".Feed.UploadItemActivity"
