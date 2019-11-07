@@ -5,40 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        tools:srcCompat="@tools:sample/avatars"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"
+        android:layout_weight="10">
 
-    <TextView
-        android:id="@+id/foodName"
-        android:text="TEST"
-        android:textStyle="bold"
-        android:textSize="50sp"
-        android:paddingStart="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/sellerUserName"
-        android:text="Seller User Name Here"
-        android:paddingStart="15dp"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/postDesc"
-        android:text="blah blah blah blah"
-        android:paddingStart="15dp"
+        <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="vertical">
 
-    <Button
-        android:text="@string/buyBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"/>
+        <ImageView
+            android:id="@+id/postImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/postTitleActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="TEST"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sellerActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="Seller User Name Here"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/postDescActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="blah blah blah blah" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:text="@string/buyBtn"
+            android:onClick="onOrderBtnClick"/>
+
+        </LinearLayout>
+    </ScrollView>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,28 +69,32 @@
         tools:ignore="MissingConstraints">
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/feed"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:text="Feed" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/map"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:text="Map" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/messaging"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:text="DM's" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/profile"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Profile" />
+            android:text="Profile"/>
 
     </LinearLayout>
 

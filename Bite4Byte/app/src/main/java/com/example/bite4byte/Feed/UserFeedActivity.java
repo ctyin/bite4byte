@@ -81,6 +81,8 @@ public class UserFeedActivity extends Activity {
             view = LayoutInflater.from(this).inflate(R.layout.post, parent, false);
             parent.addView(view);
 
+            view.setTag(jo.get("_id"));
+
             TextView title = view.findViewById(R.id.postTitle);
             title.setText((String) jo.get("foodName"));
 
@@ -99,14 +101,16 @@ public class UserFeedActivity extends Activity {
                 public void onClick(View v) {
                 Intent intent = new Intent(UserFeedActivity.this, PostActivity.class);
 
-                TextView title = view.findViewById(R.id.postTitle);
+                TextView title = v.findViewById(R.id.postTitle);
                 intent.putExtra("foodName", title.getText().toString());
 
-                TextView seller = view.findViewById(R.id.seller);
+                TextView seller = v.findViewById(R.id.seller);
                 intent.putExtra("sellerUserName", seller.getText().toString());
 
-                TextView desc = view.findViewById(R.id.description);
+                TextView desc = v.findViewById(R.id.description);
                 intent.putExtra("description", desc.getText().toString());
+
+                intent.putExtra("id", v.getTag().toString());
 
                 Data md = (Data) UserFeedActivity.this.getIntent().getSerializableExtra("manageData");
                 intent.putExtra("manageData", md);
