@@ -729,7 +729,7 @@ node_modules/sift/yarn.lock
 node_modules/sliced/index.js
 node_modules/sliced/LICENSE
 node_modules/sliced/package.json
-node_modules/sparse-bitfield/.npmignore
+node_modules/sparse-bitfield/.npmignores
 node_modules/sparse-bitfield/.travis.yml
 node_modules/sparse-bitfield/index.js
 node_modules/sparse-bitfield/LICENSE
@@ -757,3 +757,4 @@ node_modules/vary/LICENSE
 node_modules/vary/package.json
 package-lock.json
 package.json
+Bite4Byte/json-simple-1.1.1.jar

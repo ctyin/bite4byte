@@ -133,12 +133,12 @@ public class Data implements Serializable {
     }
 
     //returns true if account is successfully created
-    public boolean createAccount(Context context, String username, String firstname, String lastname, String password, String[] preferences, String[] allergies) {
-        JSONArray pref = new JSONArray();
+    public boolean createAccount(Context context, String username, String firstname, String lastname, String password, String[] restrictions, String[] allergies) {
+        JSONArray restricts = new JSONArray();
         JSONArray aller = new JSONArray();
 
-        for (String p : preferences) {
-            pref.add(p);
+        for (String r : restrictions) {
+            restricts.add(r);
         }
         for (String a : allergies) {
             aller.add(a);
@@ -149,7 +149,7 @@ public class Data implements Serializable {
         newAccount.put("firstname", firstname);
         newAccount.put("lastname", lastname);
         newAccount.put("password", password);
-        newAccount.put("preferences", pref);
+        newAccount.put("restrictions", restricts);
         newAccount.put("allergies", aller);
         accounts.add(newAccount);
         accountMap.put(username, newAccount);
@@ -185,16 +185,36 @@ public class Data implements Serializable {
         return null;
     }
 
-    public boolean uploadFoodItem(Context context, int id, int quantity, String foodName, String foodDesc, String[] ingredients, String[] restrictions, String[] cuisines, String image) {
+    public boolean uploadFoodItem(Context context, int id, int quantity, String foodName, String foodDesc, String username, String location,
+                                  Date date, String[] ingredients, String[] restrictions, String[] cuisines, String picture) {
         JSONObject newFood = new JSONObject();
-        newFood.put("id", id);
+
+        JSONArray ingredientArr = new JSONArray();
+        JSONArray restrictionArr = new JSONArray();
+        JSONArray cuisineArr = new JSONArray();
+
+        for (String i : ingredients) {
+            ingredientArr.add(i);
+        }
+        for (String r : restrictions) {
+            restrictionArr.add(r);
+        }
+        for (String c : cuisines) {
+            cuisineArr.add(c);
+        }
+
+        newFood.put("_id", id);
         newFood.put("quantity", quantity);
-        newFood.put("name", foodName);
+        newFood.put("foodName", foodName);
+        newFood.put("username", username);
         newFood.put("description", foodDesc);
-        //newFood.put("ingredients", ingredients);
-        //newFood.put("restrictions", restrictions);
-        //newFood.put("cuisines", cuisines);
-        newFood.put("image", image);
+        newFood.put("ingredients", ingredientArr);
+        newFood.put("restrictions", restrictionArr);
+        newFood.put("cuisines", cuisineArr);
+        newFood.put("picture", picture);
+        newFood.put("isAvailable", true);
+        newFood.put("location", location);
+        newFood.put("postDate", date);
 
         foodItems.add(newFood);
         foodMap.put(id, newFood);
