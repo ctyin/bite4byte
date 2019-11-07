@@ -72,17 +72,17 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject currentAccount = manageData.login(username, pass);
         if (currentAccount == null) {
             System.out.println("Invalid Username/Password");
+            Toast.makeText(this, "Invalid Username/Password", Toast.LENGTH_LONG).show();
         } else {
             System.out.println("Welcome" + " " + (String) currentAccount.get("firstname"));
-        }
-
-        try {
-            Intent i = new Intent(this, UploadItemActivity.class);
-            i.putExtra("username", username);
-            i.putExtra("manageData", manageData);
-            startActivity(i);
-        } catch (Exception e) {
-            System.out.println(e);
+            Toast.makeText(this, "Welcome" + " " + (String) currentAccount.get("firstname") + "!", Toast.LENGTH_LONG).show();
+            try {
+                Intent i = new Intent(this, UploadItemActivity.class);
+                i.putExtra("manageData", manageData);
+                startActivity(i);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
 
     }
