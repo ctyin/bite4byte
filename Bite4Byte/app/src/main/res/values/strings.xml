@@ -3,13 +3,13 @@
     <string name="buyBtn">ORDER</string>
 
     <string-array name="cuisines">
-        <item>American</item>
-        <item>Asian</item>
-        <item>French</item>
-        <item>Indian</item>
-        <item>Italian</item>
-        <item>Mexican</item>
-        <item>Middle Eastern</item>
+        <item>american</item>
+        <item>asian</item>
+        <item>french</item>
+        <item>indian</item>
+        <item>italian</item>
+        <item>mexican</item>
+        <item>middle eastern</item>
     </string-array>
 
 </resources>

@@ -19,9 +19,9 @@ allprojects {
     repositories {
         google()
         jcenter()
-//        from the YouTube tutorial
+
 //        maven{
-//                url 'https://jitpack.io'
+//                JSON.simple
 //        }
     }
 }

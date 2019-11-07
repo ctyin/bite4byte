@@ -256,6 +256,11 @@ public class Data implements Serializable {
         }
     }
 
+    public void setFoodAvailability(int id, boolean val) {
+        JSONObject foodObj = foodMap.get(id);
+        foodObj.put("isAvailable", val);
+    }
+
     public Map<Integer, JSONObject> getFoodItems() {
         return foodMap;
     }
@@ -263,5 +268,4 @@ public class Data implements Serializable {
     public JSONObject getAccount(String n) {
         return accountMap.get(n);
     }
-
 }
