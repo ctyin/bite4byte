@@ -77,10 +77,10 @@
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/map"
+            android:id="@+id/uploadBtnPost"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Map" />
+            android:text="UPLOAD" />
 
         <Button
             style="?android:attr/buttonBarButtonStyle"

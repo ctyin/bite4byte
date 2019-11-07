@@ -50,12 +50,15 @@ public class Data implements Serializable {
     public Data(Context context) {
         //this.context = context;
         try {
+            System.out.println("Try-catch reaches 1");
             //File internalDir = context.getFilesDir();
             //System.out.println(internalDir);
             //InputStream is = context.openFileInput(accountFileName);
             JSONParser parser = new JSONParser();
             this.accounts = (JSONArray) parser.parse(read(context, accountFileName));
+
             this.foodItems = (JSONArray) parser.parse(read(context, foodItemsFileName));
+            System.out.println("Try-catch reaches 2");
             System.out.println(accounts.size());
 
             Iterator<JSONObject> accountsIter = accounts.iterator();
@@ -125,7 +128,7 @@ public class Data implements Serializable {
 
     //for initial validation of username when account is created
     public boolean verifyAvailableUsername(String username) {
-        System.out.println("reached");
+        System.out.println(accountMap != null);
         if (accountMap.containsKey(username)) {
             return false;
         }
@@ -208,7 +211,7 @@ public class Data implements Serializable {
     }
 
     public boolean uploadFoodItem(Context context, int id, int quantity, String foodName, String foodDesc, String username, String location,
-                                  Date date, String[] ingredients, String[] restrictions, String[] cuisines, String picture) {
+                                  String date, String[] ingredients, String[] restrictions, String[] cuisines, String picture) {
         JSONObject newFood = new JSONObject();
 
         JSONArray ingredientArr = new JSONArray();
@@ -228,7 +231,7 @@ public class Data implements Serializable {
         newFood.put("_id", id);
         newFood.put("quantity", quantity);
         newFood.put("foodName", foodName);
-        newFood.put("username", username);
+        newFood.put("sellerUserName", username);
         newFood.put("description", foodDesc);
         newFood.put("ingredients", ingredientArr);
         newFood.put("restrictions", restrictionArr);

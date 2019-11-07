@@ -162,9 +162,10 @@ public class UploadItemActivity extends AppCompatActivity {
         }
 
         Date date = new Date();
+        String dateParam = date.toString();
 
         manageData.uploadFoodItem(this, foodID, foodQuantity, foodName, foodDesc, username,
-                location, date, ingredients, restrictions, cuisines, photoPath);
+                location, dateParam, ingredients, restrictions, cuisines, photoPath);
     }
 
     @Override

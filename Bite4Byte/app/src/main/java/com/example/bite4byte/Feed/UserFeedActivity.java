@@ -38,6 +38,7 @@ public class UserFeedActivity extends Activity {
     private View view;
     private Data manageData;
     private JSONObject user;
+    private String username;
     private Set<JSONObject> feed = new HashSet<JSONObject>();
     private Set<Integer> selectedCuisines = new HashSet<Integer>();
     private Set<String> cuisines = new HashSet<String>();
@@ -67,7 +68,9 @@ public class UserFeedActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         manageData = (Data) getIntent().getSerializableExtra("manageData");
-        user = manageData.getAccount(getIntent().getStringExtra("user"));
+        username = getIntent().getStringExtra("user");
+        user = manageData.getAccount(username);
+
         cuisinesFilter = getResources().getStringArray(R.array.cuisines);
         Map<Integer, JSONObject> foodItems = manageData.getFoodItems();
 
@@ -138,7 +141,7 @@ public class UserFeedActivity extends Activity {
                 intent.putExtra("description", desc.getText().toString());
 
                 intent.putExtra("id", v.getTag().toString());
-                intent.putExtra("username", UserFeedActivity.this.getIntent().getStringExtra("username"));
+                intent.putExtra("username", username);
 
                 Data md = (Data) UserFeedActivity.this.getIntent().getSerializableExtra("manageData");
                 intent.putExtra("manageData", md);
@@ -213,6 +216,17 @@ public class UserFeedActivity extends Activity {
         }
 
         return results;
+    }
+
+    public void onUploadClick(View view) {
+        try {
+            Intent i = new Intent(this, UploadItemActivity.class);
+            i.putExtra("manageData", manageData);
+            i.putExtra("username", username);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void onProfileClick(View view) {
