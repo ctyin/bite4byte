@@ -28,15 +28,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class UserFeedActivity extends Activity {
     private View view;
+    private Data manageData;
+    private JSONObject user;
+    private List<JSONObject> feed = new ArrayList<JSONObject>();
     private Set<Integer> selectedCuisines = new HashSet<Integer>();
     private Set<String> cuisines = new HashSet<String>();
     private String[] cuisinesFilter;
     private boolean[] cuisinesSelect;
 
+    /*
     public String loadJsonFromAsset() {
         // method taken in part from https://preview.tinyurl.com/yxzhv883
         String json = null;
@@ -52,37 +57,22 @@ public class UserFeedActivity extends Activity {
             return null;
         }
         return json;
-    }
-
-    public List<JSONObject> filterByParam(String field,
-                                          Set<String> values, Iterator<JSONObject> posts) {
-        ArrayList<JSONObject> ret = new ArrayList<>();
-
-        while (posts.hasNext()) {
-            JSONObject jo = (JSONObject) posts.next();
-            ret.add(jo);
-        }
-
-        return ret;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        JSONParser parser = new JSONParser();
-        JSONArray posts = null;
+        manageData = (Data) getIntent().getSerializableExtra("manageData");
+        user = manageData.getAccount(getIntent().getStringExtra("user"));
+        cuisinesFilter = getResources().getStringArray(R.array.cuisines);
+        Map<Integer, JSONObject> foodItems = manageData.getFoodItems();
 
-        try {
-            posts = (JSONArray) parser.parse(loadJsonFromAsset());
-        } catch (ParseException e) {
-            e.printStackTrace();
+        for (int key : foodItems.keySet()) {
+            feed.add(foodItems.get(key));
         }
 
-        cuisinesFilter = getResources().getStringArray(R.array.cuisines);
-
-        Iterator<JSONObject> iter = posts.iterator();
-        List<JSONObject> result = filterByParam(null, null, iter);
+        List<JSONObject> result = filterByParam("allergies", null, iter);
 
         setContentView(R.layout.activity_user_feed);
         ViewGroup parent = (ViewGroup) findViewById(R.id.post_container);
@@ -125,6 +115,17 @@ public class UserFeedActivity extends Activity {
                 }
             });
         }
+    }
+
+    public List<JSONObject> filterByParam(String field, Set<String> values, Iterator<JSONObject> posts) {
+        ArrayList<JSONObject> ret = new ArrayList<>();
+
+        while (posts.hasNext()) {
+            JSONObject jo = (JSONObject) posts.next();
+            ret.add(jo);
+        }
+
+        return ret;
     }
 
     public void onSearchClick() {

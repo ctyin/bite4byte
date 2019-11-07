@@ -235,5 +235,12 @@ public class Data implements Serializable {
         }
     }
 
+    public Map<Integer, JSONObject> getFoodItems() {
+        return foodMap;
+    }
+
+    public JSONObject getAccount(String n) {
+        return accountMap.get(n);
+    }
 
 }

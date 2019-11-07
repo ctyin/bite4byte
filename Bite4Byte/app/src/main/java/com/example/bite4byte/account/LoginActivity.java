@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         //get current account - will return null if invalid username or password
 
         JSONObject currentAccount = manageData.login(username, pass);
+
         if (currentAccount == null) {
             System.out.println("Invalid Username/Password");
             Toast.makeText(this, "Invalid Username/Password", Toast.LENGTH_LONG).show();
@@ -74,8 +76,9 @@ public class LoginActivity extends AppCompatActivity {
             System.out.println("Welcome" + " " + (String) currentAccount.get("firstname"));
             Toast.makeText(this, "Welcome" + " " + (String) currentAccount.get("firstname") + "!", Toast.LENGTH_LONG).show();
             try {
-                Intent i = new Intent(this, UploadItemActivity.class);
+                Intent i = new Intent(this, UserFeedActivity.class);
                 i.putExtra("manageData", manageData);
+                i.putExtra("user", username);
                 startActivity(i);
             } catch (Exception e) {
                 System.out.println(e);
