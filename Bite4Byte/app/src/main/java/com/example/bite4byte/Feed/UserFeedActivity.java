@@ -70,6 +70,7 @@ public class UserFeedActivity extends Activity {
         manageData = (Data) getIntent().getSerializableExtra("manageData");
         username = getIntent().getStringExtra("user");
         user = manageData.getAccount(username);
+        setContentView(R.layout.activity_user_feed);
 
         cuisinesFilter = getResources().getStringArray(R.array.cuisines);
         Map<Integer, JSONObject> foodItems = manageData.getFoodItems();
@@ -99,12 +100,11 @@ public class UserFeedActivity extends Activity {
         }
 
         updateFeed(feed);
-        setContentView(R.layout.activity_user_feed);
 
     }
 
     public void updateFeed(Set<JSONObject> set) {
-        ViewGroup parent = (ViewGroup) findViewById(R.id.post_container);
+        ViewGroup parent = (ViewGroup) this.findViewById(R.id.post_container);
 
         for (JSONObject jo : set) {
             view = LayoutInflater.from(this).inflate(R.layout.post, parent, false);

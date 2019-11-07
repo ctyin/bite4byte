@@ -166,6 +166,11 @@ public class UploadItemActivity extends AppCompatActivity {
 
         manageData.uploadFoodItem(this, foodID, foodQuantity, foodName, foodDesc, username,
                 location, dateParam, ingredients, restrictions, cuisines, photoPath);
+
+        Intent intent = new Intent(this, UserFeedActivity.class);
+        intent.putExtra("user", username);
+        intent.putExtra("manageData", manageData);
+        startActivity(intent);
     }
 
     @Override
@@ -200,7 +205,7 @@ public class UploadItemActivity extends AppCompatActivity {
     }
 
     private File createPhotoFile() {
-        String filename = Integer.toString(foodID);
+        String filename = "000" + Integer.toString(foodID);
         File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image = null;
         try {

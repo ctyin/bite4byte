@@ -77,7 +77,7 @@ public class Data implements Serializable {
             while (foodIter.hasNext()) {
                 JSONObject b = (JSONObject) foodIter.next();
                 try {
-                    foodMap.put((int) b.get("id"), b);
+                    foodMap.put(Integer.parseInt(b.get("_id").toString()), b);
                 } catch (Exception e) {
                     continue;
                 }
@@ -338,4 +338,5 @@ public class Data implements Serializable {
     public JSONObject getAccount(String n) {
         return accountMap.get(n);
     }
+    
 }

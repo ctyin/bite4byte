@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        create("accounts.json", "[]"); //Overwrite File and make it blank
-//        create("foods.json", "[]");
+        //create("accounts.json", "[]"); //Overwrite File and make it blank
+        //create("foods.json", "[]");
 
         boolean isAccountsFilePresent = isFilePresent("accounts.json");
         boolean isFoodItemsFilePresent = isFilePresent("foods.json");
