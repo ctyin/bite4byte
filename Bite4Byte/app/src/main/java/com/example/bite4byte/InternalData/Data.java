@@ -151,6 +151,7 @@ public class Data implements Serializable {
         newAccount.put("password", password);
         newAccount.put("restrictions", restricts);
         newAccount.put("allergies", aller);
+        newAccount.put("order", new JSONArray());
         accounts.add(newAccount);
         accountMap.put(username, newAccount);
         System.out.println(accountMap.keySet().size());
