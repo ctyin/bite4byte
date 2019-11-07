@@ -73,7 +73,8 @@
             android:id="@+id/feed"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Feed" />
+            android:text="Feed"
+            android:onClick="onFeedBtnClick"/>
 
         <Button
             style="?android:attr/buttonBarButtonStyle"

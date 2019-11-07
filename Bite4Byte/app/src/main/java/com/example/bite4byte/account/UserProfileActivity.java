@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bite4byte.Feed.PostActivity;
+import com.example.bite4byte.Feed.UploadItemActivity;
 import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.MainActivity;
@@ -96,7 +97,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void onPostButtonClick(View view) {
-        Intent intent = new Intent(this, PostActivity.class);
+        Intent intent = new Intent(this, UploadItemActivity.class);
         intent.putExtra("manageData", manageData);
         intent.putExtra("username", username);
         startActivity(intent);

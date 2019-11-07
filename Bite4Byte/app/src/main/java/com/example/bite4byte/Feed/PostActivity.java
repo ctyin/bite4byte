@@ -52,6 +52,13 @@ public class PostActivity extends Activity {
         Toast.makeText(this, "Your order is confirmed!", Toast.LENGTH_LONG).show();
     }
 
+    public void onFeedBtnClick(View view) {
+        Intent intent = new Intent(this, UserFeedActivity.class);
+        intent.putExtra("manageData", md);
+        intent.putExtra("user", username);
+        startActivity(intent);
+    }
+
     public void onProfileButtonClick(View view) {
         Intent intent = new Intent(this, UserProfileActivity.class);
         intent.putExtra("manageData", md);
