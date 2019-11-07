@@ -85,6 +85,10 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         if (!manageData.verifyAvailableUsername(username)) {
             System.out.println("Username taken");
+            Toast.makeText(
+                    CreateAccountActivity.this,
+                    "Username already exists",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
