@@ -174,21 +174,23 @@ public class UserFeedActivity extends Activity {
 
         results.removeAll(containAllergy);
 
-        for (JSONObject item : results) {
-            JSONArray resJSON = (JSONArray) item.get("restrictions");
-            for (Object r : resJSON) {
-                String restriction = r.toString();
+        if (!restrictions.isEmpty()) {
+            for (JSONObject item : results) {
+                JSONArray resJSON = (JSONArray) item.get("restrictions");
+                for (Object r : resJSON) {
+                    String restriction = r.toString();
 
-                for (String res : restrictions) {
-                    if (restriction.equals(res)) {
-                        meetRestrict.add(item);
-                        break;
+                    for (String res : restrictions) {
+                        if (restriction.equals(res)) {
+                            meetRestrict.add(item);
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        results = meetRestrict;
+            results = meetRestrict;
+        }
 
         if (!cuisines.isEmpty()) {
             for (JSONObject item : results) {
