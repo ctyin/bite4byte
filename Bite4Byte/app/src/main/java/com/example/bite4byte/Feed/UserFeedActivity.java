@@ -72,11 +72,12 @@ public class UserFeedActivity extends Activity {
             feed.add(foodItems.get(key));
         }
 
-        List<JSONObject> result = filterByParam("allergies", null, iter);
+        filterByParam("allergies", null);
 
         setContentView(R.layout.activity_user_feed);
         ViewGroup parent = (ViewGroup) findViewById(R.id.post_container);
 
+        /*
         for (JSONObject jo : result) {
             view = LayoutInflater.from(this).inflate(R.layout.post, parent, false);
             parent.addView(view);
@@ -115,17 +116,11 @@ public class UserFeedActivity extends Activity {
                 }
             });
         }
+        */
     }
 
-    public List<JSONObject> filterByParam(String field, Set<String> values, Iterator<JSONObject> posts) {
-        ArrayList<JSONObject> ret = new ArrayList<>();
+    public void filterByParam(String field, Set<String> values) {
 
-        while (posts.hasNext()) {
-            JSONObject jo = (JSONObject) posts.next();
-            ret.add(jo);
-        }
-
-        return ret;
     }
 
     public void onSearchClick() {
