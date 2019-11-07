@@ -125,7 +125,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
             i++;
         }
 
-        compositeDisposable.add(iMyService.foodPref(username, preferenceArr, allergyArr)
+        /*compositeDisposable.add(iMyService.foodPref(username, preferenceArr, allergyArr)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
@@ -136,7 +136,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
                                 ""+response,
                                 Toast.LENGTH_SHORT).show();
                     }
-                }));
+                }));*/
 
         manageData.createAccount(this, username, firstname, lastname, password, preferenceArr, allergyArr);
 
