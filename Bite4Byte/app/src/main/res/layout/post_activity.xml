@@ -94,7 +94,8 @@
             android:id="@+id/profile"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Profile"/>
+            android:text="Profile"
+            android:onClick="onProfileButtonClick"/>
 
     </LinearLayout>
 

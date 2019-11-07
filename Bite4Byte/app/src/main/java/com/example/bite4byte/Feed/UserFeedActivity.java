@@ -41,7 +41,8 @@ public class UserFeedActivity extends Activity {
     private String username;
     private Set<JSONObject> feed = new HashSet<JSONObject>();
     private Set<Integer> selectedCuisines = new HashSet<Integer>();
-    private Set<String> cuisines = new HashSet<String>();
+    private Set<String> cuisines = new HashSet<String>(), allergies = new HashSet<String>(),
+            restrictions = new HashSet<String>();
     private String[] cuisinesFilter;
     private boolean[] cuisinesSelect;
 
@@ -73,38 +74,35 @@ public class UserFeedActivity extends Activity {
         setContentView(R.layout.activity_user_feed);
 
         cuisinesFilter = getResources().getStringArray(R.array.cuisines);
-        Map<Integer, JSONObject> foodItems = manageData.getFoodItems();
+        cuisinesSelect = new boolean[cuisinesFilter.length];
 
+        Map<Integer, JSONObject> foodItems = manageData.getFoodItems();
         for (int key : foodItems.keySet()) {
             feed.add(foodItems.get(key));
         }
 
-        Set<String> allergies = new HashSet<String>();
         JSONArray allergiesJSON = (JSONArray) user.get("allergies");
         if (allergiesJSON != null) {
             for (Object j : allergiesJSON) {
                 allergies.add(j.toString());
             }
-
-            feed = filterByParam("allergies", allergies);
         }
 
-        Set<String> restrictions = new HashSet<String>();
         JSONArray restrictsJSON = (JSONArray) user.get("restrictions");
         if (restrictsJSON != null) {
             for (Object j : restrictsJSON) {
                 restrictions.add(j.toString());
             }
-
-            feed = filterByParam("restrictions", restrictions);
         }
 
-        updateFeed(feed);
+        Set<JSONObject> newFeed = filterByParam();
 
+        updateFeed(newFeed);
     }
 
     public void updateFeed(Set<JSONObject> set) {
         ViewGroup parent = (ViewGroup) this.findViewById(R.id.post_container);
+        parent.removeAllViews();
 
         for (JSONObject jo : set) {
             view = LayoutInflater.from(this).inflate(R.layout.post, parent, false);
@@ -122,8 +120,10 @@ public class UserFeedActivity extends Activity {
             desc.setText((String) jo.get("description"));
 
             ImageView iv = view.findViewById(R.id.imageView);
-            Bitmap bm = BitmapFactory.decodeFile(jo.get("picture").toString());
-            iv.setImageBitmap(bm);
+            if (!jo.get("picture").toString().isEmpty()) {
+                Bitmap bm = BitmapFactory.decodeFile(jo.get("picture").toString());
+                iv.setImageBitmap(bm);
+            }
 
             // need to get the data from the post itself
             view.setOnClickListener(new View.OnClickListener() {
@@ -152,67 +152,62 @@ public class UserFeedActivity extends Activity {
         }
     }
 
-    public Set<JSONObject> filterByParam(String field, Set<String> values) {
+    public Set<JSONObject> filterByParam() {
         Set<JSONObject> results = feed;
-        boolean removed = false;
+        Set<JSONObject> containAllergy = new HashSet<JSONObject>();
+        Set<JSONObject> meetRestrict = new HashSet<JSONObject>();
+        Set<JSONObject> inCuisine = new HashSet<JSONObject>();
 
-        if (field.equals("allergies")) {
-            for (JSONObject item : feed) {
-                JSONArray ingredJSON = (JSONArray) item.get("ingredients");
-                for (Object s : ingredJSON) {
-                    String ingredient = s.toString().trim();
+        for (JSONObject item : results) {
+            JSONArray ingredJSON = (JSONArray) item.get("ingredients");
+            for (Object s : ingredJSON) {
+                String ingredient = s.toString().trim();
 
-                    for (String v : values) {
-                        if (ingredient.equals(v)) {
-                            removed = results.remove(item);
-                            break;
-                        }
-                    }
-
-                    if (removed) {
-                        removed = false;
+                for (String a : allergies) {
+                    if (ingredient.equals(a)) {
+                        containAllergy.add(item);
                         break;
                     }
                 }
             }
-        } else if (field.equals("cuisines")) {
-            for (JSONObject item : feed) {
-                JSONArray cuisJSON = (JSONArray) item.get("cuisines");
-                for (Object c : cuisJSON) {
-                    String cuisine = c.toString();
+        }
 
-                    for (String v : values) {
-                        if (cuisine.equals(v)) {
-                            removed = results.remove(item);
-                            break;
-                        }
-                    }
+        results.removeAll(containAllergy);
 
-                    if (removed) {
-                        removed = false;
-                        break;
-                    }
-                }
-            }
-        } else if (field.equals("restrictions")) {
-            for (JSONObject item : feed) {
+        if (!restrictions.isEmpty()) {
+            for (JSONObject item : results) {
                 JSONArray resJSON = (JSONArray) item.get("restrictions");
                 for (Object r : resJSON) {
                     String restriction = r.toString();
 
-                    for (String v : values) {
-                        if (restriction.equals(v)) {
-                            removed = results.remove(item);
+                    for (String res : restrictions) {
+                        if (restriction.equals(res)) {
+                            meetRestrict.add(item);
                             break;
                         }
                     }
+                }
+            }
 
-                    if (removed) {
-                        removed = false;
-                        break;
+            results = meetRestrict;
+        }
+
+        if (!cuisines.isEmpty()) {
+            for (JSONObject item : results) {
+                JSONArray cuisJSON = (JSONArray) item.get("cuisines");
+                for (Object c : cuisJSON) {
+                    String cuisine = c.toString();
+
+                    for (String cuis : cuisines) {
+                        if (cuisine.equals(cuis)) {
+                            inCuisine.add(item);
+                            break;
+                        }
                     }
                 }
             }
+
+            results = inCuisine;
         }
 
         return results;
@@ -258,11 +253,14 @@ public class UserFeedActivity extends Activity {
         mBuilder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                cuisines.clear();
+
                 for (int c : selectedCuisines) {
                     cuisines.add(cuisinesFilter[c]);
                 }
-                feed = filterByParam("cuisine", cuisines);
-                updateFeed(feed);
+
+                Set<JSONObject> newFeed = filterByParam();
+                updateFeed(newFeed);
             }
         });
 
