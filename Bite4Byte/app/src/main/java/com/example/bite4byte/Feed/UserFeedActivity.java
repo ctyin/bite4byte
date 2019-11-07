@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -35,7 +37,7 @@ public class UserFeedActivity extends Activity {
     private View view;
     private Data manageData;
     private JSONObject user;
-    private List<JSONObject> feed = new ArrayList<JSONObject>();
+    private Set<JSONObject> feed = new HashSet<JSONObject>();
     private Set<Integer> selectedCuisines = new HashSet<Integer>();
     private Set<String> cuisines = new HashSet<String>();
     private String[] cuisinesFilter;
@@ -72,13 +74,35 @@ public class UserFeedActivity extends Activity {
             feed.add(foodItems.get(key));
         }
 
-        filterByParam("allergies", null);
+        Set<String> allergies = new HashSet<String>();
+        JSONArray allergiesJSON = (JSONArray) user.get("allergies");
+        if (allergiesJSON != null) {
+            for (Object j : allergiesJSON) {
+                allergies.add(j.toString());
+            }
 
+            feed = filterByParam("allergies", allergies);
+        }
+
+        Set<String> restrictions = new HashSet<String>();
+        JSONArray restrictsJSON = (JSONArray) user.get("restrictions");
+        if (restrictsJSON != null) {
+            for (Object j : restrictsJSON) {
+                restrictions.add(j.toString());
+            }
+
+            feed = filterByParam("restrictions", restrictions);
+        }
+
+        updateFeed(feed);
         setContentView(R.layout.activity_user_feed);
+
+    }
+
+    public void updateFeed(Set<JSONObject> set) {
         ViewGroup parent = (ViewGroup) findViewById(R.id.post_container);
 
-        /*
-        for (JSONObject jo : result) {
+        for (JSONObject jo : set) {
             view = LayoutInflater.from(this).inflate(R.layout.post, parent, false);
             parent.addView(view);
 
@@ -92,7 +116,8 @@ public class UserFeedActivity extends Activity {
             desc.setText((String) jo.get("description"));
 
             ImageView iv = view.findViewById(R.id.imageView);
-            iv.setImageResource(R.drawable.chicken_curry);
+            Bitmap bm = BitmapFactory.decodeFile(jo.get("picture").toString());
+            iv.setImageBitmap(bm);
 
             // need to get the data from the post itself
             view.setOnClickListener(new View.OnClickListener() {
@@ -116,15 +141,72 @@ public class UserFeedActivity extends Activity {
                 }
             });
         }
-        */
     }
 
-    public void filterByParam(String field, Set<String> values) {
+    public Set<JSONObject> filterByParam(String field, Set<String> values) {
+        Set<JSONObject> results = feed;
+        boolean removed = false;
 
-    }
+        if (field.equals("allergies")) {
+            for (JSONObject item : feed) {
+                JSONArray ingredJSON = (JSONArray) item.get("ingredients");
+                for (Object s : ingredJSON) {
+                    String ingredient = s.toString().trim();
 
-    public void onSearchClick() {
+                    for (String v : values) {
+                        if (ingredient.equals(v)) {
+                            removed = results.remove(item);
+                            break;
+                        }
+                    }
 
+                    if (removed) {
+                        removed = false;
+                        break;
+                    }
+                }
+            }
+        } else if (field.equals("cuisines")) {
+            for (JSONObject item : feed) {
+                JSONArray cuisJSON = (JSONArray) item.get("cuisines");
+                for (Object c : cuisJSON) {
+                    String cuisine = c.toString();
+
+                    for (String v : values) {
+                        if (cuisine.equals(v)) {
+                            removed = results.remove(item);
+                            break;
+                        }
+                    }
+
+                    if (removed) {
+                        removed = false;
+                        break;
+                    }
+                }
+            }
+        } else if (field.equals("restrictions")) {
+            for (JSONObject item : feed) {
+                JSONArray resJSON = (JSONArray) item.get("restrictions");
+                for (Object r : resJSON) {
+                    String restriction = r.toString();
+
+                    for (String v : values) {
+                        if (restriction.equals(v)) {
+                            removed = results.remove(item);
+                            break;
+                        }
+                    }
+
+                    if (removed) {
+                        removed = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return results;
     }
 
     public void onFilterClick(View view) {
@@ -146,8 +228,10 @@ public class UserFeedActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 for (int c : selectedCuisines) {
-                    cuisines.add(cuisinesFilter[i]);
+                    cuisines.add(cuisinesFilter[c]);
                 }
+                feed = filterByParam("cuisine", cuisines);
+                updateFeed(feed);
             }
         });
 
