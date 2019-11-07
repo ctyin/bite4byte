@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bite4byte.Feed.PostActivity;
+import com.example.bite4byte.Feed.UploadItemActivity;
 import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.MainActivity;
@@ -16,6 +17,10 @@ import com.example.bite4byte.R;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class UserProfileActivity extends AppCompatActivity {
 
@@ -30,6 +35,7 @@ public class UserProfileActivity extends AppCompatActivity {
         manageData = (Data) getIntent().getSerializableExtra("manageData");
         username = (String) getIntent().getStringExtra("user");
         userAccount = manageData.getAccount(username);
+        Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
 
         setContentView(R.layout.activity_user_profile);
 
@@ -52,9 +58,17 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         }
 
+        JSONArray orderIds = (JSONArray) userAccount.get("orders");
+        String orderStr = "";
+        if (orderIds != null) {
+            for (Object j : orderIds) {
+                orderStr += foodMap.get(Integer.parseInt((String)j)).get("foodName") + "\n";
+            }
+        }
 
         ((TextView) findViewById(R.id.restrictionsText)).setText(restricts);
         ((TextView) findViewById(R.id.allergiesText)).setText(allers);
+        ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
     }
 
     public void onEditAccountButtonClick(View view) {
@@ -83,9 +97,10 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void onPostButtonClick(View view) {
-        Intent intent = new Intent(this, PostActivity.class);
+        Intent intent = new Intent(this, UploadItemActivity.class);
         intent.putExtra("manageData", manageData);
-
+        intent.putExtra("username", username);
+        startActivity(intent);
     }
 
 

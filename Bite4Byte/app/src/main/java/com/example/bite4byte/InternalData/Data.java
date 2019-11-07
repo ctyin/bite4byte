@@ -154,7 +154,7 @@ public class Data implements Serializable {
         newAccount.put("password", password);
         newAccount.put("restrictions", restricts);
         newAccount.put("allergies", aller);
-        newAccount.put("order", new JSONArray());
+        newAccount.put("orders", new JSONArray());
         accounts.add(newAccount);
         accountMap.put(username, newAccount);
         System.out.println(accountMap.keySet().size());
@@ -173,7 +173,7 @@ public class Data implements Serializable {
         }
     }
 
-    public void modifyAccount(Context context, String username, String firstname, String lastname, String password, String[] restrictions, String[] allergies) {
+    public void modifyAccount(Context context, String username, String firstname, String lastname, String password, String[] restrictions, String[] allergies, JSONArray orders) {
         JSONArray restricts = new JSONArray();
         JSONArray aller = new JSONArray();
 
@@ -191,6 +191,7 @@ public class Data implements Serializable {
         newAccount.put("password", password);
         newAccount.put("restrictions", restricts);
         newAccount.put("allergies", aller);
+        newAccount.put("orders", orders);
         for (Object j : accounts) {
             JSONObject obj = (JSONObject) j;
             if (((String) obj.get("username")).equals(username)) {
