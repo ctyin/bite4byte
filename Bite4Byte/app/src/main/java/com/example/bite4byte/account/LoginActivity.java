@@ -13,6 +13,7 @@ import com.example.bite4byte.MainActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
+import com.example.bite4byte.UploadItemActivity;
 
 import org.json.simple.JSONObject;
 
@@ -75,6 +76,13 @@ public class LoginActivity extends AppCompatActivity {
             System.out.println("Welcome" + " " + (String) currentAccount.get("firstname"));
         }
 
+        try {
+            Intent i = new Intent(this, UploadItemActivity.class);
+            i.putExtra("manageData", manageData);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
     }
 

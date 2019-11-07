@@ -3,6 +3,8 @@
     package="com.example.bite4byte">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:usesCleartextTraffic="true"
@@ -25,6 +27,20 @@
         <activity android:name=".account.CreateAccPreferencesActivity"/>
         <activity android:name=".Feed.UserFeedActivity" android:exported="true"/>
         <activity android:name=".Feed.PostActivity"/>
+        <activity android:name=".UploadItemActivity"
+            android:exported="true"/>
+        
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.bite4byte.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+
+        </provider>
     </application>
 
 </manifest>

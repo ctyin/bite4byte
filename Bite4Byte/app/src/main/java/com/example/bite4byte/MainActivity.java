@@ -37,9 +37,21 @@ public class MainActivity extends AppCompatActivity {
 
         //create("accounts.json", "[]"); //Overwrite File and make it blank
 
-        boolean isFilePresent = isFilePresent("accounts.json");
-        if(!isFilePresent) {
+        boolean isAccountsFilePresent = isFilePresent("accounts.json");
+        boolean isFoodItemsFilePresent = isFilePresent("foods.json");
+        if(!isAccountsFilePresent) {
             boolean isFileCreated = create("accounts.json", "[]");
+            if(!isFileCreated) {
+                System.out.println("Failed File Creation");
+            } else {
+                System.out.println("File Created");
+            }
+        } else {
+            System.out.println("File exists");
+        }
+
+        if(!isFoodItemsFilePresent) {
+            boolean isFileCreated = create("foods.json", "[]");
             if(!isFileCreated) {
                 System.out.println("Failed File Creation");
             } else {
@@ -87,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(this, CreateAccountActivity.class);
             i.putExtra("manageData", manageData);
             startActivityForResult(i, CreateAccountActivity_ID);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
