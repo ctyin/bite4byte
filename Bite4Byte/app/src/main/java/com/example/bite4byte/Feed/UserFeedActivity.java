@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
 
 import org.json.JSONException;
@@ -80,8 +81,6 @@ public class UserFeedActivity extends Activity {
             view = LayoutInflater.from(this).inflate(R.layout.post, parent, false);
             parent.addView(view);
 
-//            view.setTag(i);
-
             TextView title = view.findViewById(R.id.postTitle);
             title.setText((String) jo.get("foodName"));
 
@@ -98,9 +97,21 @@ public class UserFeedActivity extends Activity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(UserFeedActivity.this, PostActivity.class);
-                    intent.putExtra("postId", v.getTag().toString());
-                    startActivity(intent);
+                Intent intent = new Intent(UserFeedActivity.this, PostActivity.class);
+
+                TextView title = view.findViewById(R.id.postTitle);
+                intent.putExtra("foodName", title.getText().toString());
+
+                TextView seller = view.findViewById(R.id.seller);
+                intent.putExtra("sellerUserName", seller.getText().toString());
+
+                TextView desc = view.findViewById(R.id.description);
+                intent.putExtra("description", desc.getText().toString());
+
+                Data md = (Data) UserFeedActivity.this.getIntent().getSerializableExtra("manageData");
+                intent.putExtra("manageData", md);
+
+                startActivity(intent);
                 }
             });
         }

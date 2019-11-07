@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Bite4Byte</string>
+    <string name="buyBtn">ORDER</string>
 </resources>
