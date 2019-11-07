@@ -20,6 +20,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 
 public class UserFeedActivity extends Activity {
@@ -43,14 +44,17 @@ public class UserFeedActivity extends Activity {
         return json;
     }
 
-    public List<JSONObject> filterByParam()
+    public List<JSONObject> filterByParam(List<String> fields,
+                                          List<String> values, Iterator<JSONObject> posts) {
+        return null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         JSONParser parser = new JSONParser();
-        JSONArray posts;
+        JSONArray posts = null;
 
         try {
             posts = (JSONArray) parser.parse(loadJsonFromAsset());
@@ -58,7 +62,8 @@ public class UserFeedActivity extends Activity {
             e.printStackTrace();
         }
 
-
+        Iterator<JSONObject> iter = posts.iterator();
+//        filterByParam(iter)
 
         setContentView(R.layout.activity_user_feed);
         ViewGroup parent = (ViewGroup) findViewById(R.id.post_container);
@@ -82,5 +87,9 @@ public class UserFeedActivity extends Activity {
                 }
             });
         }
+    }
+
+    public void onSearchClick() {
+
     }
 }
