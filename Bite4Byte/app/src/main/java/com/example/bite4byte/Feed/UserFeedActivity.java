@@ -73,6 +73,7 @@ public class UserFeedActivity extends Activity {
         setContentView(R.layout.activity_user_feed);
 
         cuisinesFilter = getResources().getStringArray(R.array.cuisines);
+        cuisinesSelect = new boolean[cuisinesFilter.length];
         Map<Integer, JSONObject> foodItems = manageData.getFoodItems();
 
         for (int key : foodItems.keySet()) {
@@ -154,7 +155,7 @@ public class UserFeedActivity extends Activity {
 
     public Set<JSONObject> filterByParam(String field, Set<String> values) {
         Set<JSONObject> results = feed;
-        boolean removed = false;
+        Set<JSONObject> removed = new HashSet<JSONObject>();
 
         if (field.equals("allergies")) {
             for (JSONObject item : feed) {
@@ -164,17 +165,14 @@ public class UserFeedActivity extends Activity {
 
                     for (String v : values) {
                         if (ingredient.equals(v)) {
-                            removed = results.remove(item);
+                            removed.add(item);
                             break;
                         }
                     }
-
-                    if (removed) {
-                        removed = false;
-                        break;
-                    }
                 }
             }
+
+            results.removeAll(removed);
         } else if (field.equals("cuisines")) {
             for (JSONObject item : feed) {
                 JSONArray cuisJSON = (JSONArray) item.get("cuisines");
@@ -183,17 +181,14 @@ public class UserFeedActivity extends Activity {
 
                     for (String v : values) {
                         if (cuisine.equals(v)) {
-                            removed = results.remove(item);
+                            removed.add(item);
                             break;
                         }
                     }
-
-                    if (removed) {
-                        removed = false;
-                        break;
-                    }
                 }
             }
+
+            results.removeAll(removed);
         } else if (field.equals("restrictions")) {
             for (JSONObject item : feed) {
                 JSONArray resJSON = (JSONArray) item.get("restrictions");
@@ -202,17 +197,14 @@ public class UserFeedActivity extends Activity {
 
                     for (String v : values) {
                         if (restriction.equals(v)) {
-                            removed = results.remove(item);
+                            removed.add(item);
                             break;
                         }
                     }
-
-                    if (removed) {
-                        removed = false;
-                        break;
-                    }
                 }
             }
+
+            results = removed;
         }
 
         return results;
