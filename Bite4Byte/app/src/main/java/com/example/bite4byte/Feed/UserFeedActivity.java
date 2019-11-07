@@ -13,19 +13,20 @@ import android.widget.TextView;
 import com.example.bite4byte.R;
 
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class UserFeedActivity extends Activity {
     private View view;
-    int i;
 
     public String loadJsonFromAsset() {
         // method taken in part from https://preview.tinyurl.com/yxzhv883
@@ -46,7 +47,14 @@ public class UserFeedActivity extends Activity {
 
     public List<JSONObject> filterByParam(List<String> fields,
                                           List<String> values, Iterator<JSONObject> posts) {
-        return null;
+        ArrayList<JSONObject> ret = new ArrayList<>();
+
+        while (posts.hasNext()) {
+            JSONObject jo = (JSONObject) posts.next();
+            ret.add(jo);
+        }
+
+        return ret;
     }
 
     @Override
@@ -63,16 +71,25 @@ public class UserFeedActivity extends Activity {
         }
 
         Iterator<JSONObject> iter = posts.iterator();
-//        filterByParam(iter)
+        List<JSONObject> result = filterByParam(null, null, iter);
 
         setContentView(R.layout.activity_user_feed);
         ViewGroup parent = (ViewGroup) findViewById(R.id.post_container);
 
-        for (i=0; i<4; i++) {
+        for (JSONObject jo : result) {
             view = LayoutInflater.from(this).inflate(R.layout.post, parent, false);
             parent.addView(view);
 
-            view.setTag(i);
+//            view.setTag(i);
+
+            TextView title = view.findViewById(R.id.postTitle);
+            title.setText((String) jo.get("foodName"));
+
+            TextView seller = view.findViewById(R.id.seller);
+            seller.setText((String) jo.get("sellerUserName"));
+
+            TextView desc = view.findViewById(R.id.description);
+            desc.setText((String) jo.get("description"));
 
             ImageView iv = view.findViewById(R.id.imageView);
             iv.setImageResource(R.drawable.chicken_curry);

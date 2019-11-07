@@ -42,9 +42,5 @@ dependencies {
     //    Material Edit Text
     //    implementation 'com.rengwuxian.materialedtitext:library:2.1.4'
     //    Material Styled Dialog
-    //    implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
-<<<<<<< HEAD
-=======
-    implementation files('/Users/Juni/Documents/School/CIS 350/350F19-15/Bite4Byte/json-simple-1.1.1.jar')
->>>>>>> a1181471b4da5ce4eca8aa0ad9d785d7ffc4ea61
+    //    implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'/CIS 350/350F19-15/Bite4Byte/json-simple-1.1.1.jar')
 }
