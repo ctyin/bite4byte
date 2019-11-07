@@ -169,6 +169,47 @@ public class Data implements Serializable {
         }
     }
 
+    public void modifyAccount(Context context, String username, String firstname, String lastname, String password, String[] restrictions, String[] allergies) {
+        JSONArray restricts = new JSONArray();
+        JSONArray aller = new JSONArray();
+
+        for (String r : restrictions) {
+            restricts.add(r);
+        }
+        for (String a : allergies) {
+            aller.add(a);
+        }
+
+        JSONObject newAccount = new JSONObject();
+        newAccount.put("username", username);
+        newAccount.put("firstname", firstname);
+        newAccount.put("lastname", lastname);
+        newAccount.put("password", password);
+        newAccount.put("restrictions", restricts);
+        newAccount.put("allergies", aller);
+        for (Object j : accounts) {
+            JSONObject obj = (JSONObject) j;
+            if (((String) obj.get("username")).equals(username)) {
+                accounts.remove(j);
+                break;
+            }
+        }
+        accountMap.remove(username);
+        accounts.add(newAccount);
+        accountMap.put(username, newAccount);
+        String jsonString = accounts.toJSONString();
+        try {
+            FileOutputStream fos = context.openFileOutput(accountFileName,Context.MODE_PRIVATE);
+            if (jsonString != null) {
+                fos.write(jsonString.getBytes());
+            }
+            fos.close();
+        } catch (FileNotFoundException fileNotFound) {
+        } catch (IOException ioException) {
+        }
+
+    }
+
     public void deleteAccount(String username, Context context) {
         for (Object j : accounts) {
             JSONObject obj = (JSONObject) j;

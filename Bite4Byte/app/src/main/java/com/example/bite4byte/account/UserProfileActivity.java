@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bite4byte.Feed.PostActivity;
+import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.MainActivity;
 import com.example.bite4byte.R;
@@ -41,12 +43,12 @@ public class UserProfileActivity extends AppCompatActivity {
         JSONArray allergies = (JSONArray) userAccount.get("allergies");
         if (restrictions != null) {
             for (Object j : restrictions) {
-                restricts += j.toString() + ", ";
+                restricts += j.toString() + " ";
             }
         }
         if (allergies != null) {
             for (Object j : allergies) {
-                allers += j.toString() + ", ";
+                allers += j.toString() + " ";
             }
         }
 
@@ -56,7 +58,10 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void onEditAccountButtonClick(View view) {
-
+        Intent intent = new Intent(this, EditAccountActivity.class);
+        intent.putExtra("manageData", manageData);
+        intent.putExtra("username", username);
+        startActivity(intent);
     }
 
     public void onDeleteAccountButtonClick(View view) {
@@ -64,5 +69,25 @@ public class UserProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    public void onLogOutButtonClick(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void onFeedButtonClick(View view) {
+        Intent intent = new Intent(this, UserFeedActivity.class);
+        intent.putExtra("manageData", manageData);
+        intent.putExtra("user", username);
+        startActivity(intent);
+    }
+
+    public void onPostButtonClick(View view) {
+        Intent intent = new Intent(this, PostActivity.class);
+        intent.putExtra("manageData", manageData);
+        
+    }
+
+
 
 }

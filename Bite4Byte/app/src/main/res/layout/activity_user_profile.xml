@@ -161,13 +161,15 @@
             android:id="@+id/feed"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Feed" />
+            android:text="Feed"
+            android:onClick="onFeedButtonClick"/>
 
         <Button
-            android:id="@+id/map"
+            android:id="@+id/post"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Map" />
+            android:text="Post"
+            android:onClick="onPostButtonClick"/>
 
         <Button
             android:id="@+id/messaging"
