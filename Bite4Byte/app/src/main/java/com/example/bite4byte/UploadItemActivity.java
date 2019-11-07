@@ -28,6 +28,9 @@ import com.example.bite4byte.Retrofit.RetrofitClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +47,7 @@ public class UploadItemActivity extends AppCompatActivity {
     int foodQuantity = 0, foodID;
     Integer[] quantities = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-    String photoPath;
+    String photoPath, username;
     ImageView foodPhoto;
 
     @Override
@@ -59,6 +62,7 @@ public class UploadItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_item);
         foodID = (int) (Math.random() * 9999);
         manageData = (Data) getIntent().getSerializableExtra("manageData");
+        username = getIntent().getStringExtra("username");
 
         Spinner quantitySpinner = findViewById(R.id.quantity_spinner);
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
@@ -90,9 +94,10 @@ public class UploadItemActivity extends AppCompatActivity {
     public void onUploadFoodClick(View view) {
         String foodName = ((EditText) findViewById(R.id.food_name)).getText().toString();
         String foodDesc = ((EditText) findViewById(R.id.food_desc)).getText().toString();
-        String[] ingredients = ((EditText) findViewById(R.id.ingredients)).getText().toString().toLowerCase().split(",");
+        String[] ingredients = ((EditText) findViewById(R.id.ingredients)).getText().toString().toLowerCase().split("\\s*,\\s*");
         Set<String> restrictionsSet = new HashSet<String>();
         Set<String> cuisinesSet = new HashSet<String>();
+        String location = ((EditText) findViewById(R.id.food_location)).getText().toString();
 
         CheckBox pescatarianCheck = (CheckBox) findViewById(R.id.pescatarian_check);
         if (pescatarianCheck.isChecked()) {
@@ -158,7 +163,10 @@ public class UploadItemActivity extends AppCompatActivity {
             i++;
         }
 
-        manageData.uploadFoodItem(this, foodID, foodQuantity, foodName, foodDesc, ingredients, restrictions, cuisines, photoPath);
+        Date date = new Date();
+
+        manageData.uploadFoodItem(this, foodID, foodQuantity, foodName, foodDesc, username,
+                location, date, ingredients, restrictions, cuisines, photoPath);
     }
 
     @Override

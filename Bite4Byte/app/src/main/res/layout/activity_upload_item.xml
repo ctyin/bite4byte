@@ -88,6 +88,20 @@
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:textSize="20sp"
+                    android:text="Location (address)" />
+
+                <EditText
+                    android:id="@+id/food_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textSize="20sp"
                     android:text="Restrictions" />
 
                 <CheckBox

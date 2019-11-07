@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
         try {
             Intent i = new Intent(this, UploadItemActivity.class);
+            i.putExtra("username", username);
             i.putExtra("manageData", manageData);
             startActivity(i);
         } catch (Exception e) {

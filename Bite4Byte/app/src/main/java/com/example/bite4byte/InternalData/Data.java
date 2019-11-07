@@ -185,16 +185,21 @@ public class Data implements Serializable {
         return null;
     }
 
-    public boolean uploadFoodItem(Context context, int id, int quantity, String foodName, String foodDesc, String[] ingredients, String[] restrictions, String[] cuisines, String image) {
+    public boolean uploadFoodItem(Context context, int id, int quantity, String foodName, String foodDesc, String username, String location,
+                                  Date date, String[] ingredients, String[] restrictions, String[] cuisines, String picture) {
         JSONObject newFood = new JSONObject();
-        newFood.put("id", id);
+        newFood.put("_id", id);
         newFood.put("quantity", quantity);
-        newFood.put("name", foodName);
+        newFood.put("foodName", foodName);
+        newFood.put("username", username);
         newFood.put("description", foodDesc);
         //newFood.put("ingredients", ingredients);
         //newFood.put("restrictions", restrictions);
         //newFood.put("cuisines", cuisines);
-        newFood.put("image", image);
+        newFood.put("picture", picture);
+        newFood.put("isAvailable", true);
+        newFood.put("location", location);
+        newFood.put("postDate", date);
 
         foodItems.add(newFood);
         foodMap.put(id, newFood);
