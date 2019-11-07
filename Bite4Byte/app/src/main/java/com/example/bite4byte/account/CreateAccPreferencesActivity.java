@@ -1,5 +1,6 @@
 package com.example.bite4byte.account;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
@@ -139,6 +141,12 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
                 }));*/
 
         manageData.createAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
+
+        Intent intent = new Intent(this, UserFeedActivity.class);
+        intent.putExtra("manageData", manageData);
+        intent.putExtra("user", username);
+        startActivity(intent);
+
 
 
     }
