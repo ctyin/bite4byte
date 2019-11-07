@@ -1,0 +1,232 @@
+[
+  {
+    "foodName": "sint",
+    "_id": "5dc31d3ccd0b623fbe291dd4",
+    "seller": "Spencer Galloway",
+    "picture": "http://placehold.it/32x32",
+    "servings": 3,
+    "isAvailable": true,
+    "postDate": "2017-06-23T01:24:02 +04:00",
+    "address": "505 Locust Avenue, Rehrersburg, Montana, 8086",
+    "foodItems": [
+      "nuts",
+      "tofu",
+      "potatoes"
+    ],
+    "cuisineTags": [
+      "Italian",
+      "American"
+    ],
+    "restrictions": [
+      ""
+    ],
+    "description": "id deserunt qui amet excepteur aute dolore culpa Lorem qui sint fugiat laboris adipisicing ad esse ex id ipsum ullamco anim aute esse"
+  },
+  {
+    "foodName": "eiusmod",
+    "_id": "5dc31d3c16ac4c717f939231",
+    "seller": "Cervantes Garrison",
+    "picture": "http://placehold.it/32x32",
+    "servings": 10,
+    "isAvailable": true,
+    "postDate": "2018-01-19T12:42:54 +05:00",
+    "address": "775 Foster Avenue, Cedarville, Nebraska, 4327",
+    "foodItems": [
+      "nuts",
+      "beef",
+      "potatoes"
+    ],
+    "cuisineTags": [
+      "Thai",
+      "Chinese"
+    ],
+    "restrictions": [
+      "vegan"
+    ],
+    "description": "adipisicing commodo veniam irure laborum ut fugiat proident voluptate nisi ad duis incididunt id magna officia proident aute sint elit amet minim nisi"
+  },
+  {
+    "foodName": "nostrud",
+    "_id": "5dc31d3cb1f134338da5d7c1",
+    "seller": "Olga Sykes",
+    "picture": "http://placehold.it/32x32",
+    "servings": 6,
+    "isAvailable": true,
+    "postDate": "2018-04-09T01:20:52 +04:00",
+    "address": "353 Dahl Court, Valle, Nevada, 4132",
+    "foodItems": [
+      "nuts",
+      "chicken",
+      "broccoli"
+    ],
+    "cuisineTags": [
+      "TexMex",
+      "Japanese"
+    ],
+    "restrictions": [
+      "vegetarian"
+    ],
+    "description": "occaecat id exercitation est mollit mollit aute ea voluptate ad occaecat cillum mollit qui mollit quis ex exercitation labore eiusmod consequat dolore et"
+  },
+  {
+    "foodName": "dolor",
+    "_id": "5dc31d3c897073fc165adbe8",
+    "seller": "Holmes Madden",
+    "picture": "http://placehold.it/32x32",
+    "servings": 9,
+    "isAvailable": false,
+    "postDate": "2016-10-14T11:09:22 +04:00",
+    "address": "926 Ferry Place, Waiohinu, Michigan, 4671",
+    "foodItems": [
+      "nuts",
+      "beef",
+      "broccoli"
+    ],
+    "cuisineTags": [
+      "Italian",
+      "American"
+    ],
+    "restrictions": [
+      "pescatarian"
+    ],
+    "description": "mollit enim ex fugiat aliquip eiusmod dolor deserunt officia dolor pariatur aliqua dolor dolore sint duis"
+  },
+  {
+    "foodName": "pariatur",
+    "_id": "5dc31d3c32a3444b0a555fed",
+    "seller": "Katina Pugh",
+    "picture": "http://placehold.it/32x32",
+    "servings": 4,
+    "isAvailable": true,
+    "postDate": "2019-08-18T02:40:39 +04:00",
+    "address": "882 Ovington Avenue, Linganore, Iowa, 4152",
+    "foodItems": [
+      "milk",
+      "beef",
+      "potatoes"
+    ],
+    "cuisineTags": [
+      "Italian",
+      "American"
+    ],
+    "restrictions": [
+      "pescatarian"
+    ],
+    "description": "esse velit cillum duis enim duis dolore mollit occaecat do anim in exercitation et velit incididunt exercitation reprehenderit consequat proident exercitation excepteur deserunt amet"
+  },
+  {
+    "foodName": "aute",
+    "_id": "5dc31d3cbf3efb45a75d7341",
+    "seller": "Helene Cross",
+    "picture": "http://placehold.it/32x32",
+    "servings": 10,
+    "isAvailable": false,
+    "postDate": "2014-01-12T08:26:55 +05:00",
+    "address": "802 Java Street, Indio, Wisconsin, 9827",
+    "foodItems": [
+      "nuts",
+      "tofu",
+      "potatoes"
+    ],
+    "cuisineTags": [
+      "Italian",
+      "American"
+    ],
+    "restrictions": [
+      ""
+    ],
+    "description": "nisi duis esse Lorem fugiat enim anim consectetur duis adipisicing reprehenderit quis duis laboris consectetur sit"
+  },
+  {
+    "foodName": "exercitation",
+    "_id": "5dc31d3c2b1c5df220b7f63a",
+    "seller": "Case Rodgers",
+    "picture": "http://placehold.it/32x32",
+    "servings": 7,
+    "isAvailable": false,
+    "postDate": "2017-09-02T07:32:59 +04:00",
+    "address": "230 Girard Street, Summerfield, California, 1937",
+    "foodItems": [
+      "nuts",
+      "chicken",
+      "carrots"
+    ],
+    "cuisineTags": [
+      "Thai",
+      "Japanese"
+    ],
+    "restrictions": [
+      ""
+    ],
+    "description": "irure eu mollit aliqua consequat cupidatat culpa nisi voluptate occaecat dolor ea quis eu ea pariatur reprehenderit tempor deserunt Lorem in excepteur amet laboris nostrud"
+  },
+  {
+    "foodName": "pariatur",
+    "_id": "5dc31d3c998fb06ee1d2459b",
+    "seller": "Heidi Hamilton",
+    "picture": "http://placehold.it/32x32",
+    "servings": 6,
+    "isAvailable": false,
+    "postDate": "2015-07-16T06:57:39 +04:00",
+    "address": "989 Turnbull Avenue, Cochranville, American Samoa, 4525",
+    "foodItems": [
+      "milk",
+      "beef",
+      "broccoli"
+    ],
+    "cuisineTags": [
+      "Italian",
+      "American"
+    ],
+    "restrictions": [
+      "vegan"
+    ],
+    "description": "ex pariatur ex velit deserunt aliqua id amet sit qui quis anim pariatur ipsum cupidatat ipsum tempor esse magna mollit sit laborum magna"
+  },
+  {
+    "foodName": "laborum",
+    "_id": "5dc31d3c0f6ecdbc4b774dbd",
+    "seller": "Samantha Cortez",
+    "picture": "http://placehold.it/32x32",
+    "servings": 2,
+    "isAvailable": false,
+    "postDate": "2015-01-05T04:10:46 +05:00",
+    "address": "873 Robert Street, Allensworth, Indiana, 2021",
+    "foodItems": [
+      "nuts",
+      "tofu",
+      "potatoes"
+    ],
+    "cuisineTags": [
+      "Italian",
+      "Chinese"
+    ],
+    "restrictions": [
+      "vegetarian"
+    ],
+    "description": "mollit consequat mollit consectetur esse consectetur cupidatat occaecat laboris duis et exercitation veniam fugiat reprehenderit tempor veniam anim cillum est ipsum"
+  },
+  {
+    "foodName": "consequat",
+    "_id": "5dc31d3c607e001c73079d4c",
+    "seller": "Michele Sargent",
+    "picture": "http://placehold.it/32x32",
+    "servings": 5,
+    "isAvailable": true,
+    "postDate": "2018-07-28T05:29:35 +04:00",
+    "address": "935 Orange Street, Farmington, Puerto Rico, 5459",
+    "foodItems": [
+      "eggs",
+      "beef",
+      "potatoes"
+    ],
+    "cuisineTags": [
+      "TexMex",
+      "American"
+    ],
+    "restrictions": [
+      "vegan"
+    ],
+    "description": "anim elit consequat id laborum enim cillum aliquip Lorem veniam occaecat aute nulla duis excepteur cillum"
+  }
+]

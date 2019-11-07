@@ -14,9 +14,13 @@ import com.example.bite4byte.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class UserFeedActivity extends Activity {
     private View view;
@@ -26,7 +30,7 @@ public class UserFeedActivity extends Activity {
         // method taken in part from https://preview.tinyurl.com/yxzhv883
         String json = null;
         try {
-            InputStream is = this.getAssets().open("yourfilename.json");
+            InputStream is = this.getAssets().open("generatedFoodPosts.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -39,15 +43,22 @@ public class UserFeedActivity extends Activity {
         return json;
     }
 
+    public List<JSONObject> filterByParam()
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        JSONParser parser = new JSONParser();
+        JSONArray posts;
+
         try {
-            JSONObject obj = new JSONObject(loadJsonFromAsset());
-        } catch (JSONException e) {
+            posts = (JSONArray) parser.parse(loadJsonFromAsset());
+        } catch (ParseException e) {
             e.printStackTrace();
         }
+
+
 
         setContentView(R.layout.activity_user_feed);
         ViewGroup parent = (ViewGroup) findViewById(R.id.post_container);
