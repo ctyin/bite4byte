@@ -14,6 +14,7 @@ import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.HashSet;
@@ -34,6 +35,7 @@ public class EditAccountActivity extends AppCompatActivity {
     String firstname;
     String lastname;
     String password;
+    JSONArray orders;
     Data manageData;
 
     /*@Override
@@ -51,6 +53,7 @@ public class EditAccountActivity extends AppCompatActivity {
         firstname = (String) acct.get("firstname");
         lastname = (String) acct.get("lastname");
         password = (String) acct.get("password");
+        orders = (JSONArray) acct.get("orders");
         setContentView(R.layout.activity_create_acc_preferences);
 
         // init singleton service, don't need to implement yet
@@ -143,7 +146,7 @@ public class EditAccountActivity extends AppCompatActivity {
                     }
                 }));*/
 
-        manageData.modifyAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
+        manageData.modifyAccount(this, username, firstname, lastname, password, restrictArr, allergyArr, orders);
 
         Intent intent = new Intent(this, UserProfileActivity.class);
         intent.putExtra("manageData", manageData);

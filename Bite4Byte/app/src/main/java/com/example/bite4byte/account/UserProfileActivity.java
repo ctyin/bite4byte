@@ -17,6 +17,10 @@ import com.example.bite4byte.R;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Map;
+
 public class UserProfileActivity extends AppCompatActivity {
 
     Data manageData;
@@ -30,6 +34,7 @@ public class UserProfileActivity extends AppCompatActivity {
         manageData = (Data) getIntent().getSerializableExtra("manageData");
         username = (String) getIntent().getStringExtra("user");
         userAccount = manageData.getAccount(username);
+        Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
 
         setContentView(R.layout.activity_user_profile);
 
@@ -52,9 +57,17 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         }
 
+        JSONArray orderIds = (JSONArray) userAccount.get("orders");
+        String orderStr = "";
+        if (orderIds != null) {
+            for (Object j : orderIds) {
+                orderStr += foodMap.get(j).get("foodName") + "\n";
+            }
+        }
 
         ((TextView) findViewById(R.id.restrictionsText)).setText(restricts);
         ((TextView) findViewById(R.id.allergiesText)).setText(allers);
+        ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
     }
 
     public void onEditAccountButtonClick(View view) {
