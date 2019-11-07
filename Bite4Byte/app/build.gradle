@@ -37,10 +37,12 @@ dependencies {
     // RxJava
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
-    implementation files('C:\\Users\\cyin7\\Documents\\CIS350\\350F19-15\\Bite4Byte\\json-simple-1.1.1.jar')
+    implementation files('C:\\Users\\chaud\\Desktop\\UPenn\\Fall2019\\350F19-15\\Bite4Byte\\json-simple-1.1.1.jar')
+    //implementation files('C:\\Users\\cyin7\\Documents\\CIS350\\350F19-15\\Bite4Byte\\json-simple-1.1.1.jar')
     implementation 'com.google.code.gson:gson:2.8.6'
+
     //    Material Edit Text
     //    implementation 'com.rengwuxian.materialedtitext:library:2.1.4'
     //    Material Styled Dialog
-    //    implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'/CIS 350/350F19-15/Bite4Byte/json-simple-1.1.1.jar')
+    //    implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
 }

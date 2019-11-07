@@ -134,13 +134,23 @@ public class Data implements Serializable {
 
     //returns true if account is successfully created
     public boolean createAccount(Context context, String username, String firstname, String lastname, String password, String[] preferences, String[] allergies) {
+        JSONArray pref = new JSONArray();
+        JSONArray aller = new JSONArray();
+
+        for (String p : preferences) {
+            pref.add(p);
+        }
+        for (String a : allergies) {
+            aller.add(a);
+        }
+
         JSONObject newAccount = new JSONObject();
         newAccount.put("username", username);
         newAccount.put("firstname", firstname);
         newAccount.put("lastname", lastname);
         newAccount.put("password", password);
-        //newAccount.put("preferences", preferences);
-        //newAccount.put("allergies", allergies);
+        newAccount.put("preferences", pref);
+        newAccount.put("allergies", aller);
         accounts.add(newAccount);
         accountMap.put(username, newAccount);
         System.out.println(accountMap.keySet().size());
