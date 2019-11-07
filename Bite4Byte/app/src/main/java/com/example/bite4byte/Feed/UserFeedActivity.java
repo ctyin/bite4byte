@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
+import com.example.bite4byte.account.UserProfileActivity;
 
 import org.json.JSONException;
 import org.json.simple.JSONObject;
@@ -125,6 +126,17 @@ public class UserFeedActivity extends Activity {
 
     public void onSearchClick() {
 
+    }
+
+    public void onProfileClick(View view) {
+        try {
+            Intent i = new Intent(this, UserProfileActivity.class);
+            i.putExtra("manageData", manageData);
+            i.putExtra("user", (String) user.get("username"));
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void onFilterClick(View view) {

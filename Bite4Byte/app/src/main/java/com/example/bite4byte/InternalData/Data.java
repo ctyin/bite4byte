@@ -169,6 +169,27 @@ public class Data implements Serializable {
         }
     }
 
+    public void deleteAccount(String username, Context context) {
+        for (Object j : accounts) {
+            JSONObject obj = (JSONObject) j;
+            if (((String) obj.get("username")).equals(username)) {
+                accounts.remove(j);
+                break;
+            }
+        }
+        accountMap.remove(username);
+        String jsonString = accounts.toJSONString();
+        try {
+            FileOutputStream fos = context.openFileOutput(accountFileName,Context.MODE_PRIVATE);
+            if (jsonString != null) {
+                fos.write(jsonString.getBytes());
+            }
+            fos.close();
+        } catch (FileNotFoundException fileNotFound) {
+        } catch (IOException ioException) {
+        }
+    }
+
     //returns the JSONObject for the username and null if username, pswd is invalid
     public JSONObject login(String usernameIn, String passwordIn) {
         System.out.println(accountMap.keySet().size());

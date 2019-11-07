@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--tools:context=".account.__________"-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:text="Profile"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:text="Username:" />
+
+            <TextView
+                android:id="@+id/usernameText"
+                android:layout_width="80dp"
+                android:layout_height="60dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:text="First Name:" />
+
+            <TextView
+                android:id="@+id/firstnameText"
+                android:layout_width="80dp"
+                android:layout_height="60dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:text="Last Name:" />
+
+            <TextView
+                android:id="@+id/lastnameText"
+                android:layout_width="80dp"
+                android:layout_height="60dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:text="Restrictions:" />
+
+            <TextView
+                android:id="@+id/restrictionsText"
+                android:layout_width="80dp"
+                android:layout_height="60dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:text="Allergies:" />
+
+            <TextView
+                android:id="@+id/allergiesText"
+                android:layout_width="80dp"
+                android:layout_height="60dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/editAccount"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:onClick="onEditAccountButtonClick"
+                android:text="Edit Account" />
+
+            <Button
+                android:id="@+id/logOut"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:onClick="onLogOutButtonClick"
+                android:text="Log Out" />
+
+            <Button
+                android:id="@+id/deleteAccount"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:onClick="onDeleteAccountButtonClick"
+                android:text="Delete Account" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/feed"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="Feed" />
+
+        <Button
+            android:id="@+id/map"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="Map" />
+
+        <Button
+            android:id="@+id/messaging"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="DM's" />
+
+        <Button
+            android:id="@+id/profile"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="Profile" />
+
+    </LinearLayout>
+
+</LinearLayout>
