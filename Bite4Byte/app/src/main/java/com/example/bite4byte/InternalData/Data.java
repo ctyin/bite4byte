@@ -50,12 +50,15 @@ public class Data implements Serializable {
     public Data(Context context) {
         //this.context = context;
         try {
+            System.out.println("Try-catch reaches 1");
             //File internalDir = context.getFilesDir();
             //System.out.println(internalDir);
             //InputStream is = context.openFileInput(accountFileName);
             JSONParser parser = new JSONParser();
             this.accounts = (JSONArray) parser.parse(read(context, accountFileName));
+
             this.foodItems = (JSONArray) parser.parse(read(context, foodItemsFileName));
+            System.out.println("Try-catch reaches 2");
             System.out.println(accounts.size());
 
             Iterator<JSONObject> accountsIter = accounts.iterator();
@@ -74,7 +77,7 @@ public class Data implements Serializable {
             while (foodIter.hasNext()) {
                 JSONObject b = (JSONObject) foodIter.next();
                 try {
-                    foodMap.put((int) b.get("id"), b);
+                    foodMap.put(Integer.parseInt(b.get("_id").toString()), b);
                 } catch (Exception e) {
                     continue;
                 }
@@ -125,7 +128,7 @@ public class Data implements Serializable {
 
     //for initial validation of username when account is created
     public boolean verifyAvailableUsername(String username) {
-        System.out.println("reached");
+        System.out.println(accountMap != null);
         if (accountMap.containsKey(username)) {
             return false;
         }
@@ -151,6 +154,7 @@ public class Data implements Serializable {
         newAccount.put("password", password);
         newAccount.put("restrictions", restricts);
         newAccount.put("allergies", aller);
+        newAccount.put("order", new JSONArray());
         accounts.add(newAccount);
         accountMap.put(username, newAccount);
         System.out.println(accountMap.keySet().size());
@@ -248,7 +252,7 @@ public class Data implements Serializable {
     }
 
     public boolean uploadFoodItem(Context context, int id, int quantity, String foodName, String foodDesc, String username, String location,
-                                  Date date, String[] ingredients, String[] restrictions, String[] cuisines, String picture) {
+                                  String date, String[] ingredients, String[] restrictions, String[] cuisines, String picture) {
         JSONObject newFood = new JSONObject();
 
         JSONArray ingredientArr = new JSONArray();
@@ -268,7 +272,7 @@ public class Data implements Serializable {
         newFood.put("_id", id);
         newFood.put("quantity", quantity);
         newFood.put("foodName", foodName);
-        newFood.put("username", username);
+        newFood.put("sellerUserName", username);
         newFood.put("description", foodDesc);
         newFood.put("ingredients", ingredientArr);
         newFood.put("restrictions", restrictionArr);
@@ -302,6 +306,31 @@ public class Data implements Serializable {
         foodObj.put("isAvailable", val);
     }
 
+    public void addToAccountOrders(String username, String order_id, Context context) {
+        for (Object foo : accounts) {
+            JSONObject obj = (JSONObject) foo;
+            if (((String) obj.get("username")).equals(username)) {
+                JSONArray arr = (JSONArray) obj.get("orders");
+                arr.add(order_id);
+                obj.put("orders", arr);
+
+                accountMap.put(username, obj);
+                break;
+            }
+        }
+
+        String jsonStr = accounts.toJSONString();
+        try {
+            FileOutputStream fos = context.openFileOutput(accountFileName, MODE_PRIVATE);
+            if (jsonStr != null) {
+                fos.write(jsonStr.getBytes());
+            }
+            fos.close();
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+    }
+
     public Map<Integer, JSONObject> getFoodItems() {
         return foodMap;
     }
@@ -309,4 +338,5 @@ public class Data implements Serializable {
     public JSONObject getAccount(String n) {
         return accountMap.get(n);
     }
+    
 }
