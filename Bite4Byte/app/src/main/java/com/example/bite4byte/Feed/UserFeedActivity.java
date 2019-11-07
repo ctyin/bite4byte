@@ -1,6 +1,8 @@
 package com.example.bite4byte.Feed;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
@@ -23,11 +25,17 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class UserFeedActivity extends Activity {
     private View view;
+    private Set<Integer> selectedCuisines = new HashSet<Integer>();
+    private Set<String> cuisines = new HashSet<String>();
+    private String[] cuisinesFilter;
+    private boolean[] cuisinesSelect;
 
     public String loadJsonFromAsset() {
         // method taken in part from https://preview.tinyurl.com/yxzhv883
@@ -46,8 +54,8 @@ public class UserFeedActivity extends Activity {
         return json;
     }
 
-    public List<JSONObject> filterByParam(List<String> fields,
-                                          List<String> values, Iterator<JSONObject> posts) {
+    public List<JSONObject> filterByParam(String field,
+                                          Set<String> values, Iterator<JSONObject> posts) {
         ArrayList<JSONObject> ret = new ArrayList<>();
 
         while (posts.hasNext()) {
@@ -70,6 +78,8 @@ public class UserFeedActivity extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        cuisinesFilter = getResources().getStringArray(R.array.cuisines);
 
         Iterator<JSONObject> iter = posts.iterator();
         List<JSONObject> result = filterByParam(null, null, iter);
@@ -119,5 +129,45 @@ public class UserFeedActivity extends Activity {
 
     public void onSearchClick() {
 
+    }
+
+    public void onFilterClick(View view) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserFeedActivity.this);
+        mBuilder.setTitle("Filter by Cuisine");
+
+        mBuilder.setMultiChoiceItems(cuisinesFilter, cuisinesSelect, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                if (b) {
+                    selectedCuisines.add(i);
+                }
+            }
+        });
+
+        mBuilder.setCancelable(false);
+
+        mBuilder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                for (int c : selectedCuisines) {
+                    cuisines.add(cuisinesFilter[i]);
+                }
+            }
+        });
+
+        mBuilder.setNeutralButton("Clear all", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                for (int j = 0; j < cuisinesSelect.length; j++) {
+                    cuisinesSelect[j] = false;
+                }
+
+                selectedCuisines.clear();
+                cuisines.clear();
+            }
+        });
+
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
     }
 }

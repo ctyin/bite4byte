@@ -8,10 +8,13 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
-        <Spinner
+
+        <Button
+            android:id="@+id/filter_button"
             android:layout_width="100dp"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp"
+            android:text="filter"
+            android:onClick="onFilterClick"/>
 
         <SearchView
             android:id="@+id/simpleSearchView"
@@ -19,6 +22,7 @@
             android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
             android:queryHint="Search here"/>
+
     </LinearLayout>
 
     <ScrollView
@@ -31,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical" />
+
     </ScrollView>
 
     <LinearLayout
@@ -70,4 +75,5 @@
             android:text="Profile" />
 
     </LinearLayout>
+
 </LinearLayout>
