@@ -180,26 +180,30 @@
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:text="Feed"
+            style="?android:attr/buttonBarButtonStyle"
             android:onClick="onFeedButtonClick"/>
 
         <Button
             android:id="@+id/post"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Post"
+            android:text="Upload"
+            style="?android:attr/buttonBarButtonStyle"
             android:onClick="onPostButtonClick"/>
 
         <Button
             android:id="@+id/messaging"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="DM's" />
+            android:text="DM's"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
             android:id="@+id/profile"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Profile" />
+            android:text="Profile"
+            style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>
 

@@ -286,6 +286,9 @@ public class UserFeedActivity extends Activity {
 
                 selectedCuisines.clear();
                 cuisines.clear();
+
+                Set<JSONObject> newFeed = filterByParam();
+                updateFeed(newFeed);
             }
         });
 
