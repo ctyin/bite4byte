@@ -9,18 +9,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bite4byte.InternalData.Data;
-import com.example.bite4byte.MainActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
-import com.example.bite4byte.UploadItemActivity;
+import com.example.bite4byte.Feed.UploadItemActivity;
 
 import org.json.simple.JSONObject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
@@ -69,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 }));*/
 
         //get current account - will return null if invalid username or password
+
         JSONObject currentAccount = manageData.login(username, pass);
         if (currentAccount == null) {
             System.out.println("Invalid Username/Password");
