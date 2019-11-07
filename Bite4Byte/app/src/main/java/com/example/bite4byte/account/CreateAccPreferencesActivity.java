@@ -24,7 +24,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
-    HashSet<String> preferences = new HashSet<String>();
+    HashSet<String> restrictions = new HashSet<String>();
     HashSet<String> allergies = new HashSet<String>();
     String username;
     String firstname;
@@ -56,17 +56,17 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
     public void onCreatePrefSubmitClick(View view) {
         CheckBox pescatarianCheck = (CheckBox) findViewById(R.id.pescatarian_check);
         if (pescatarianCheck.isChecked()) {
-            preferences.add("pescatarian");
+            restrictions.add("pescatarian");
         }
 
         CheckBox vegetarianCheck = (CheckBox) findViewById(R.id.vegetarian_check);
         if (vegetarianCheck.isChecked()) {
-            preferences.add("vegetarian");
+            restrictions.add("vegetarian");
         }
 
         CheckBox veganCheck = (CheckBox) findViewById(R.id.vegan_check);
         if (veganCheck.isChecked()) {
-            preferences.add("vegan");
+            restrictions.add("vegan");
         }
 
         CheckBox peanutCheck = (CheckBox) findViewById(R.id.peanut_allergy);
@@ -111,10 +111,10 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
 
         //have to implement the rest of the checkboxes.
 
-        String[] preferenceArr = new String[preferences.size()];
+        String[] restrictArr = new String[restrictions.size()];
         int i = 0;
-        for (String s : preferences) {
-            preferenceArr[i] = s;
+        for (String s : restrictions) {
+            restrictArr[i] = s;
             i++;
         }
 
@@ -138,7 +138,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
                     }
                 }));*/
 
-        manageData.createAccount(this, username, firstname, lastname, password, preferenceArr, allergyArr);
+        manageData.createAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
 
 
     }
