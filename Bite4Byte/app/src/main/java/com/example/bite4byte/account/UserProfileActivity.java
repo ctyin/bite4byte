@@ -61,7 +61,7 @@ public class UserProfileActivity extends AppCompatActivity {
         String orderStr = "";
         if (orderIds != null) {
             for (Object j : orderIds) {
-                orderStr += foodMap.get(j).get("foodName") + "\n";
+                orderStr += foodMap.get(Integer.parseInt((String)j)).get("foodName") + "\n";
             }
         }
 

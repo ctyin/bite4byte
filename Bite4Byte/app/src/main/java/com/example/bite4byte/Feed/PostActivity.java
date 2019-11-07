@@ -39,6 +39,8 @@ public class PostActivity extends Activity {
 
         TextView desc = findViewById(R.id.postDescActivity);
         desc.setText(i.getStringExtra("description"));
+
+        order_id = i.getStringExtra("id");
     }
 
     public void onOrderBtnClick(View v) {
