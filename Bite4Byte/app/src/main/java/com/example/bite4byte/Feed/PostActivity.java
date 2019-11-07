@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
+import com.example.bite4byte.account.UserProfileActivity;
 
 public class PostActivity extends Activity {
 
@@ -48,5 +49,14 @@ public class PostActivity extends Activity {
 
         Toast.makeText(this, "Your order is confirmed!", Toast.LENGTH_LONG).show();
     }
+
+    public void onProfileButtonClick(View view) {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        intent.putExtra("manageData", md);
+        intent.putExtra("user", username);
+        startActivity(intent);
+    }
+
+
 
 }
