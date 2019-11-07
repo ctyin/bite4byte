@@ -2,6 +2,8 @@ package com.example.bite4byte.Feed;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +13,8 @@ import android.widget.Toast;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
 import com.example.bite4byte.account.UserProfileActivity;
+
+import org.json.simple.JSONObject;
 
 public class PostActivity extends Activity {
 
@@ -27,9 +31,14 @@ public class PostActivity extends Activity {
         Intent i = getIntent();
         md = (Data) i.getSerializableExtra("manageData");
         username = i.getStringExtra("username");
+        order_id = i.getStringExtra("id");
 
         ImageView iv = findViewById(R.id.postImg);
-        iv.setImageResource(R.drawable.chicken_curry);
+        JSONObject pic = md.getFoodItems().get(Integer.parseInt(order_id));
+        if (pic.get("picture") != null && !pic.get("picture").toString().isEmpty()) {
+            Bitmap bm = BitmapFactory.decodeFile(pic.get("picture").toString());
+            iv.setImageBitmap(bm);
+        }
 
         TextView fName = findViewById(R.id.postTitleActivity);
         fName.setText(i.getStringExtra("foodName"));
@@ -39,8 +48,6 @@ public class PostActivity extends Activity {
 
         TextView desc = findViewById(R.id.postDescActivity);
         desc.setText(i.getStringExtra("description"));
-
-        order_id = i.getStringExtra("id");
     }
 
     public void onOrderBtnClick(View v) {

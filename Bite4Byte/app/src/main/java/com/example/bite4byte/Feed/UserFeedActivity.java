@@ -78,7 +78,9 @@ public class UserFeedActivity extends Activity {
 
         Map<Integer, JSONObject> foodItems = manageData.getFoodItems();
         for (int key : foodItems.keySet()) {
-            feed.add(foodItems.get(key));
+            if ("true".equals(foodItems.get(key).get("isAvailable").toString())) {
+                feed.add(foodItems.get(key));
+            }
         }
 
         JSONArray allergiesJSON = (JSONArray) user.get("allergies");
@@ -154,9 +156,20 @@ public class UserFeedActivity extends Activity {
 
     public Set<JSONObject> filterByParam() {
         Set<JSONObject> results = feed;
+        Set<JSONObject> usersPost = new HashSet<JSONObject>();
         Set<JSONObject> containAllergy = new HashSet<JSONObject>();
         Set<JSONObject> meetRestrict = new HashSet<JSONObject>();
         Set<JSONObject> inCuisine = new HashSet<JSONObject>();
+
+        for (JSONObject item : results) {
+            String seller = item.get("sellerUserName").toString();
+
+            if (seller.equals(username)) {
+                usersPost.add(item);
+            }
+        }
+
+        results.removeAll(usersPost);
 
         for (JSONObject item : results) {
             JSONArray ingredJSON = (JSONArray) item.get("ingredients");
