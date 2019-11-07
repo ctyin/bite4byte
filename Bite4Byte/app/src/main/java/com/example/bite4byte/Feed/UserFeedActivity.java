@@ -188,7 +188,7 @@ public class UserFeedActivity extends Activity {
                 }
             }
 
-            results.removeAll(removed);
+            results = removed;
         } else if (field.equals("restrictions")) {
             for (JSONObject item : feed) {
                 JSONArray resJSON = (JSONArray) item.get("restrictions");
