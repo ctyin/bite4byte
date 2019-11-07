@@ -41,5 +41,5 @@ dependencies {
     //    implementation 'com.rengwuxian.materialedtitext:library:2.1.4'
     //    Material Styled Dialog
     //    implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
-    implementation files('C:/Users/chaud/Desktop/UPenn/Fall2019/350F19-15/Bite4Byte/json-simple-1.1.1.jar')
+    implementation files('/Users/Juni/Documents/School/CIS 350/350F19-15/Bite4Byte/json-simple-1.1.1.jar')
 }

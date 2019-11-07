@@ -39,8 +39,11 @@ public class Data implements Serializable {
     */
 
     static Map<String, JSONObject> accountMap;
+    static Map<Integer, JSONObject> foodMap;
     String accountFileName = "accounts.json";
+    String foodItemsFileName = "foods.json";
     JSONArray accounts;
+    JSONArray foodItems;
     //Context context;
 
 
@@ -52,14 +55,26 @@ public class Data implements Serializable {
             //InputStream is = context.openFileInput(accountFileName);
             JSONParser parser = new JSONParser();
             this.accounts = (JSONArray) parser.parse(read(context, accountFileName));
+            this.foodItems = (JSONArray) parser.parse(read(context, foodItemsFileName));
             System.out.println(accounts.size());
 
-            Iterator<JSONObject> iter = accounts.iterator();
+            Iterator<JSONObject> accountsIter = accounts.iterator();
             accountMap = new HashMap<String, JSONObject>();
-            while (iter.hasNext()) {
-                JSONObject a = (JSONObject) iter.next();
+            while (accountsIter.hasNext()) {
+                JSONObject a = (JSONObject) accountsIter.next();
                 try {
                     accountMap.put((String) a.get("username"), a);
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+
+            Iterator<JSONObject> foodIter = foodItems.iterator();
+            foodMap = new HashMap<Integer, JSONObject>();
+            while (foodIter.hasNext()) {
+                JSONObject b = (JSONObject) foodIter.next();
+                try {
+                    foodMap.put((int) b.get("id"), b);
                 } catch (Exception e) {
                     continue;
                 }
@@ -158,6 +173,36 @@ public class Data implements Serializable {
         }
         System.out.println("reached");
         return null;
+    }
+
+    public boolean uploadFoodItem(Context context, int id, int quantity, String foodName, String foodDesc, String[] ingredients, String[] restrictions, String[] cuisines, String image) {
+        JSONObject newFood = new JSONObject();
+        newFood.put("id", id);
+        newFood.put("quantity", quantity);
+        newFood.put("name", foodName);
+        newFood.put("description", foodDesc);
+        //newFood.put("ingredients", ingredients);
+        //newFood.put("restrictions", restrictions);
+        //newFood.put("cuisines", cuisines);
+        newFood.put("image", image);
+
+        foodItems.add(newFood);
+        foodMap.put(id, newFood);
+
+        String jsonString = foodItems.toJSONString();
+        System.out.println(jsonString);
+        try {
+            FileOutputStream fos = context.openFileOutput(foodItemsFileName,Context.MODE_PRIVATE);
+            if (jsonString != null) {
+                fos.write(jsonString.getBytes());
+            }
+            fos.close();
+            return true;
+        } catch (FileNotFoundException fileNotFound) {
+            return false;
+        } catch (IOException ioException) {
+            return false;
+        }
     }
 
 

@@ -68,6 +68,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             return;
         }
 
+        /*
         compositeDisposable.add(iMyService.registerUser(username, firstname, lastname, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,6 +81,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 }));
+         */
 
         if (!manageData.verifyAvailableUsername(username)) {
             System.out.println("Username taken");
