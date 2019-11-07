@@ -262,6 +262,31 @@ public class Data implements Serializable {
         foodObj.put("isAvailable", val);
     }
 
+    public void addToAccountOrders(String username, String order_id, Context context) {
+        for (Object foo : accounts) {
+            JSONObject obj = (JSONObject) foo;
+            if (((String) obj.get("username")).equals(username)) {
+                JSONArray arr = (JSONArray) obj.get("orders");
+                arr.add(order_id);
+                obj.put("orders", arr);
+
+                accountMap.put(username, obj);
+                break;
+            }
+        }
+
+        String jsonStr = accounts.toJSONString();
+        try {
+            FileOutputStream fos = context.openFileOutput(accountFileName, MODE_PRIVATE);
+            if (jsonStr != null) {
+                fos.write(jsonStr.getBytes());
+            }
+            fos.close();
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+    }
+
     public Map<Integer, JSONObject> getFoodItems() {
         return foodMap;
     }

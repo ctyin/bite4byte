@@ -138,6 +138,7 @@ public class UserFeedActivity extends Activity {
                 intent.putExtra("description", desc.getText().toString());
 
                 intent.putExtra("id", v.getTag().toString());
+                intent.putExtra("username", UserFeedActivity.this.getIntent().getStringExtra("username"));
 
                 Data md = (Data) UserFeedActivity.this.getIntent().getSerializableExtra("manageData");
                 intent.putExtra("manageData", md);

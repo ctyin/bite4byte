@@ -14,6 +14,8 @@ import com.example.bite4byte.R;
 public class PostActivity extends Activity {
 
     private Data md;
+    private String username;
+    private String order_id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class PostActivity extends Activity {
 
         Intent i = getIntent();
         md = (Data) i.getSerializableExtra("manageData");
+        username = i.getStringExtra("username");
 
         ImageView iv = findViewById(R.id.postImg);
         iv.setImageResource(R.drawable.chicken_curry);
@@ -41,7 +44,7 @@ public class PostActivity extends Activity {
         // set the current food's availability to false
         md.setFoodAvailability(Integer.parseInt(getIntent().getStringExtra("id")), false);
 
-
+        md.addToAccountOrders(username, order_id, this);
 
         Toast.makeText(this, "Your order is confirmed!", Toast.LENGTH_LONG).show();
     }
