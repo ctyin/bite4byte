@@ -22,7 +22,7 @@ public interface IMyService {
     @POST("food_preferences")
     @FormUrlEncoded
     Observable<String> foodPref(@Field("username") String username,
-                                @Field("preferences") String[] preferences,
+                                @Field("restrictions") String[] restrictions,
                                 @Field("allergies") String[] allergies);
 
     // Body HTTP example requires single json object
