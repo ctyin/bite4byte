@@ -235,15 +235,16 @@ public class Data implements Serializable {
         }
     }
 
-    public Map<Integer, JSONObject> getFoodMap() {
-        return foodMap;
-    }
-
     public void setFoodAvailability(int id, boolean val) {
         JSONObject foodObj = foodMap.get(id);
         foodObj.put("isAvailable", val);
     }
 
-    
+    public Map<Integer, JSONObject> getFoodItems() {
+        return foodMap;
+    }
 
+    public JSONObject getAccount(String n) {
+        return accountMap.get(n);
+    }
 }

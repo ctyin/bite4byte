@@ -43,5 +43,10 @@ dependencies {
     //    implementation 'com.rengwuxian.materialedtitext:library:2.1.4'
     //    Material Styled Dialog
     //    implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
-    implementation files('C:/Users/cyin7/Documents/CIS350/350F19-15/Bite4Byte/json-simple-1.1.1.jar')
+
+//    implementation files('C:/Users/cyin7/Documents/CIS350/350F19-15/Bite4Byte/json-simple-1.1.1.jar')
+
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation ('com.googlecode.json-simple:json-simple:1.1.1'){ exclude group: 'org.hamcrest', module: 'hamcrest-core' }
+
 }

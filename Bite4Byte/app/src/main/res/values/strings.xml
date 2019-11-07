@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Bite4Byte</string>
     <string name="buyBtn">ORDER</string>
+
+    <string-array name="cuisines">
+        <item>american</item>
+        <item>asian</item>
+        <item>french</item>
+        <item>indian</item>
+        <item>italian</item>
+        <item>mexican</item>
+        <item>middle eastern</item>
+    </string-array>
+
 </resources>
