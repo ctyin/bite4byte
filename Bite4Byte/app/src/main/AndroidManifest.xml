@@ -29,8 +29,9 @@
         <activity android:name=".account.EditAccountActivity"/>
         <activity android:name=".Feed.UserFeedActivity" android:exported="true"/>
         <activity android:name=".Feed.PostActivity"/>
-        <activity android:name=".Feed.UploadItemActivity"
-            android:exported="true"/>
+        <activity android:name=".Feed.UploadItemActivity" android:exported="true"/>
+        <activity android:name=".account.UserSearchActivity" android:exported="true"/>
+        <activity android:name=".account.OtherUserProfileActivity" android:exported="true"/>
         
         <provider
             android:name="androidx.core.content.FileProvider"

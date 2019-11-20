@@ -76,10 +76,8 @@ app.post('/food_preferences', (req, res) => {
 	var name = req.body.username;
 	var preferenceArr = [].concat(req.body.preferences);
 	var allergyArr = [].concat(req.body.allergies);
-	console.log(name + " " + preferenceArr);
 
 	Account.findOne({username: name}, function (err, account) {
-		console.log("reached");
 		if (err || account == null) {		//Account doesn't exist
 			console.log("Invalid Username");
 		} else {
