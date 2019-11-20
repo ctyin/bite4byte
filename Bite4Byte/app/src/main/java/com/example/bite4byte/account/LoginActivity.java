@@ -14,25 +14,25 @@ import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
 import com.example.bite4byte.Feed.UploadItemActivity;
+import com.example.bite4byte.Retrofit.UserContents;
 
 import org.json.simple.JSONObject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
 
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+//    CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
 
     Data manageData;
-
-    @Override
-    public void onStop() {
-        compositeDisposable.clear();
-        super.onStop();
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,21 +52,23 @@ public class LoginActivity extends AppCompatActivity {
         EditText passView = (EditText) findViewById(R.id.login_password);
         String pass = passView.getText().toString();
 
-        /*compositeDisposable.add(iMyService.loginUser(username, pass)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String response) throws Exception {
-                        Toast.makeText(
-                                LoginActivity.this,
-                                ""+response,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }));*/
+        Call<UserContents> call = iMyService.loginUser(username, pass);
+
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                System.out.println(response.body().getName());
+
+                Toast.makeText(LoginActivity.this, response.body().getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //get current account - will return null if invalid username or password
-
         JSONObject currentAccount = manageData.login(username, pass);
 
         if (currentAccount == null) {
