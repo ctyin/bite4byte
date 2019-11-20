@@ -141,6 +141,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
                 }));*/
 
         manageData.createAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
+        manageData.writeLoggedInUser(this, username, firstname, lastname, password, restrictArr, allergyArr);
 
         Intent intent = new Intent(this, UserFeedActivity.class);
         intent.putExtra("manageData", manageData);

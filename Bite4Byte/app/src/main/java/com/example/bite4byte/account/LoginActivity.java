@@ -76,6 +76,9 @@ public class LoginActivity extends AppCompatActivity {
             System.out.println("Welcome" + " " + (String) currentAccount.get("firstname"));
             Toast.makeText(this, "Welcome" + " " + (String) currentAccount.get("firstname") + "!", Toast.LENGTH_LONG).show();
             try {
+
+                /*manageData.writeLoggedInUser(this, (String) currentAccount.get("username"), (String) currentAccount.get("firstname"), (String) currentAccount.get("lastname"),
+                        (String) currentAccount.get("password"), (String) currentAccount.get())*/
                 Intent i = new Intent(this, UserFeedActivity.class);
                 i.putExtra("manageData", manageData);
                 i.putExtra("user", username);

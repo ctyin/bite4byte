@@ -91,12 +91,14 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void onDeleteAccountButtonClick(View view) {
+        manageData.eraseLoggedInUser(this);
         manageData.deleteAccount(username, this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     public void onLogOutButtonClick(View view) {
+        manageData.eraseLoggedInUser(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

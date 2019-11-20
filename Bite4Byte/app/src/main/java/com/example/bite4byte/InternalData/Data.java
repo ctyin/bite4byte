@@ -40,8 +40,10 @@ public class Data implements Serializable {
 
     static Map<String, JSONObject> accountMap;
     static Map<Integer, JSONObject> foodMap;
+    String loggedInFileName = "loggedin.json";
     String accountFileName = "accounts.json";
     String foodItemsFileName = "foods.json";
+    JSONObject currentUser;
     JSONArray accounts;
     JSONArray foodItems;
     //Context context;
@@ -55,6 +57,8 @@ public class Data implements Serializable {
             //System.out.println(internalDir);
             //InputStream is = context.openFileInput(accountFileName);
             JSONParser parser = new JSONParser();
+
+            this.currentUser = (JSONObject) parser.parse(read(context, loggedInFileName));
             this.accounts = (JSONArray) parser.parse(read(context, accountFileName));
 
             this.foodItems = (JSONArray) parser.parse(read(context, foodItemsFileName));
@@ -125,6 +129,70 @@ public class Data implements Serializable {
         }
         return json;
     }*/
+
+    public boolean userLoggedIn() {
+        if (currentUser.get("username") == null) {
+            System.out.println("Not Logged In");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean writeLoggedInUser(Context context, String username, String firstname, String lastname, String password, String[] restrictions, String[] allergies) {
+        JSONArray restricts = new JSONArray();
+        JSONArray aller = new JSONArray();
+
+        for (String r : restrictions) {
+            restricts.add(r);
+        }
+        for (String a : allergies) {
+            aller.add(a);
+        }
+
+        JSONObject newAccount = new JSONObject();
+        newAccount.put("username", username);
+        newAccount.put("firstname", firstname);
+        newAccount.put("lastname", lastname);
+        newAccount.put("password", password);
+        newAccount.put("restrictions", restricts);
+        newAccount.put("allergies", aller);
+        newAccount.put("orders", new JSONArray());
+
+        String jsonString = newAccount.toJSONString();
+
+        try {
+            FileOutputStream fos = context.openFileOutput(loggedInFileName,Context.MODE_PRIVATE);
+            if (jsonString != null) {
+                fos.write(jsonString.getBytes());
+            }
+            fos.close();
+            return true;
+        } catch (FileNotFoundException fileNotFound) {
+            return false;
+        } catch (IOException ioException) {
+            return false;
+        }
+    }
+
+    public boolean eraseLoggedInUser(Context context) {
+        String jsonString = "{}";
+        try {
+            FileOutputStream fos = context.openFileOutput(loggedInFileName,Context.MODE_PRIVATE);
+            if (jsonString != null) {
+                fos.write(jsonString.getBytes());
+            }
+            fos.close();
+            return true;
+        } catch (FileNotFoundException fileNotFound) {
+            return false;
+        } catch (IOException ioException) {
+            return false;
+        }
+    }
+
+    public JSONObject getLoggedInUser() {
+        return currentUser;
+    }
 
     //for initial validation of username when account is created
     public boolean verifyAvailableUsername(String username) {

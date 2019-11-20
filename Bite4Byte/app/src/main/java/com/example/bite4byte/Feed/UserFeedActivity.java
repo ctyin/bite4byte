@@ -70,6 +70,7 @@ public class UserFeedActivity extends Activity {
 
         manageData = (Data) getIntent().getSerializableExtra("manageData");
         username = getIntent().getStringExtra("user");
+        System.out.println(username);
         user = manageData.getAccount(username);
         setContentView(R.layout.activity_user_feed);
 
@@ -81,6 +82,10 @@ public class UserFeedActivity extends Activity {
             if ("true".equals(foodItems.get(key).get("isAvailable").toString())) {
                 feed.add(foodItems.get(key));
             }
+        }
+
+        if(user == null) {
+            System.out.println("User is null");
         }
 
         JSONArray allergiesJSON = (JSONArray) user.get("allergies");
