@@ -39,6 +39,11 @@ app.post('/login', (req, res) => {
 	console.log(name + " " + password);
 });
 
+app.use('/deleteacc', (req, res) => {
+	username = req.body.username;
+	Account.remove({username : username});
+})
+
 // route for creating a new person
 // this is the action of the "create new person" form
 app.use('/register', (req, res) => {
