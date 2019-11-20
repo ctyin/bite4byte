@@ -23,10 +23,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class OtherUserProfileActivity extends AppCompatActivity {
 
     Data manageData;
-    String username;
+    String currUsername, otherUsername;
     JSONObject userAccount;
 
     @Override
@@ -34,13 +34,14 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         manageData = (Data) getIntent().getSerializableExtra("manageData");
-        username = (String) getIntent().getStringExtra("user");
-        userAccount = manageData.getAccount(username);
+        currUsername = (String) getIntent().getStringExtra("user");
+        otherUsername = (String) getIntent().getStringExtra("otherUser");
+        userAccount = manageData.getAccount(otherUsername);
         Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
 
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_other_user_profile);
 
-        ((TextView) findViewById(R.id.usernameText)).setText(username);
+        ((TextView) findViewById(R.id.usernameText)).setText(otherUsername);
         ((TextView) findViewById(R.id.firstnameText)).setText((String) userAccount.get("firstname"));
         ((TextView) findViewById(R.id.lastnameText)).setText((String) userAccount.get("lastname"));
 
@@ -78,41 +79,28 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, UserSearchActivity.class);
         intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
+        intent.putExtra("username", currUsername);
         intent.putExtra("query", query);
         startActivity(intent);
     }
 
-    public void onEditAccountButtonClick(View view) {
-        Intent intent = new Intent(this, EditAccountActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
-        startActivity(intent);
-    }
+    public void onFriendRequestButtonClick(View view) {
 
-    public void onDeleteAccountButtonClick(View view) {
-        manageData.deleteAccount(username, this);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    public void onLogOutButtonClick(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 
     public void onFeedButtonClick(View view) {
         Intent intent = new Intent(this, UserFeedActivity.class);
         intent.putExtra("manageData", manageData);
-        intent.putExtra("user", username);
+        intent.putExtra("user", currUsername);
         startActivity(intent);
     }
 
     public void onPostButtonClick(View view) {
         Intent intent = new Intent(this, UploadItemActivity.class);
         intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
+        intent.putExtra("username", currUsername);
         startActivity(intent);
     }
 
 }
+
