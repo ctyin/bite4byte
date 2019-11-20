@@ -2,6 +2,7 @@ package com.example.bite4byte.Retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
@@ -12,6 +13,7 @@ public class RetrofitClient {
             instance = new Retrofit.Builder()
                     // in emulator, change localhost to 10.0.2.2
                     .baseUrl("http://10.0.2.2:3000")
+                    .addConverterFactory(GsonConverterFactory.create())
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();

@@ -37,6 +37,8 @@ app.post('/login', (req, res) => {
 	  	console.log(accounts);
 	})*/ 
 	console.log(name + " " + password);
+
+	res.json({"username":"hardCodedTest"});
 });
 
 app.use('/deleteacc', (req, res) => {
