@@ -21,4 +21,8 @@ public class UserContents {
     public String[] getAllergies() { return allergies; }
 
     public String[] getFriendsList() { return friends; }
+
+    public void setName(String name) {
+        username = name;
+    }
 }

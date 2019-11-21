@@ -13,8 +13,27 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // import the Account class from Account.js
 var Account = require('./Account.js');
-	
+var Convo = require('./Convo.js');
+var Message = require('./Message');
+
 /***************************************/
+
+// need the http server instance for socket.io
+var server = app.listen(3000,  () => {
+	console.log('Listening on port 3000');
+    });
+var io = require('socket.io').listen(server);
+
+io.on('connection', (socket)=> {
+	console.log('a user connected');
+	socket.on('join', (data) => {
+		console.log(data);
+
+		dataJson = JSON.parse(data);
+
+		console.log('username: ' + dataJson.username);
+	});
+});
 
 app.post('/login', (req, res) => {
 	var name = req.body.username;
@@ -185,6 +204,33 @@ app.use('/all', (req, res) => {
 	    }).sort({ 'age': 'asc' }); // this sorts them BEFORE rendering the results
     });*/
 
+app.use('/convos', (req, res) => {
+	var queryObj = {};
+
+	// need to figure out how this request looks
+	if (req.body.username) {
+		queryObj = {"participants": req.body.username};
+	}
+
+	Convo.find( queryObj,
+    function(err, convos) {
+    	if (err) {
+    		console.log(err);
+    		res.json({});
+    	}
+    	else {
+    		var returnArray = [];
+    		convos.forEach((convo) => {
+    			console.log(convo);
+
+    			returnArray.push( {"convo_id" : convo.convo_id, "participants" : convo.participants});
+    		});
+
+    		res.json(returnArray);
+    	}
+    } );
+});
+
 // route for accessing data via the web api
 // to use this, make a request for /api to get an array of all Person objects
 // or /api?name=[whatever] to get a single object
@@ -220,7 +266,7 @@ app.use('/api', (req, res) => {
 			    returnArray.push( { "username" : person.name , "firstname" : account.firstname, "lastname" : account.lastname } );
 			});
 		    // send it back as JSON Array
-		    res.json(returnArray); 
+		    res.json(returnArray);
 		}
 		
 	    });
@@ -234,7 +280,3 @@ app.use('/api', (req, res) => {
 app.use('/public', express.static('public'));
 
 //app.use('/', (req, res) => { res.redirect('/public/personform.html'); } );
-
-app.listen(3000,  () => {
-	console.log('Listening on port 3000');
-    });
