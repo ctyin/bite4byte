@@ -18,6 +18,7 @@ import com.example.bite4byte.Feed.PostActivity;
 import com.example.bite4byte.Feed.UploadItemActivity;
 import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
+import com.example.bite4byte.Messaging.AllMsgActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
@@ -185,6 +186,16 @@ public class UserSearchActivity extends AppCompatActivity {
     public void onProfileClick(View view) {
         try {
             Intent i = new Intent(this, UserProfileActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void onDMClick(View view) {
+        try {
+            Intent i = new Intent(this, AllMsgActivity.class);
             i.putExtra("user", user);
             startActivity(i);
         } catch (Exception e) {

@@ -88,7 +88,8 @@
             android:id="@+id/messaging"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="DM's" />
+            android:text="DM's"
+            android:onClick="onDMClick"/>
 
         <Button
             style="?android:attr/buttonBarButtonStyle"

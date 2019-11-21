@@ -216,7 +216,8 @@
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:text="DM's"
-            style="?android:attr/buttonBarButtonStyle"/>
+            style="?android:attr/buttonBarButtonStyle"
+            android:onClick="onDMClick"/>
 
         <Button
             android:id="@+id/profile"

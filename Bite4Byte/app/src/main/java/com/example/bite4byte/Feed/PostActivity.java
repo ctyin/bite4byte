@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bite4byte.InternalData.Data;
+import com.example.bite4byte.Messaging.AllMsgActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.FoodContents;
 import com.example.bite4byte.Retrofit.IMyService;
@@ -113,6 +114,14 @@ public class PostActivity extends Activity {
         startActivity(intent);
     }
 
-
+    public void onDMClick(View view) {
+        try {
+            Intent i = new Intent(this, AllMsgActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
 }
