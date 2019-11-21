@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.MainActivity;
 import com.example.bite4byte.R;
+import com.example.bite4byte.Retrofit.UserContents;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -22,6 +24,10 @@ import org.json.simple.JSONObject;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OtherUserProfileActivity extends AppCompatActivity {
 
@@ -40,6 +46,29 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
 
         setContentView(R.layout.activity_other_user_profile);
+
+        Call<UserContents> call = iMyService.foodPref(username, firstname, lastname, password, restrictArr, allergyArr);
+
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                UserContents user = response.body();
+                String s = "Welcome " + response.body().getFirstName() + "!";
+                System.out.println(s);
+
+                Toast.makeText(CreateAccPreferencesActivity.this, s, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(CreateAccPreferencesActivity.this, UserFeedActivity.class);
+                intent.putExtra("manageData", manageData);
+                intent.putExtra("user", username);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                Toast.makeText(CreateAccPreferencesActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         ((TextView) findViewById(R.id.usernameText)).setText(otherUsername);
         ((TextView) findViewById(R.id.firstnameText)).setText((String) userAccount.get("firstname"));
