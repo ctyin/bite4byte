@@ -183,6 +183,7 @@ public class UserFeedActivity extends Activity {
     public Set<FoodContents> filterByParam(Set<FoodContents> set) {
         Set<FoodContents> results = set;
         Set<FoodContents> usersPost = new HashSet<FoodContents>();
+        Set<FoodContents> notAvailable = new HashSet<FoodContents>();
         Set<FoodContents> containAllergy = new HashSet<FoodContents>();
         Set<FoodContents> meetRestrict = new HashSet<FoodContents>();
         Set<FoodContents> inCuisine = new HashSet<FoodContents>();
@@ -199,9 +200,11 @@ public class UserFeedActivity extends Activity {
 
         for (FoodContents item : results) {
             if (!item.isAvailable()) {
-                results.remove(item);
+                notAvailable.add(item);
             }
         }
+
+        results.removeAll(notAvailable);
 
         for (FoodContents item : results) {
             String[] ingreds = item.getIngredients();
