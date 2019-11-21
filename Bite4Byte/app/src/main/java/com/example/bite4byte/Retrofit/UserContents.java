@@ -6,4 +6,8 @@ public class UserContents {
     public String getName() {
         return username;
     }
+
+    public void setName(String name) {
+        username = name;
+    }
 }
