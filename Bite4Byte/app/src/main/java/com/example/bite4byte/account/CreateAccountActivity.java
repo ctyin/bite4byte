@@ -29,7 +29,6 @@ public class CreateAccountActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
     Data manageData;
-    String usernameAvailable = "";
 
     @Override
     public void onStop() {
@@ -51,18 +50,18 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     public void onCreateAccSubmitClick(View view) {
         EditText usernameView = (EditText) findViewById(R.id.create_acc_username);
-        String username = usernameView.getText().toString();
+        final String username = usernameView.getText().toString();
 
         EditText firstnameView = (EditText) findViewById(R.id.create_acc_firstname);
-        String firstname = firstnameView.getText().toString();
-        firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1).toLowerCase();
+        String first = firstnameView.getText().toString();
+        final String firstname = first.substring(0, 1).toUpperCase() + first.substring(1).toLowerCase();
 
         EditText lastnameView = (EditText) findViewById(R.id.create_acc_lastname);
-        String lastname = lastnameView.getText().toString();
-        lastname = lastname.substring(0, 1).toUpperCase() + lastname.substring(1).toLowerCase();
+        String last = lastnameView.getText().toString();
+        final String lastname = last.substring(0, 1).toUpperCase() + last.substring(1).toLowerCase();
 
         EditText passView = (EditText) findViewById(R.id.create_acc_password);
-        String password = passView.getText().toString();
+        final String password = passView.getText().toString();
 
         EditText passConfirmView = (EditText) findViewById(R.id.create_acc_password_confirm);
         String pwConfirm = passConfirmView.getText().toString();
@@ -78,7 +77,24 @@ public class CreateAccountActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println(response.body());
-                usernameAvailable = response.body();
+                String usernameAvailable = response.body();
+                if (usernameAvailable.equals("false")) {
+                    //System.out.println("Username taken");
+                    Toast.makeText(
+                            CreateAccountActivity.this,
+                            "Username already exists",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    //System.out.println("Reached else block " + usernameAvailable);
+                    Intent i = new Intent(CreateAccountActivity.this, CreateAccPreferencesActivity.class);
+                    i.putExtra("username", username);
+                    i.putExtra("firstname", firstname);
+                    i.putExtra("lastname", lastname);
+                    i.putExtra("password", password);
+                    i.putExtra("manageData", manageData);
+                    startActivity(i);
+                }
                 //Toast.makeText(CreateAccountActivity.this, response.body(), Toast.LENGTH_SHORT).show();
             }
 
@@ -91,23 +107,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         System.out.println("Reached");
 
         //System.out.println("Executed: " + call.isExecuted());
-        if (usernameAvailable.equals("false")) {
-            //System.out.println("Username taken");
-            Toast.makeText(
-                    CreateAccountActivity.this,
-                    "Username already exists",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            //System.out.println("Reached else block " + usernameAvailable);
-            Intent i = new Intent(this, CreateAccPreferencesActivity.class);
-            i.putExtra("username", username);
-            i.putExtra("firstname", firstname);
-            i.putExtra("lastname", lastname);
-            i.putExtra("password", password);
-            i.putExtra("manageData", manageData);
-            startActivity(i);
-        }
+
 
 
     }
