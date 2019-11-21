@@ -37,7 +37,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
     String lastname;
     String password;
     Data manageData;
-    UserContents user;
+
 
     @Override
     public void onStop() {
@@ -137,11 +137,16 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
         call.enqueue(new Callback<UserContents>() {
             @Override
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
-                user = response.body();
+                UserContents user = response.body();
                 String s = "Welcome " + response.body().getFirstName() + "!";
                 System.out.println(s);
 
                 Toast.makeText(CreateAccPreferencesActivity.this, s, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(CreateAccPreferencesActivity.this, UserFeedActivity.class);
+                intent.putExtra("manageData", manageData);
+                intent.putExtra("user", username);
+                startActivity(intent);
             }
 
             @Override
@@ -151,12 +156,9 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
         });
 
         //manageData.createAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
-        manageData.writeLoggedInUser(this, username, firstname, lastname, password, restrictArr, allergyArr);
+        //manageData.writeLoggedInUser(this, username, firstname, lastname, password, restrictArr, allergyArr);
 
-        Intent intent = new Intent(this, UserFeedActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("user", username);
-        startActivity(intent);
+
 
 
 

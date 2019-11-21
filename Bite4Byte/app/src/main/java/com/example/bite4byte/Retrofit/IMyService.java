@@ -31,6 +31,12 @@ public interface IMyService {
 //    @POST("example")
 //    Observable<String> exampleBody(@Body RequestBody exampleRequest);
 
+    @POST("edit_account")
+    @FormUrlEncoded
+    Call<UserContents> editAccount(@Field("username") String username,
+                                   @Field("restrictions") String[] restrictions,
+                                   @Field("allergies") String[] allergies);
+
     @POST("login")
     @FormUrlEncoded
     Call<UserContents> loginUser(@Field("username") String username,

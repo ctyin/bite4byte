@@ -78,16 +78,16 @@ app.post('/food_preferences', (req, res) => {
 			allergies: req.body.allergies
 	    });
 
-	newAccount.save((err) => {
+	newAccount.save(function (err) {
 		if (err) {
 			console.log("Error saving new account to database");
 			console.log(err);
-			res.send(null);
+			res.json({});
 		} else {
 			console.log("Account saved correctly");
-			res.send(newAccount)
+			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies});
 		}
-	})
+	});
 	/*Account.findOne({username: name}, function (err, account) {
 		if (err || account == null) {		//Account doesn't exist
 			console.log("Invalid Username");
@@ -108,6 +108,19 @@ app.post('/food_preferences', (req, res) => {
 			});
 		}
 	});*/
+});
+
+app.use('/edit_account', (req, res) => {
+	Account.updateOne({username: req.body.username}, {$set:{restrictions: req.body.restrictions, allergies: req.body.allergies}}, function (err, account) {
+		if (err) {
+			console.log("Edit account error");
+			res.json({});
+		} else {
+			console.log("Account successfully edited")
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+		}
+	});
+	
 });
 
 // route for showing all the people

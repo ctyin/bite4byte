@@ -13,6 +13,7 @@ import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
+import com.example.bite4byte.Retrofit.UserContents;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,6 +24,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class EditAccountActivity extends AppCompatActivity {
@@ -37,6 +41,7 @@ public class EditAccountActivity extends AppCompatActivity {
     String password;
     JSONArray orders;
     Data manageData;
+    IMyService iMyService;
 
     /*@Override
     public void onStop() {
@@ -57,8 +62,8 @@ public class EditAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_acc_preferences);
 
         // init singleton service, don't need to implement yet
-        //Retrofit retrofitClient = new RetrofitClient().getInstance();
-        //iMyService = retrofitClient.create(IMyService.class);
+        Retrofit retrofitClient = new RetrofitClient().getInstance();
+        iMyService = retrofitClient.create(IMyService.class);
     }
 
     public void onCreatePrefSubmitClick(View view) {
@@ -133,25 +138,35 @@ public class EditAccountActivity extends AppCompatActivity {
             i++;
         }
 
-        /*compositeDisposable.add(iMyService.foodPref(username, preferenceArr, allergyArr)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String response) throws Exception {
-                        Toast.makeText(
-                                CreateAccPreferencesActivity.this,
-                                ""+response,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }));*/
+        Call<UserContents> call = iMyService.editAccount(username, restrictArr, allergyArr);
 
-        manageData.modifyAccount(this, username, firstname, lastname, password, restrictArr, allergyArr, orders);
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                UserContents user = response.body();
+                String s = "Welcome " + response.body().getFirstName() + "!";
+                System.out.println(s);
 
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("user", username);
-        startActivity(intent);
+                Toast.makeText(EditAccountActivity.this, s, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(EditAccountActivity.this, UserProfileActivity.class);
+                intent.putExtra("manageData", manageData);
+                intent.putExtra("user", username);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                Toast.makeText(EditAccountActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+
+        //manageData.modifyAccount(this, username, firstname, lastname, password, restrictArr, allergyArr, orders);
+
 
 
 
