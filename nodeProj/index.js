@@ -46,7 +46,14 @@ app.post('/login', (req, res) => {
 
 app.use('/deleteacc', (req, res) => {
 	username = req.body.username;
-	Account.remove({username : username});
+	Account.remove({username : username}, function(err) {
+		if (err) {
+			console.log(err);
+			console.log("Error with account deletion");
+		} else {
+			console.log("Account deleted");
+		}
+	});
 });
 
 // route for creating a new person

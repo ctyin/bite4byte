@@ -37,6 +37,10 @@ public interface IMyService {
                                    @Field("restrictions") String[] restrictions,
                                    @Field("allergies") String[] allergies);
 
+    @POST("deleteacc")
+    @FormUrlEncoded
+    Call<UserContents> deleteAccount(@Field("username") String username);
+
     @POST("login")
     @FormUrlEncoded
     Call<UserContents> loginUser(@Field("username") String username,
