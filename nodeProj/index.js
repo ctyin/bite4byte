@@ -79,6 +79,15 @@ app.use('/deleteacc', (req, res) => {
 			res.send({});
 		}
 	});
+
+	Food.remove({sellerUserName:username}, function(err) {
+		if (err) {
+			console.log(err);
+			console.log("Error deleting all associated posts");
+		} else {
+			console.log("Deleted all associated posts");
+		}
+	});
 });
 
 // route for creating a new person
