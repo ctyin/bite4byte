@@ -1,4 +1,5 @@
 // set up Express
+const uuidv4 = require('uuid/v4');
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
@@ -91,7 +92,7 @@ app.use('/register', (req, res) => {
 			res.send("true");
 		}
 	});
-});	
+});
 
 app.post('/food_preferences', (req, res) => {
 
@@ -212,8 +213,7 @@ app.use('/convos', (req, res) => {
 		queryObj = {"participants": req.body.username};
 	}
 
-	Convo.find( queryObj,
-    function(err, convos) {
+	Convo.find( queryObj, (err, convos) => {
     	if (err) {
     		console.log(err);
     		res.json({});
@@ -221,14 +221,93 @@ app.use('/convos', (req, res) => {
     	else {
     		var returnArray = [];
     		convos.forEach((convo) => {
-    			console.log(convo);
-
+    			console.log("hi");
     			returnArray.push( {"convo_id" : convo.convo_id, "participants" : convo.participants});
     		});
 
     		res.json(returnArray);
     	}
-    } );
+    });
+});
+
+app.use('/singleconvo', (req, res) => {
+	var queryObj = {};
+	if (req.body.convo_id) {
+		queryObj = {"convo_id" : req.body.convo_id};
+	}
+
+	Message.find(queryObj).sort({"created_at": 1}).exec((err, messages) => {
+		if (err) {
+			console.log(err);
+			res.json({});
+		} else {
+			var returnArray = [];
+			messages.forEach((msg) => {
+				returnArray.push({"convo_id" : msg.convo_id, "sender" : msg.sender, "contents" : msg.contents, "created_at" : msg.created_at});
+			});
+
+			res.json(returnArray);
+		}
+	});
+});
+
+app.use('/saveMessage', (req, res) => {
+	var newMsg = new Message({
+		sender: req.body.sender,
+		convo_id: req.body.convo_id,
+		contents: req.body.contents,
+		created_at: req.body.created_at
+	});
+
+	newMsg.save((err) => {
+		if (err) {
+			console.log(err);
+			res.json({});
+		} else {
+			console.log("Saved message correctly");
+		}
+	})
+});
+
+app.use('startConvo', (req, res) => {
+	var gen_id = uuidv4();
+
+	var newConvo = new Message({
+		convo_id: gen_id,
+		participants: [req.body.person1, req.body.person2]
+	});
+
+	gen_id.save((err) => {
+		if (err) {
+			console.log(err);
+			res.json({});
+		} else {
+			console.log("Created new conversation!");
+			res.json({convo_id: gen_id});
+		}
+	});
+});
+
+app.use('/verifyValidUsername', (req, res) => {
+	var sender = req.body.sender;
+	var recipient = req.body.recipient;
+
+	Account.findOne({username: username}, function (err, account) {
+		if (err) {
+			console.log("Create account, unique username validation error");
+			res.json({});
+		}
+		if (account != null) {
+			// username is valid, check the DB for the conversation
+			
+			Convo.find({$and: [{"participants": sender}, {"participants": recipient}]});
+
+			res.json();
+		} else {
+			// username is invalid
+			res.json({});
+		}
+	});
 });
 
 // route for accessing data via the web api

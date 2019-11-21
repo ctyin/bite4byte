@@ -52,6 +52,7 @@ public class AllMsgActivity extends AppCompatActivity {
     private Socket mSocket;
     IMyService iMyService;
     private UserContents uc;
+    String receiver = "";
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
@@ -85,10 +86,11 @@ public class AllMsgActivity extends AppCompatActivity {
 //        uc = (UserContents) getIntent().getSerializableExtra("user");
 
         uc = new UserContents();
-        uc.setName("jon");
-        Gson g = new Gson();
-        JSONObject jo = g.fromJson(g.toJson(uc), JSONObject.class);
-        mSocket.emit("join", jo);
+        uc.setName("chris");
+
+//        Gson g = new Gson();
+//        JSONObject jo = g.fromJson(g.toJson(uc), JSONObject.class);
+//        mSocket.emit("join", jo);
 
         updateFeed();
 
@@ -106,13 +108,18 @@ public class AllMsgActivity extends AppCompatActivity {
                 ViewGroup parent = (ViewGroup) AllMsgActivity.this.findViewById(R.id.conversation_container);
                 parent.removeAllViews();
 
+                System.out.println("reaches reponse");
+
                 for (ConversationResult cr : convos) {
+                    System.out.println("reaches 2");
+
                     View view = LayoutInflater.from(AllMsgActivity.this).inflate(R.layout.convo, parent, false);
                     parent.addView(view);
 
                     view.setTag(cr.getConvo_id());
+//                    view.setId(View.generateViewId());
 
-                    String receiver = "";
+                    receiver = "";
                     for (String s : cr.getParticipants()) {
                         if (!s.equals(uc.getUsername())) {
                             receiver = s;
@@ -134,12 +141,11 @@ public class AllMsgActivity extends AppCompatActivity {
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(AllMsgActivity.this, PostActivity.class);
-
-
-
-                            Data md = (Data) AllMsgActivity.this.getIntent().getSerializableExtra("manageData");
-                            intent.putExtra("manageData", md);
+                            Intent intent = new Intent(AllMsgActivity.this, DirectMessagingActivity.class);
+                            intent.putExtra("user", uc);
+                            intent.putExtra("convo_id", (String) v.getTag());
+                            TextView tv = v.findViewById(R.id.convoName);
+                            intent.putExtra("receiver", tv.getText());
 
                             startActivity(intent);
                         }
@@ -152,6 +158,17 @@ public class AllMsgActivity extends AppCompatActivity {
                 Toast.makeText(AllMsgActivity.this,"fuck", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void onNewMessageClick(View view) {
+        EditText et = findViewById(R.id.newConversation);
+        String inputFriend = et.getText().toString();
+        if (inputFriend.equals("")) {
+            Toast.makeText(this, "Enter a friend's username!", Toast.LENGTH_SHORT).show();
+        } else {
+            // search for friend
+            inputFriend.trim();
+        }
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.example.bite4byte.Retrofit;
 
-public class UserContents {
+import java.io.Serializable;
+
+public class UserContents implements Serializable {
     protected String username;
     protected String firstname;
     protected String lastname;

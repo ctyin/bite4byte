@@ -1,5 +1,6 @@
 package com.example.bite4byte.Retrofit;
 
+import com.example.bite4byte.Messaging.ChatBubble;
 import com.example.bite4byte.Messaging.ConversationResult;
 
 import java.util.List;
@@ -60,4 +61,13 @@ public interface IMyService {
     @POST("convos")
     @FormUrlEncoded
     Call<List<ConversationResult>> getConversations(@Field("username") String username);
+
+    @POST("singleconvo")
+    @FormUrlEncoded
+    Call<List<ChatBubble>> getSingleCorr(@Field("convo_id") String convo_id);
+
+    @POST("saveMessage")
+    @FormUrlEncoded
+    Call<String> saveMessage(@Field("sender") String sender, @Field("convo_id") String convo_id,
+                             @Field("contents") String contents, @Field("created_at") Long created_at);
 }
