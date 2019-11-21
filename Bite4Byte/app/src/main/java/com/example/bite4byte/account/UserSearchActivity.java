@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,14 +20,20 @@ import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
+import com.example.bite4byte.Retrofit.UserContents;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class UserSearchActivity extends AppCompatActivity {
@@ -48,28 +55,28 @@ public class UserSearchActivity extends AppCompatActivity {
 
         manageData = (Data) getIntent().getSerializableExtra("manageData");
         username = (String) getIntent().getStringExtra("username");
-        userAccount = manageData.getAccount(username);
+        //userAccount = manageData.getAccount(username);
 
         setContentView(R.layout.activity_profile_search);
     }
 
-    public void updateFeed(Set<JSONObject> set) {
+    public void updateSearchResults(List<String[]> results) {
         ViewGroup parent = (ViewGroup) this.findViewById(R.id.profile_container);
         parent.removeAllViews();
 
-        for (JSONObject jo : set) {
+        for (String [] arr : results) {
             view = LayoutInflater.from(this).inflate(R.layout.user, parent, false);
             parent.addView(view);
 
-            view.setTag(jo.get("username"));
+            view.setTag(arr[0]);
 
             TextView un = view.findViewById(R.id.username);
-            un.setText((String) jo.get("username"));
+            un.setText(arr[0]);
 
             TextView fullName = view.findViewById(R.id.user_full_name);
-            fullName.setText((String) jo.get("firstname") + " " + (String) jo.get("lastname"));
+            fullName.setText(arr[1] + " " + arr[2]);
 
-            TextView restrictions = view.findViewById(R.id.user_restrictions);
+            /*TextView restrictions = view.findViewById(R.id.user_restrictions);
             String restricts = "";
             for (Object r : (JSONArray) jo.get("restrictions")) {
                 if (!restricts.isEmpty()) {
@@ -78,7 +85,7 @@ public class UserSearchActivity extends AppCompatActivity {
                     restricts = restricts + ((JSONObject) r).toString();
                 }
             }
-            restrictions.setText(restricts);
+            restrictions.setText(restricts);*/
 
             // need to get the data from the post itself
             view.setOnClickListener(new View.OnClickListener() {
@@ -100,11 +107,36 @@ public class UserSearchActivity extends AppCompatActivity {
         EditText searchQuery = (EditText)findViewById(R.id.profile_search_text);
         String query = searchQuery.getText().toString().trim();
 
-        Intent intent = new Intent(this, UserSearchActivity.class);
+        Call<String []> call = iMyService.searchAccount(query);
+
+        call.enqueue(new Callback<String[]>() {
+            @Override
+            public void onResponse(Call<String[]> call, Response<String[]> response) {
+                String [] results = response.body();
+                List<String[]> res = new LinkedList<String[]>();
+                for (String r : results) {
+                    res.add(r.split(" "));
+                }
+
+                updateSearchResults(res);
+
+                /*Intent intent = new Intent(UserSearchActivity.this, UserFeedActivity.class);
+                intent.putExtra("manageData", manageData);
+                intent.putExtra("user", username);
+                startActivity(intent);*/
+            }
+
+            @Override
+            public void onFailure(Call<String[]> call, Throwable t) {
+                Toast.makeText(UserSearchActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /*Intent intent = new Intent(this, UserSearchActivity.class);
         intent.putExtra("manageData", manageData);
         intent.putExtra("username", username);
         intent.putExtra("query", query);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
 }

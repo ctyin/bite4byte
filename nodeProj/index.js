@@ -149,6 +149,36 @@ app.use('/edit_account', (req, res) => {
 	
 });
 
+app.use('/search_account', (req, res) => {
+	var matching_accounts = [];
+	var query = req.body.query.toLowerCase(); 
+	Account.find({}, function(err, accounts) {
+		if (err) {
+			console.log(err);
+			console.log("Error while getting accounts");
+		} else {
+			accounts.map(account => {
+				if (account.username.toLowerCase().includes(query) || query.includes(account.username.toLowerCase()) || account.firstname.toLowerCase().includes(query) || query.includes(account.firstname.toLowerCase()) || account.lastname.toLowerCase().includes(query) || query.includes(account.lastname.toLowerCase())) {
+					matching_accounts.push(account.username + " " + account.firstname + " " + account.lastname);
+					console.log(account.username);
+				}
+			})
+			res.send(matching_accounts);
+		}
+	});
+});
+
+app.use('/get_account', (req, res) => {
+	Account.findOne({username:req.body.username}, function(err, account) {
+		if (err) {
+			console.log(err);
+			console.log("Account not found");
+		} else {
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+		}
+	});
+});
+
 // route for showing all the people
 /*
 app.use('/all', (req, res) => {

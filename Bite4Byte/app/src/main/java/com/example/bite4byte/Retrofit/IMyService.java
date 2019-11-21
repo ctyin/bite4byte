@@ -49,6 +49,14 @@ public interface IMyService {
     Call<UserContents> loginUser(@Field("username") String username,
                                  @Field("password") String password);
 
+    @POST("search_account")
+    @FormUrlEncoded
+    Call<String []> searchAccount(@Field("query") String query);
+
+    @POST("get_account")
+    @FormUrlEncoded
+    Call<UserContents> getAccount(@Field("username") String username);
+
     @POST("convos")
     @FormUrlEncoded
     Call<List<ConversationResult>> getConversations(@Field("username") String username);
