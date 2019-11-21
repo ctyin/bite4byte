@@ -17,12 +17,17 @@ import com.example.bite4byte.Feed.PostActivity;
 import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
+import com.example.bite4byte.Retrofit.IMyService;
+import com.example.bite4byte.Retrofit.RetrofitClient;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.Map;
 import java.util.Set;
+
+import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Retrofit;
 
 public class UserSearchActivity extends AppCompatActivity {
 
@@ -31,9 +36,15 @@ public class UserSearchActivity extends AppCompatActivity {
     JSONObject userAccount;
     View view;
 
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    IMyService iMyService;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Retrofit retrofitClient = new RetrofitClient().getInstance();
+        iMyService = retrofitClient.create(IMyService.class);
 
         manageData = (Data) getIntent().getSerializableExtra("manageData");
         username = (String) getIntent().getStringExtra("username");

@@ -32,6 +32,7 @@
         <activity android:name=".Feed.UploadItemActivity" android:exported="true"/>
         <activity android:name=".account.UserSearchActivity" android:exported="true"/>
         <activity android:name=".account.OtherUserProfileActivity" android:exported="true"/>
+        <activity android:name=".Messaging.AllMsgActivity" android:exported="true"/>
         
         <provider
             android:name="androidx.core.content.FileProvider"
