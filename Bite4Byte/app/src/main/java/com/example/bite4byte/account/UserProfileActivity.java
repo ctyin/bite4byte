@@ -35,7 +35,7 @@ import retrofit2.Retrofit;
 public class UserProfileActivity extends AppCompatActivity {
 
     Data manageData;
-    String username;
+    UserContents user;
     JSONObject userAccount;
     IMyService iMyService;
 
@@ -45,17 +45,13 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Retrofit retrofitClient = new RetrofitClient().getInstance();
         iMyService = retrofitClient.create(IMyService.class);
-
-        manageData = (Data) getIntent().getSerializableExtra("manageData");
-        username = (String) getIntent().getStringExtra("user");
-        userAccount = manageData.getAccount(username);
-        Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
+        user = (UserContents) getIntent().getSerializableExtra("user");
 
         setContentView(R.layout.activity_user_profile);
 
-        ((TextView) findViewById(R.id.usernameText)).setText(username);
-        ((TextView) findViewById(R.id.firstnameText)).setText((String) userAccount.get("firstname"));
-        ((TextView) findViewById(R.id.lastnameText)).setText((String) userAccount.get("lastname"));
+        ((TextView) findViewById(R.id.usernameText)).setText(user.getUsername());
+        ((TextView) findViewById(R.id.firstnameText)).setText((String) user.getFirstName());
+        ((TextView) findViewById(R.id.lastnameText)).setText((String) user.getLastName());
 
         String restricts = "";
         String allers = "";
@@ -71,7 +67,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 allers += j.toString() + " ";
             }
         }
-
+/*
         JSONArray orderIds = (JSONArray) userAccount.get("orders");
         String orderStr = "";
         if (orderIds != null) {
@@ -82,7 +78,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.restrictionsText)).setText(restricts);
         ((TextView) findViewById(R.id.allergiesText)).setText(allers);
-        ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
+        ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);*/
     }
 
     public void onProfileSearchButtonClick(View view) {
@@ -90,24 +86,19 @@ public class UserProfileActivity extends AppCompatActivity {
         String query = searchQuery.getText().toString().trim();
 
         Intent intent = new Intent(this, UserSearchActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
+        intent.putExtra("user", user);
         intent.putExtra("query", query);
         startActivity(intent);
     }
 
     public void onEditAccountButtonClick(View view) {
         Intent intent = new Intent(this, EditAccountActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
     public void onDeleteAccountButtonClick(View view) {
-        manageData.eraseLoggedInUser(this);
-        manageData.deleteAccount(username, this);
-
-        Call<UserContents> call = iMyService.deleteAccount(username);
+        Call<UserContents> call = iMyService.deleteAccount(user.getUsername());
 
         call.enqueue(new Callback<UserContents>() {
             @Override
@@ -131,15 +122,13 @@ public class UserProfileActivity extends AppCompatActivity {
 
     public void onFeedButtonClick(View view) {
         Intent intent = new Intent(this, UserFeedActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("user", username);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
     public void onPostButtonClick(View view) {
         Intent intent = new Intent(this, UploadItemActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 

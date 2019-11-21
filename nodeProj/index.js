@@ -1,7 +1,9 @@
 // set up Express
 var express = require('express');
 var app = express();
-var mongoose = require('mongoose');
+var fs = require('fs');
+var mongoose = require("mongoose");
+var Grid = require('gridfs-stream');
 mongoose.connect('mongodb://127.0.0.1:27017/myDatabase');
 
 // set up EJS
@@ -15,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var Account = require('./Account.js');
 var Convo = require('./Convo.js');
 var Message = require('./Message');
+
+var Food = require('./Food.js');
 
 /***************************************/
 
@@ -45,7 +49,7 @@ app.post('/login', (req, res) => {
 		} else {
 			console.log(account);
 			if (password == account.password) { //Account exists and pswd matches
-				res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+				res.json({"username":account.username, "password":account.password, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
 				console.log("Welcome Back!");
 			} else {
 				res.json({});							//Accoutn exists but incorrect pswd
@@ -178,6 +182,94 @@ app.use('/get_account', (req, res) => {
 		}
 	});
 });
+
+app.use('/post_food', (req, res) => {
+	console.log("reached");
+	/*
+	var GridFS = Grid(mongoose.connection.db, mongoose.mongo);
+
+	if (req.body.picture) {
+		var connection = mongoose.connection;
+		connection.on('error', console.error.bind(console, 'connection error:'));
+		//connection.once('open', function () {
+
+		//var gfs = gridfs(connection.db);
+
+	    // Writing a file from local to MongoDB
+	    var writestream = GridFS.createWriteStream({ filename: req.body.picture });
+	    fs.createReadStream(req.body.picturePath).pipe(writestream);
+	    writestream.on('close', function (file) {
+	        console.log("Picture file successfully saved");
+	    });
+	}
+	*/
+    var newFood = new Food ({
+		id: req.body.id,
+		quantity: req.body.quantity,
+		foodName: req.body.foodName,
+		sellerUserName: req.body.sellerUserName,
+		description: req.body.description,
+		ingredients: req.body.ingredients,
+		restrictions: req.body.restrictions,
+		cuisines: req.body.cuisines,
+		picture: req.body.picture,
+		picturePath: req.body.picturePath,
+		isAvailable: req.body.isAvailable,
+		location: req.body.location,
+		postDate: req.body.postDate
+	});
+
+	newFood.save((err) => {
+		if (err) {
+			console.log("Error saving food to database");
+			console.log(err);
+			res.send(null);
+		} else {
+			console.log("Food saved correctly");
+		}
+	});
+	//});
+})
+
+
+app.use('/get_foods', (req, res) => {
+	Food.find({}, function (err, foods) {
+		if (err) {
+			console.log(err);
+			console.log("Error with retrieving foods");
+			res.json({});
+		} else {
+			var returnArr = [];
+
+			console.log(foods);
+
+			foods.map(food => {
+				returnArr.push({"id":food._id, "quantity":food.quantity, "foodName":food.foodName,
+					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
+					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
+					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
+			});
+
+			res.json(returnArr);
+		}
+	})
+})
+
+app.use('req_food', (req, res) => {
+	Food.findOne({_id:req.body._id}, function (err, foods) {
+		if (err) {
+			console.log(err);
+			console.log("Error with retrieving food");
+			res.json({});
+		} else {
+			console.log("Food returned");
+			res.json({"id":food._id, "quantity":food.quantity, "foodName":food.foodName,
+					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
+					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
+					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
+		};
+	})
+})
 
 // route for showing all the people
 /*

@@ -17,14 +17,18 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
+import com.example.bite4byte.Retrofit.FoodContents;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
+import com.example.bite4byte.Retrofit.UserContents;
+import com.example.bite4byte.account.LoginActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,34 +37,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class UploadItemActivity extends AppCompatActivity {
 
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
-    Data manageData;
 
-    int foodQuantity = 0, foodID;
+    int foodQuantity = 0;
     Integer[] quantities = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-    String photoPath = "", username;
+    String photoPath = null, foodID, filename = null;
+    UserContents user;
     ImageView foodPhoto;
-
-    @Override
-    public void onStop() {
-        compositeDisposable.clear();
-        super.onStop();
-    }
+    Retrofit retrofitClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_item);
-        foodID = (int) (Math.random() * 9999);
-        manageData = (Data) getIntent().getSerializableExtra("manageData");
-        username = getIntent().getStringExtra("username");
+        foodID = Integer.toString((int) (Math.random() * 999999));
+        user = (UserContents) getIntent().getSerializableExtra("user");
 
         Spinner quantitySpinner = findViewById(R.id.quantity_spinner);
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
@@ -71,7 +71,6 @@ public class UploadItemActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 foodQuantity = (int) adapterView.getSelectedItem();
-                System.out.println(foodQuantity);
             }
 
             @Override
@@ -85,7 +84,7 @@ public class UploadItemActivity extends AppCompatActivity {
         }
 
         // init singleton service, don't need to implement yet
-        Retrofit retrofitClient = new RetrofitClient().getInstance();
+        retrofitClient = new RetrofitClient().getInstance();
         iMyService = retrofitClient.create(IMyService.class);
     }
 
@@ -162,14 +161,27 @@ public class UploadItemActivity extends AppCompatActivity {
         }
 
         Date date = new Date();
-        String dateParam = date.toString();
+        //String dateParam = date.toString();
+        System.out.println(Environment.getExternalStorageDirectory().getAbsolutePath());
+        photoPath = Environment.getExternalStorageDirectory().getPath() + photoPath;
 
-        manageData.uploadFoodItem(this, foodID, foodQuantity, foodName, foodDesc, username,
-                location, dateParam, ingredients, restrictions, cuisines, photoPath);
+        Call<FoodContents> call = iMyService.uploadFood(foodID, foodQuantity, foodName, user.getUsername(), foodDesc, ingredients,
+                restrictions, cuisines, filename + ".jpg", photoPath, true, location, date);
+
+        call.enqueue(new Callback<FoodContents>() {
+            @Override
+            public void onResponse(Call<FoodContents> call, Response<FoodContents> response) {
+                System.out.println("Called");
+            }
+
+            @Override
+            public void onFailure(Call<FoodContents> call, Throwable t) {
+                Toast.makeText(UploadItemActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Intent intent = new Intent(this, UserFeedActivity.class);
-        intent.putExtra("user", username);
-        intent.putExtra("manageData", manageData);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
@@ -205,7 +217,7 @@ public class UploadItemActivity extends AppCompatActivity {
     }
 
     private File createPhotoFile() {
-        String filename = "000" + Integer.toString(foodID);
+        filename = "000" + foodID;
         File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image = null;
         try {

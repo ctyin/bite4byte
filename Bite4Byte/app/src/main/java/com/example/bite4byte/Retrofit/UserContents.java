@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class UserContents implements Serializable {
     protected String username;
+    protected String password;
     protected String firstname;
     protected String lastname;
     protected String[] restrictions;
@@ -13,6 +14,8 @@ public class UserContents implements Serializable {
     public String getUsername() {
         return username;
     }
+
+    public String getPassword() { return password; }
 
     public String getFirstName() { return firstname; }
 

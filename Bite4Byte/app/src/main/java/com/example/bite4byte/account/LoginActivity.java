@@ -32,13 +32,10 @@ public class LoginActivity extends AppCompatActivity {
 //    CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
 
-    Data manageData;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        manageData = (Data) getIntent().getSerializableExtra("manageData");
 
         // init singleton service, don't need to implement yet
         Retrofit retrofitClient = new RetrofitClient().getInstance();
@@ -58,9 +55,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
                 if (response.body().getUsername() == null) {
-                    Toast.makeText(LoginActivity.this, "Invalid Username or Password!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(LoginActivity.this, "Welcome" + " " + response.body().getUsername() + "!", Toast.LENGTH_LONG).show();
+
                     Intent i = new Intent(LoginActivity.this, UserFeedActivity.class);
                     i.putExtra("user", response.body());
                     startActivity(i);

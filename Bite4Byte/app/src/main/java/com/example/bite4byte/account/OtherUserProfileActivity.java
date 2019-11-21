@@ -104,8 +104,6 @@ public class OtherUserProfileActivity extends AppCompatActivity {
                 Toast.makeText(OtherUserProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     public void onProfileSearchButtonClick(View view) {
