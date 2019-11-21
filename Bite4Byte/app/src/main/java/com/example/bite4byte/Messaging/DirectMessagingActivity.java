@@ -11,10 +11,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bite4byte.Feed.UploadItemActivity;
+import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
 import com.example.bite4byte.Retrofit.UserContents;
+import com.example.bite4byte.account.UserProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,5 +119,31 @@ public class DirectMessagingActivity extends AppCompatActivity {
                 Toast.makeText(DirectMessagingActivity.this,"Didn't save successfully(?)", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void onUploadClick(View view) {
+        try {
+            Intent i = new Intent(this, UploadItemActivity.class);
+            i.putExtra("user", uc);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void onFeedButtonClick(View view) {
+        Intent intent = new Intent(this, UserFeedActivity.class);
+        intent.putExtra("user", uc);
+        startActivity(intent);
+    }
+
+    public void onProfileClick(View view) {
+        try {
+            Intent i = new Intent(this, UserProfileActivity.class);
+            i.putExtra("user", uc);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
