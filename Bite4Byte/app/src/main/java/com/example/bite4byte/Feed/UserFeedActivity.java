@@ -86,25 +86,32 @@ public class UserFeedActivity extends Activity {
 
         cuisinesFilter = getResources().getStringArray(R.array.cuisines);
         cuisinesSelect = new boolean[cuisinesFilter.length];
+        feed.clear();
 
         Call<List<FoodContents>> call = iMyService.getFoods();
         call.enqueue(new Callback<List<FoodContents>>() {
             @Override
             public void onResponse(Call<List<FoodContents>> call, Response<List<FoodContents>> response) {
                 List<FoodContents> food = response.body();
-                for (FoodContents f : food) {
-                    feed.add(f);
-                    System.out.println(f.getFoodName());
+                if (food != null) {
+                    for (FoodContents f : food) {
+                        feed.add(f);
+                        System.out.println(f.getFoodName());
+                    }
                 }
 
                 String[] allergiesArr = user.getAllergies();
-                for (int i = 0; i < allergiesArr.length; i++) {
-                    allergies.add(allergiesArr[i]);
+                if (allergiesArr != null) {
+                    for (int i = 0; i < allergiesArr.length; i++) {
+                        allergies.add(allergiesArr[i]);
+                    }
                 }
 
                 String[] restrictsArr = user.getRestrictions();
-                for (int i = 0; i < restrictsArr.length; i++) {
-                    restrictions.add(restrictsArr[i]);
+                if (restrictsArr != null) {
+                    for (int i = 0; i < restrictsArr.length; i++) {
+                        restrictions.add(restrictsArr[i]);
+                    }
                 }
 
                 Set<FoodContents> newFeed = filterByParam(feed);
@@ -153,21 +160,21 @@ public class UserFeedActivity extends Activity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                Intent intent = new Intent(UserFeedActivity.this, PostActivity.class);
+                    Intent intent = new Intent(UserFeedActivity.this, PostActivity.class);
 
-                TextView title = v.findViewById(R.id.postTitle);
-                intent.putExtra("foodName", title.getText().toString());
+                    TextView title = v.findViewById(R.id.postTitle);
+                    intent.putExtra("foodName", title.getText().toString());
 
-                TextView seller = v.findViewById(R.id.seller);
-                intent.putExtra("sellerUserName", seller.getText().toString());
+                    TextView seller = v.findViewById(R.id.seller);
+                    intent.putExtra("sellerUserName", seller.getText().toString());
 
-                TextView desc = v.findViewById(R.id.description);
-                intent.putExtra("description", desc.getText().toString());
+                    TextView desc = v.findViewById(R.id.description);
+                    intent.putExtra("description", desc.getText().toString());
 
-                intent.putExtra("id", v.getTag().toString());
-                intent.putExtra("user", user);
+                    intent.putExtra("id", v.getTag().toString());
+                    intent.putExtra("user", user);
 
-                startActivity(intent);
+                    startActivity(intent);
                 }
             });
         }
@@ -288,7 +295,9 @@ public class UserFeedActivity extends Activity {
                     cuisines.add(cuisinesFilter[c]);
                 }
 
+                //feed.clear();
                 Set<FoodContents> newFeed = filterByParam(feed);
+
                 updateFeed(newFeed);
             }
         });
@@ -303,7 +312,9 @@ public class UserFeedActivity extends Activity {
                 selectedCuisines.clear();
                 cuisines.clear();
 
+                //feed.clear();
                 Set<FoodContents> newFeed = filterByParam(feed);
+
                 updateFeed(newFeed);
             }
         });

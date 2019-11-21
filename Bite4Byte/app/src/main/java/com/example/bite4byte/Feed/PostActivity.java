@@ -50,6 +50,21 @@ public class PostActivity extends Activity {
             @Override
             public void onResponse(Call<FoodContents> call, Response<FoodContents> response) {
                 food = response.body();
+
+                ImageView iv = findViewById(R.id.postImg);
+                if (food.getPicturePath() != null && !food.getPicturePath().isEmpty()) {
+                    Bitmap bm = BitmapFactory.decodeFile(food.getPicturePath());
+                    iv.setImageBitmap(bm);
+                }
+
+                TextView fName = findViewById(R.id.postTitleActivity);
+                fName.setText(food.getFoodName());
+
+                TextView sellUser = findViewById(R.id.sellerActivity);
+                sellUser.setText(food.getSellerUserName());
+
+                TextView desc = findViewById(R.id.postDescActivity);
+                desc.setText(food.getDescription());
             }
 
             @Override
@@ -57,21 +72,6 @@ public class PostActivity extends Activity {
                 Toast.makeText(PostActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
-
-        ImageView iv = findViewById(R.id.postImg);
-        if (food.getPicturePath() != null && !food.getPicturePath().isEmpty()) {
-            Bitmap bm = BitmapFactory.decodeFile(food.getPicturePath());
-            iv.setImageBitmap(bm);
-        }
-
-        TextView fName = findViewById(R.id.postTitleActivity);
-        fName.setText(food.getFoodName());
-
-        TextView sellUser = findViewById(R.id.sellerActivity);
-        sellUser.setText(food.getSellerUserName());
-
-        TextView desc = findViewById(R.id.postDescActivity);
-        desc.setText(food.getDescription());
     }
 /*
     public void onOrderBtnClick(View v) {

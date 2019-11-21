@@ -83,6 +83,7 @@ public interface IMyService {
     @GET("get_foods")
     Call<List<FoodContents>> getFoods();
 
-    @GET("req_food")
-    Call<FoodContents> getOneFood(@Field("_id") String id);
+    @POST("req_food")
+    @FormUrlEncoded
+    Call<FoodContents> getOneFood(@Field("id") String id);
 }

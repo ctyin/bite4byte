@@ -191,7 +191,7 @@
             android:layout_height="60dp"
             android:text="Upload"
             style="?android:attr/buttonBarButtonStyle"
-            android:onClick="onPostButtonClick"/>
+            android:onClick="onUploadClick"/>
 
         <Button
             android:id="@+id/messaging"
@@ -205,6 +205,7 @@
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:text="Profile"
+            android:onClick="onProfileClick"
             style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>

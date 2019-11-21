@@ -36,8 +36,9 @@ import retrofit2.Retrofit;
 public class OtherUserProfileActivity extends AppCompatActivity {
 
     Data manageData;
-    String currUsername, otherUsername;
-    JSONObject userAccount;
+    UserContents user;
+    String otherUsername;
+    //JSONObject userAccount;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
 
@@ -45,15 +46,15 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        manageData = (Data) getIntent().getSerializableExtra("manageData");
-        currUsername = (String) getIntent().getStringExtra("user");
+        //manageData = (Data) getIntent().getSerializableExtra("manageData");
+        user = (UserContents) getIntent().getSerializableExtra("user");
         otherUsername = (String) getIntent().getStringExtra("otherUser");
         //userAccount = manageData.getAccount(otherUsername);
 
 
         Retrofit retrofitClient = new RetrofitClient().getInstance();
         iMyService = retrofitClient.create(IMyService.class);
-        Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
+        //Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
 
         setContentView(R.layout.activity_other_user_profile);
 
@@ -111,8 +112,8 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         String query = searchQuery.getText().toString().trim();
 
         Intent intent = new Intent(this, UserSearchActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", currUsername);
+        //intent.putExtra("manageData", manageData);
+        intent.putExtra("user", user);
         intent.putExtra("query", query);
         startActivity(intent);
     }
@@ -121,18 +122,37 @@ public class OtherUserProfileActivity extends AppCompatActivity {
 
     }
 
-    public void onFeedButtonClick(View view) {
-        Intent intent = new Intent(this, UserFeedActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("user", currUsername);
+    public void onPostButtonClick(View view) {
+        Intent intent = new Intent(this, UploadItemActivity.class);
+        //intent.putExtra("manageData", manageData);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
-    public void onPostButtonClick(View view) {
-        Intent intent = new Intent(this, UploadItemActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", currUsername);
+    public void onFeedButtonClick(View view) {
+        Intent intent = new Intent(this, UserFeedActivity.class);
+        intent.putExtra("user", user);
         startActivity(intent);
+    }
+
+    public void onUploadClick(View view) {
+        try {
+            Intent i = new Intent(this, UploadItemActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void onProfileClick(View view) {
+        try {
+            Intent i = new Intent(this, UserProfileActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 }

@@ -50,21 +50,20 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         ((TextView) findViewById(R.id.usernameText)).setText(user.getUsername());
-        ((TextView) findViewById(R.id.firstnameText)).setText((String) user.getFirstName());
-        ((TextView) findViewById(R.id.lastnameText)).setText((String) user.getLastName());
+        ((TextView) findViewById(R.id.firstnameText)).setText(user.getFirstName());
+        ((TextView) findViewById(R.id.lastnameText)).setText(user.getLastName());
 
-        String restricts = "";
-        String allers = "";
-        JSONArray restrictions = (JSONArray) userAccount.get("restrictions");
-        JSONArray allergies = (JSONArray) userAccount.get("allergies");
+        String restricts = "", allers = "";
+        String[] restrictions = user.getRestrictions();
+        String[] allergies = user.getAllergies();
         if (restrictions != null) {
-            for (Object j : restrictions) {
-                restricts += j.toString() + " ";
+            for (String j : restrictions) {
+                restricts += j + " ";
             }
         }
         if (allergies != null) {
-            for (Object j : allergies) {
-                allers += j.toString() + " ";
+            for (String j : allergies) {
+                allers += j + " ";
             }
         }
 /*
@@ -74,11 +73,11 @@ public class UserProfileActivity extends AppCompatActivity {
             for (Object j : orderIds) {
                 orderStr += foodMap.get(Integer.parseInt((String)j)).get("foodName") + "\n";
             }
-        }
+        }*/
 
         ((TextView) findViewById(R.id.restrictionsText)).setText(restricts);
         ((TextView) findViewById(R.id.allergiesText)).setText(allers);
-        ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);*/
+       // ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
     }
 
     public void onProfileSearchButtonClick(View view) {
@@ -115,7 +114,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void onLogOutButtonClick(View view) {
-        manageData.eraseLoggedInUser(this);
+        //manageData.eraseLoggedInUser(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

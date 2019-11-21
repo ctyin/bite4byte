@@ -162,8 +162,6 @@ public class UploadItemActivity extends AppCompatActivity {
 
         Date date = new Date();
         //String dateParam = date.toString();
-        System.out.println(Environment.getExternalStorageDirectory().getAbsolutePath());
-        photoPath = Environment.getExternalStorageDirectory().getPath() + photoPath;
 
         Call<FoodContents> call = iMyService.uploadFood(foodID, foodQuantity, foodName, user.getUsername(), foodDesc, ingredients,
                 restrictions, cuisines, filename + ".jpg", photoPath, true, location, date);

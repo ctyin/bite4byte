@@ -73,8 +73,10 @@ app.use('/deleteacc', (req, res) => {
 		if (err) {
 			console.log(err);
 			console.log("Error with account deletion");
+			res.send({});
 		} else {
 			console.log("Account deleted");
+			res.send({});
 		}
 	});
 });
@@ -141,12 +143,26 @@ app.post('/food_preferences', (req, res) => {
 });
 
 app.use('/edit_account', (req, res) => {
-	Account.updateOne({username: req.body.username}, {$set:{restrictions: req.body.restrictions, allergies: req.body.allergies}}, function (err, account) {
+	/*await Account.updateOne({username: req.body.username}, {$set:{restrictions: req.body.restrictions, allergies: req.body.allergies}}, function (err, account) {
 		if (err) {
 			console.log("Edit account error");
 			res.json({});
 		} else {
-			console.log("Account successfully edited")
+			console.log("Account successfully edited");
+		}
+	});*/
+
+
+
+	Account.findOne({username:req.body.username}, function(err, account) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log("found");
+			account.restrictions = req.body.restrictions;
+			account.allergies = req.body.allergies;
+			account.save();
+			console.log(account.restrictions);
 			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
 		}
 	});
@@ -229,7 +245,7 @@ app.use('/post_food', (req, res) => {
 		}
 	});
 	//});
-})
+});
 
 
 app.use('/get_foods', (req, res) => {
@@ -244,7 +260,7 @@ app.use('/get_foods', (req, res) => {
 			console.log(foods);
 
 			foods.map(food => {
-				returnArr.push({"id":food._id, "quantity":food.quantity, "foodName":food.foodName,
+				returnArr.push({"id":food.id, "quantity":food.quantity, "foodName":food.foodName,
 					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
 					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
 					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
@@ -252,24 +268,25 @@ app.use('/get_foods', (req, res) => {
 
 			res.json(returnArr);
 		}
-	})
-})
+	});
+});
 
-app.use('req_food', (req, res) => {
-	Food.findOne({_id:req.body._id}, function (err, foods) {
+app.use('/req_food', (req, res) => {
+	console.log("reached REQFOOD");
+	Food.findOne({id:req.body.id}, function (err, food) {
 		if (err) {
 			console.log(err);
 			console.log("Error with retrieving food");
 			res.json({});
 		} else {
 			console.log("Food returned");
-			res.json({"id":food._id, "quantity":food.quantity, "foodName":food.foodName,
+			res.json({"id":food.id, "quantity":food.quantity, "foodName":food.foodName,
 					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
 					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
 					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
-		};
-	})
-})
+		}
+	});
+});
 
 // route for showing all the people
 /*
