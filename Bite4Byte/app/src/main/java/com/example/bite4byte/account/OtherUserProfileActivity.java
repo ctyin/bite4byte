@@ -16,6 +16,8 @@ import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.MainActivity;
 import com.example.bite4byte.R;
+import com.example.bite4byte.Retrofit.IMyService;
+import com.example.bite4byte.Retrofit.RetrofitClient;
 import com.example.bite4byte.Retrofit.UserContents;
 
 import org.json.simple.JSONArray;
@@ -25,15 +27,19 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
+import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class OtherUserProfileActivity extends AppCompatActivity {
 
     Data manageData;
     String currUsername, otherUsername;
     JSONObject userAccount;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    IMyService iMyService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,64 +48,64 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         manageData = (Data) getIntent().getSerializableExtra("manageData");
         currUsername = (String) getIntent().getStringExtra("user");
         otherUsername = (String) getIntent().getStringExtra("otherUser");
-        userAccount = manageData.getAccount(otherUsername);
+        //userAccount = manageData.getAccount(otherUsername);
+
+
+        Retrofit retrofitClient = new RetrofitClient().getInstance();
+        iMyService = retrofitClient.create(IMyService.class);
         Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
 
         setContentView(R.layout.activity_other_user_profile);
 
-        Call<UserContents> call = iMyService.foodPref(username, firstname, lastname, password, restrictArr, allergyArr);
+        Call<UserContents> call = iMyService.getAccount(otherUsername);
 
         call.enqueue(new Callback<UserContents>() {
             @Override
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
                 UserContents user = response.body();
-                String s = "Welcome " + response.body().getFirstName() + "!";
-                System.out.println(s);
 
-                Toast.makeText(CreateAccPreferencesActivity.this, s, Toast.LENGTH_SHORT).show();
+                ((TextView) findViewById(R.id.usernameText)).setText(otherUsername);
+                ((TextView) findViewById(R.id.firstnameText)).setText(user.getFirstName());
+                ((TextView) findViewById(R.id.lastnameText)).setText(user.getFirstName());
 
-                Intent intent = new Intent(CreateAccPreferencesActivity.this, UserFeedActivity.class);
-                intent.putExtra("manageData", manageData);
-                intent.putExtra("user", username);
-                startActivity(intent);
+                String restricts = "";
+                String allers = "";
+                String [] restrictions = user.getRestrictions();
+                String [] allergies= user.getAllergies();
+                if (restrictions != null) {
+                    for (String j : restrictions) {
+                        restricts += j + " ";
+                    }
+                }
+                if (allergies != null) {
+                    for (String j : allergies) {
+                        allers += j + " ";
+                    }
+                }
+
+                /*JSONArray orderIds = (JSONArray) userAccount.get("orders");
+                String orderStr = "";
+                if (orderIds != null) {
+                    for (Object j : orderIds) {
+                        orderStr += foodMap.get(Integer.parseInt((String)j)).get("foodName") + "\n";
+                    }
+                }*/
+
+                ((TextView) findViewById(R.id.restrictionsText)).setText(restricts);
+                ((TextView) findViewById(R.id.allergiesText)).setText(allers);
+                //((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
+
+
+
             }
 
             @Override
             public void onFailure(Call<UserContents> call, Throwable t) {
-                Toast.makeText(CreateAccPreferencesActivity.this, "error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtherUserProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
 
-        ((TextView) findViewById(R.id.usernameText)).setText(otherUsername);
-        ((TextView) findViewById(R.id.firstnameText)).setText((String) userAccount.get("firstname"));
-        ((TextView) findViewById(R.id.lastnameText)).setText((String) userAccount.get("lastname"));
 
-        String restricts = "";
-        String allers = "";
-        JSONArray restrictions = (JSONArray) userAccount.get("restrictions");
-        JSONArray allergies = (JSONArray) userAccount.get("allergies");
-        if (restrictions != null) {
-            for (Object j : restrictions) {
-                restricts += j.toString() + " ";
-            }
-        }
-        if (allergies != null) {
-            for (Object j : allergies) {
-                allers += j.toString() + " ";
-            }
-        }
-
-        JSONArray orderIds = (JSONArray) userAccount.get("orders");
-        String orderStr = "";
-        if (orderIds != null) {
-            for (Object j : orderIds) {
-                orderStr += foodMap.get(Integer.parseInt((String)j)).get("foodName") + "\n";
-            }
-        }
-
-        ((TextView) findViewById(R.id.restrictionsText)).setText(restricts);
-        ((TextView) findViewById(R.id.allergiesText)).setText(allers);
-        ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
     }
 
     public void onProfileSearchButtonClick(View view) {
