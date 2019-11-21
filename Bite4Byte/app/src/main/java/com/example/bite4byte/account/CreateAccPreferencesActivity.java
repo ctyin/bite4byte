@@ -144,8 +144,8 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
                 Toast.makeText(CreateAccPreferencesActivity.this, s, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(CreateAccPreferencesActivity.this, UserFeedActivity.class);
-                intent.putExtra("manageData", manageData);
-                intent.putExtra("user", username);
+                //intent.putExtra("manageData", manageData);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
 

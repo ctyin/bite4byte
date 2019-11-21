@@ -66,7 +66,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
 
                 ((TextView) findViewById(R.id.usernameText)).setText(otherUsername);
                 ((TextView) findViewById(R.id.firstnameText)).setText(user.getFirstName());
-                ((TextView) findViewById(R.id.lastnameText)).setText(user.getFirstName());
+                ((TextView) findViewById(R.id.lastnameText)).setText(user.getLastName());
 
                 String restricts = "";
                 String allers = "";
