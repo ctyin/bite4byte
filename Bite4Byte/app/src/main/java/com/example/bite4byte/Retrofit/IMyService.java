@@ -3,6 +3,7 @@ package com.example.bite4byte.Retrofit;
 import com.example.bite4byte.Messaging.ChatBubble;
 import com.example.bite4byte.Messaging.ConversationResult;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface IMyService {
@@ -29,7 +31,8 @@ public interface IMyService {
                                 @Field("lastname") String lastname,
                                 @Field("password") String password,
                                 @Field("restrictions") String[] restrictions,
-                                @Field("allergies") String[] allergies);
+                                @Field("allergies") String[] allergies,
+                                @Field("orders") String[] orders);
 
     // Body HTTP example requires single json object
 //    @POST("example")
@@ -61,7 +64,7 @@ public interface IMyService {
     @POST("convos")
     @FormUrlEncoded
     Call<List<ConversationResult>> getConversations(@Field("username") String username);
-
+    
     @POST("singleconvo")
     @FormUrlEncoded
     Call<List<ChatBubble>> getSingleCorr(@Field("convo_id") String convo_id);
@@ -70,4 +73,33 @@ public interface IMyService {
     @FormUrlEncoded
     Call<String> saveMessage(@Field("sender") String sender, @Field("convo_id") String convo_id,
                              @Field("contents") String contents, @Field("created_at") Long created_at);
+
+    @POST("post_food")
+    @FormUrlEncoded
+    Call<FoodContents> uploadFood(@Field("id") String id,
+                                  @Field("quantity") int quantity,
+                                  @Field("foodName") String foodName,
+                                  @Field("sellerUserName") String username,
+                                  @Field("description") String foodDesc,
+                                  @Field("ingredients") String[] ingredientArr,
+                                  @Field("restrictions") String[] restrictionArr,
+                                  @Field("cuisines") String[] cuisineArr,
+                                  @Field("picture") String picture,
+                                  @Field("picturePath") String picPath,
+                                  @Field("isAvailable") boolean isAvailable,
+                                  @Field("location") String location,
+                                  @Field("postDate") Date date);
+
+    @GET("get_foods")
+    Call<List<FoodContents>> getFoods();
+
+    @POST("req_food")
+    @FormUrlEncoded
+    Call<FoodContents> getOneFood(@Field("id") String id);
+
+    @POST("order_food")
+    @FormUrlEncoded
+    Call<UserContents> orderFood(@Field("id") String id,
+                                 @Field("foodName") String foodName,
+                                 @Field("username") String username);
 }

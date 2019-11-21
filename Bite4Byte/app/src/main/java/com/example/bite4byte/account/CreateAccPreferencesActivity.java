@@ -132,7 +132,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
             i++;
         }
 
-        Call<UserContents> call = iMyService.foodPref(username, firstname, lastname, password, restrictArr, allergyArr);
+        Call<UserContents> call = iMyService.foodPref(username, firstname, lastname, password, restrictArr, allergyArr, new String[]{});
 
         call.enqueue(new Callback<UserContents>() {
             @Override
@@ -143,9 +143,9 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
 
                 Toast.makeText(CreateAccPreferencesActivity.this, s, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(CreateAccPreferencesActivity.this, UserSearchActivity.class);
-                intent.putExtra("manageData", manageData);
-                intent.putExtra("user", username);
+                Intent intent = new Intent(CreateAccPreferencesActivity.this, UserFeedActivity.class);
+                //intent.putExtra("manageData", manageData);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
 

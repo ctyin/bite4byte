@@ -15,6 +15,7 @@ import com.example.bite4byte.Feed.UploadItemActivity;
 import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.MainActivity;
+import com.example.bite4byte.Messaging.AllMsgActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
@@ -35,7 +36,7 @@ import retrofit2.Retrofit;
 public class UserProfileActivity extends AppCompatActivity {
 
     Data manageData;
-    String username;
+    UserContents user;
     JSONObject userAccount;
     IMyService iMyService;
 
@@ -45,38 +46,33 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Retrofit retrofitClient = new RetrofitClient().getInstance();
         iMyService = retrofitClient.create(IMyService.class);
-
-        manageData = (Data) getIntent().getSerializableExtra("manageData");
-        username = (String) getIntent().getStringExtra("user");
-        userAccount = manageData.getAccount(username);
-        Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
+        user = (UserContents) getIntent().getSerializableExtra("user");
 
         setContentView(R.layout.activity_user_profile);
 
-        ((TextView) findViewById(R.id.usernameText)).setText(username);
-        ((TextView) findViewById(R.id.firstnameText)).setText((String) userAccount.get("firstname"));
-        ((TextView) findViewById(R.id.lastnameText)).setText((String) userAccount.get("lastname"));
+        ((TextView) findViewById(R.id.usernameText)).setText(user.getUsername());
+        ((TextView) findViewById(R.id.firstnameText)).setText(user.getFirstName());
+        ((TextView) findViewById(R.id.lastnameText)).setText(user.getLastName());
 
-        String restricts = "";
-        String allers = "";
-        JSONArray restrictions = (JSONArray) userAccount.get("restrictions");
-        JSONArray allergies = (JSONArray) userAccount.get("allergies");
+        String restricts = "", allers = "";
+        String[] restrictions = user.getRestrictions();
+        String[] allergies = user.getAllergies();
         if (restrictions != null) {
-            for (Object j : restrictions) {
-                restricts += j.toString() + " ";
+            for (String j : restrictions) {
+                restricts += j + " ";
             }
         }
         if (allergies != null) {
-            for (Object j : allergies) {
-                allers += j.toString() + " ";
+            for (String j : allergies) {
+                allers += j + " ";
             }
         }
 
-        JSONArray orderIds = (JSONArray) userAccount.get("orders");
+        String [] orderIds = user.getOrders();
         String orderStr = "";
         if (orderIds != null) {
-            for (Object j : orderIds) {
-                orderStr += foodMap.get(Integer.parseInt((String)j)).get("foodName") + "\n";
+            for (String j : orderIds) {
+                orderStr += j + " ";
             }
         }
 
@@ -90,24 +86,19 @@ public class UserProfileActivity extends AppCompatActivity {
         String query = searchQuery.getText().toString().trim();
 
         Intent intent = new Intent(this, UserSearchActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
+        intent.putExtra("user", user);
         intent.putExtra("query", query);
         startActivity(intent);
     }
 
     public void onEditAccountButtonClick(View view) {
         Intent intent = new Intent(this, EditAccountActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
     public void onDeleteAccountButtonClick(View view) {
-        manageData.eraseLoggedInUser(this);
-        manageData.deleteAccount(username, this);
-
-        Call<UserContents> call = iMyService.deleteAccount(username);
+        Call<UserContents> call = iMyService.deleteAccount(user.getUsername());
 
         call.enqueue(new Callback<UserContents>() {
             @Override
@@ -124,23 +115,31 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void onLogOutButtonClick(View view) {
-        manageData.eraseLoggedInUser(this);
+        //manageData.eraseLoggedInUser(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     public void onFeedButtonClick(View view) {
         Intent intent = new Intent(this, UserFeedActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("user", username);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
     public void onPostButtonClick(View view) {
         Intent intent = new Intent(this, UploadItemActivity.class);
-        intent.putExtra("manageData", manageData);
-        intent.putExtra("username", username);
+        intent.putExtra("user", user);
         startActivity(intent);
+    }
+
+    public void onDMClick(View view) {
+        try {
+            Intent i = new Intent(this, AllMsgActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 }

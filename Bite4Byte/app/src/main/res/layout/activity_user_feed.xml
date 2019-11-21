@@ -59,7 +59,8 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="DM's" />
+            android:text="DM's"
+            android:onClick="onDMClick"/>
 
         <Button
             android:id="@+id/profile"

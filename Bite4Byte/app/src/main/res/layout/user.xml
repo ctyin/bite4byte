@@ -30,12 +30,13 @@
                 android:layout_height="wrap_content"
                 android:text="JOHN DOE"/>
 
+
             <TextView
                 android:id="@+id/user_restrictions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:lines="1"
-                android:text="Vegan, Vegetarian, Pescatarian"
+                android:text=""
                 android:ellipsize="end"/>
 
         </LinearLayout>

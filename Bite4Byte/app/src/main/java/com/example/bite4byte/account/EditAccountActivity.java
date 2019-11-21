@@ -35,7 +35,7 @@ public class EditAccountActivity extends AppCompatActivity {
     //IMyService iMyService;
     HashSet<String> restrictions = new HashSet<String>();
     HashSet<String> allergies = new HashSet<String>();
-    String username;
+    UserContents user;
     String firstname;
     String lastname;
     String password;
@@ -52,13 +52,13 @@ public class EditAccountActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        manageData = (Data) getIntent().getSerializableExtra("manageData");
-        username = getIntent().getStringExtra("username");
-        JSONObject acct = manageData.getAccount(username);
-        firstname = (String) acct.get("firstname");
-        lastname = (String) acct.get("lastname");
-        password = (String) acct.get("password");
-        orders = (JSONArray) acct.get("orders");
+        //manageData = (Data) getIntent().getSerializableExtra("manageData");
+        user = (UserContents) getIntent().getSerializableExtra("user");
+        //JSONObject acct = manageData.getAccount(username);
+        firstname = user.getFirstName();
+        lastname = user.getLastName();
+        password = user.getPassword();
+        //orders = (JSONArray) acct.get("orders");
         setContentView(R.layout.activity_create_acc_preferences);
 
         // init singleton service, don't need to implement yet
@@ -94,7 +94,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
         CheckBox glutenCheck = (CheckBox) findViewById(R.id.gluten_allergy);
         if (glutenCheck.isChecked()) {
-            allergies.add("peanut");
+            allergies.add("gluten");
         }
 
         CheckBox eggCheck = (CheckBox) findViewById(R.id.egg_allergy);
@@ -138,20 +138,21 @@ public class EditAccountActivity extends AppCompatActivity {
             i++;
         }
 
-        Call<UserContents> call = iMyService.editAccount(username, restrictArr, allergyArr);
+        Call<UserContents> call = iMyService.editAccount(user.getUsername(), restrictArr, allergyArr);
 
         call.enqueue(new Callback<UserContents>() {
             @Override
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
-                UserContents user = response.body();
-                String s = "Welcome " + response.body().getFirstName() + "!";
-                System.out.println(s);
+                //String s = "Welcome " + response.body().getFirstName() + "!";
+                //System.out.println(s);
+                UserContents changeduser = response.body();
+                System.out.println(changeduser.getUsername());
 
-                Toast.makeText(EditAccountActivity.this, s, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(EditAccountActivity.this, s, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(EditAccountActivity.this, UserProfileActivity.class);
-                intent.putExtra("manageData", manageData);
-                intent.putExtra("user", username);
+                //intent.putExtra("manageData", manageData);
+                intent.putExtra("user", changeduser);
                 startActivity(intent);
             }
 

@@ -2,8 +2,10 @@
 const uuidv4 = require('uuid/v4');
 var express = require('express');
 var app = express();
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/myDatabase');
+var fs = require('fs');
+var mongoose = require("mongoose");
+var Grid = require('gridfs-stream');
+mongoose.connect('mongodb://127.0.0.1:27017/myDatabase');
 
 // set up EJS
 app.set('view engine', 'ejs');
@@ -16,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var Account = require('./Account.js');
 var Convo = require('./Convo.js');
 var Message = require('./Message');
+
+var Food = require('./Food.js');
 
 /***************************************/
 
@@ -42,15 +46,15 @@ app.post('/login', (req, res) => {
 	Account.findOne({username: name}, function (err, account) {
 		if (err || account == null) {		//Account doesn't exist
 			res.json({});
-			//console.log("Invalid Username");
+			console.log("Invalid Username");
 		} else {
-			//console.log(account);
+			console.log(account);
 			if (password == account.password) { //Account exists and pswd matches
-				res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
-				//console.log("Welcome Back!");
+				res.json({"username":account.username, "password":account.password, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders});
+				console.log("Welcome Back!");
 			} else {
 				res.json({});							//Accoutn exists but incorrect pswd
-				//console.log("Incorrect password");
+				console.log("Incorrect password");
 			}
 		}
 	});
@@ -70,8 +74,19 @@ app.use('/deleteacc', (req, res) => {
 		if (err) {
 			console.log(err);
 			console.log("Error with account deletion");
+			res.send({});
 		} else {
 			console.log("Account deleted");
+			res.send({});
+		}
+	});
+
+	Food.remove({sellerUserName:username}, function(err) {
+		if (err) {
+			console.log(err);
+			console.log("Error deleting all associated posts");
+		} else {
+			console.log("Deleted all associated posts");
 		}
 	});
 });
@@ -102,7 +117,8 @@ app.post('/food_preferences', (req, res) => {
 			lastname: req.body.lastname,
 			password: req.body.password,
 			restrictions: req.body.restrictions,
-			allergies: req.body.allergies
+			allergies: req.body.allergies,
+			orders: req.body.orders
 	    });
 
 	newAccount.save(function (err) {
@@ -112,7 +128,7 @@ app.post('/food_preferences', (req, res) => {
 			res.json({});
 		} else {
 			console.log("Account saved correctly");
-			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies});
+			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies, "orders":newAccount.orders});
 		}
 	});
 	/*Account.findOne({username: name}, function (err, account) {
@@ -138,13 +154,27 @@ app.post('/food_preferences', (req, res) => {
 });
 
 app.use('/edit_account', (req, res) => {
-	Account.updateOne({username: req.body.username}, {$set:{restrictions: req.body.restrictions, allergies: req.body.allergies}}, function (err, account) {
+	/*await Account.updateOne({username: req.body.username}, {$set:{restrictions: req.body.restrictions, allergies: req.body.allergies}}, function (err, account) {
 		if (err) {
 			console.log("Edit account error");
 			res.json({});
 		} else {
-			console.log("Account successfully edited")
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+			console.log("Account successfully edited");
+		}
+	});*/
+
+
+
+	Account.findOne({username:req.body.username}, function(err, account) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log("found");
+			account.restrictions = req.body.restrictions;
+			account.allergies = req.body.allergies;
+			account.save();
+			console.log(account.restrictions);
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders});
 		}
 	});
 	
@@ -175,7 +205,123 @@ app.use('/get_account', (req, res) => {
 			console.log(err);
 			console.log("Account not found");
 		} else {
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders});
+		}
+	});
+});
+
+app.use('/post_food', (req, res) => {
+	console.log("reached");
+	/*
+	var GridFS = Grid(mongoose.connection.db, mongoose.mongo);
+
+	if (req.body.picture) {
+		var connection = mongoose.connection;
+		connection.on('error', console.error.bind(console, 'connection error:'));
+		//connection.once('open', function () {
+
+		//var gfs = gridfs(connection.db);
+
+	    // Writing a file from local to MongoDB
+	    var writestream = GridFS.createWriteStream({ filename: req.body.picture });
+	    fs.createReadStream(req.body.picturePath).pipe(writestream);
+	    writestream.on('close', function (file) {
+	        console.log("Picture file successfully saved");
+	    });
+	}
+	*/
+    var newFood = new Food ({
+		id: req.body.id,
+		quantity: req.body.quantity,
+		foodName: req.body.foodName,
+		sellerUserName: req.body.sellerUserName,
+		description: req.body.description,
+		ingredients: req.body.ingredients,
+		restrictions: req.body.restrictions,
+		cuisines: req.body.cuisines,
+		picture: req.body.picture,
+		picturePath: req.body.picturePath,
+		isAvailable: req.body.isAvailable,
+		location: req.body.location,
+		postDate: req.body.postDate
+	});
+
+	newFood.save((err) => {
+		if (err) {
+			console.log("Error saving food to database");
+			console.log(err);
+			res.send(null);
+		} else {
+			console.log("Food saved correctly");
+		}
+	});
+	//});
+});
+
+
+app.use('/get_foods', (req, res) => {
+	Food.find({}, function (err, foods) {
+		if (err) {
+			console.log(err);
+			console.log("Error with retrieving foods");
+			res.json({});
+		} else {
+			var returnArr = [];
+
+			console.log(foods);
+
+			foods.map(food => {
+				returnArr.push({"id":food.id, "quantity":food.quantity, "foodName":food.foodName,
+					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
+					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
+					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
+			});
+
+			res.json(returnArr);
+		}
+	});
+});
+
+app.use('/req_food', (req, res) => {
+	console.log("reached REQFOOD");
+	Food.findOne({id:req.body.id}, function (err, food) {
+		if (err) {
+			console.log(err);
+			console.log("Error with retrieving food");
+			res.json({});
+		} else {
+			console.log("Food returned");
+			res.json({"id":food.id, "quantity":food.quantity, "foodName":food.foodName,
+					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
+					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
+					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
+		}
+	});
+});
+
+app.use('/order_food', (req, res) => {
+	console.log("reached order food");
+	Food.findOne({id:req.body.id}, function (err, food) {
+		if (err) {
+			console.log(err);
+			console.log("Failed to order food");
+			//res.json({});
+		} else {
+			console.log("Food ordered");
+			food.isAvailable = false;
+			food.save();
+		}
+	});
+	Account.findOne({username:req.body.username}, function (err, account) {
+		if (err) {
+			console.log(err);
+			console.log("Order account retrieval failed");
+			res.json({});
+		} else {
+			console.log("Order Account found");
+			account.orders.push(req.body.foodName);
+			account.save();
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders})
 		}
 	});
 });

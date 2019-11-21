@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 // the host:port must match the location where you are running MongoDB
 // the "myDatabase" part can be anything you like
-mongoose.connect('mongodb://localhost:27017/myDatabase');
+mongoose.connect('mongodb://127.0.0.1:27017/myDatabase');
 
 var Schema = mongoose.Schema;
 
@@ -12,7 +12,8 @@ var accountSchema = new Schema({
 	firstname: {type: String, required: true, unique: false},
 	password: {type: String, required: true, unique: false},
 	restrictions: {type: [String], required: false, unique: false},
-	allergies: {type: [String], required: false, unique: false}
+	allergies: {type: [String], required: false, unique: false},
+	orders: {type: [String], required: false, unique: false}
     });
 
 // export personSchema as a class called Person

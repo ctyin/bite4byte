@@ -15,8 +15,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bite4byte.Feed.PostActivity;
+import com.example.bite4byte.Feed.UploadItemActivity;
 import com.example.bite4byte.Feed.UserFeedActivity;
 import com.example.bite4byte.InternalData.Data;
+import com.example.bite4byte.Messaging.AllMsgActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
@@ -39,7 +41,7 @@ import retrofit2.Retrofit;
 public class UserSearchActivity extends AppCompatActivity {
 
     Data manageData;
-    String username;
+    UserContents user;
     JSONObject userAccount;
     View view;
 
@@ -53,11 +55,37 @@ public class UserSearchActivity extends AppCompatActivity {
         Retrofit retrofitClient = new RetrofitClient().getInstance();
         iMyService = retrofitClient.create(IMyService.class);
 
-        manageData = (Data) getIntent().getSerializableExtra("manageData");
-        username = (String) getIntent().getStringExtra("username");
+        //manageData = (Data) getIntent().getSerializableExtra("manageData");
+        user = (UserContents) getIntent().getSerializableExtra("user");
+        String query = getIntent().getStringExtra("query");
         //userAccount = manageData.getAccount(username);
 
         setContentView(R.layout.activity_profile_search);
+
+        Call<String []> call = iMyService.searchAccount(query);
+
+        call.enqueue(new Callback<String[]>() {
+            @Override
+            public void onResponse(Call<String[]> call, Response<String[]> response) {
+                String[] results = response.body();
+                List<String[]> res = new LinkedList<String[]>();
+                for (String r : results) {
+                    res.add(r.split(" "));
+                }
+
+                updateSearchResults(res);
+
+                /*Intent intent = new Intent(UserSearchActivity.this, UserFeedActivity.class);
+                intent.putExtra("manageData", manageData);
+                intent.putExtra("user", username);
+                startActivity(intent);*/
+            }
+
+            @Override
+            public void onFailure(Call<String[]> call, Throwable t) {
+                Toast.makeText(UserSearchActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void updateSearchResults(List<String[]> results) {
@@ -93,8 +121,8 @@ public class UserSearchActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(UserSearchActivity.this, OtherUserProfileActivity.class);
 
-                    intent.putExtra("manageData", manageData);
-                    intent.putExtra("user", username);
+                    //intent.putExtra("manageData", manageData);
+                    intent.putExtra("user", user);
                     intent.putExtra("otherUser", ((TextView)v.findViewById(R.id.username)).getText().toString());
 
                     startActivity(intent);
@@ -137,6 +165,42 @@ public class UserSearchActivity extends AppCompatActivity {
         intent.putExtra("username", username);
         intent.putExtra("query", query);
         startActivity(intent);*/
+    }
+
+    public void onFeedButtonClick(View view) {
+        Intent intent = new Intent(this, UserFeedActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    public void onUploadClick(View view) {
+        try {
+            Intent i = new Intent(this, UploadItemActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void onProfileClick(View view) {
+        try {
+            Intent i = new Intent(this, UserProfileActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void onDMClick(View view) {
+        try {
+            Intent i = new Intent(this, AllMsgActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 }

@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
@@ -57,7 +57,8 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Feed" />
+            android:text="Feed"
+            android:onClick="onFeedButtonClick"/>
 
         <Button
             android:id="@+id/uploadBtnFeed"
@@ -72,7 +73,8 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="DM's" />
+            android:text="DM's"
+            android:onClick="onDMClick"/>
 
         <Button
             android:id="@+id/profile"

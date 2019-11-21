@@ -11,68 +11,117 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bite4byte.InternalData.Data;
+import com.example.bite4byte.Messaging.AllMsgActivity;
 import com.example.bite4byte.R;
+import com.example.bite4byte.Retrofit.FoodContents;
+import com.example.bite4byte.Retrofit.IMyService;
+import com.example.bite4byte.Retrofit.RetrofitClient;
+import com.example.bite4byte.Retrofit.UserContents;
 import com.example.bite4byte.account.UserProfileActivity;
 
 import org.json.simple.JSONObject;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class PostActivity extends Activity {
 
-    private Data md;
-    private String username;
+    private UserContents user;
     private String order_id;
+    IMyService iMyService;
+    FoodContents food;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Retrofit retrofitClient = new RetrofitClient().getInstance();
+        iMyService = retrofitClient.create(IMyService.class);
+
         setContentView(R.layout.post_activity);
 
         Intent i = getIntent();
-        md = (Data) i.getSerializableExtra("manageData");
-        username = i.getStringExtra("username");
+        user = (UserContents) i.getSerializableExtra("user");
         order_id = i.getStringExtra("id");
 
-        ImageView iv = findViewById(R.id.postImg);
-        JSONObject pic = md.getFoodItems().get(Integer.parseInt(order_id));
-        if (pic.get("picture") != null && !pic.get("picture").toString().isEmpty()) {
-            Bitmap bm = BitmapFactory.decodeFile(pic.get("picture").toString());
-            iv.setImageBitmap(bm);
-        }
+        Call<FoodContents> call = iMyService.getOneFood(order_id);
+        call.enqueue(new Callback<FoodContents>() {
+            @Override
+            public void onResponse(Call<FoodContents> call, Response<FoodContents> response) {
+                food = response.body();
 
-        TextView fName = findViewById(R.id.postTitleActivity);
-        fName.setText(i.getStringExtra("foodName"));
+                ImageView iv = findViewById(R.id.postImg);
+                if (food.getPicturePath() != null && !food.getPicturePath().isEmpty()) {
+                    Bitmap bm = BitmapFactory.decodeFile(food.getPicturePath());
+                    iv.setImageBitmap(bm);
+                }
 
-        TextView sellUser = findViewById(R.id.sellerActivity);
-        sellUser.setText(i.getStringExtra("sellerUserName"));
+                TextView fName = findViewById(R.id.postTitleActivity);
+                fName.setText(food.getFoodName());
 
-        TextView desc = findViewById(R.id.postDescActivity);
-        desc.setText(i.getStringExtra("description"));
+                TextView sellUser = findViewById(R.id.sellerActivity);
+                sellUser.setText(food.getSellerUserName());
+
+                TextView desc = findViewById(R.id.postDescActivity);
+                desc.setText(food.getDescription());
+            }
+
+            @Override
+            public void onFailure(Call<FoodContents> call, Throwable t) {
+                Toast.makeText(PostActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void onOrderBtnClick(View v) {
         // set the current food's availability to false
-        md.setFoodAvailability(Integer.parseInt(getIntent().getStringExtra("id")), false);
+        //food.setIsAvailable();
 
-        md.addToAccountOrders(username, order_id, this);
+        Call<UserContents> call = iMyService.orderFood(order_id, food.getFoodName(), user.getUsername());
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                UserContents changedUser = response.body();
 
-        Toast.makeText(this, "Your order is confirmed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(PostActivity.this, "You have placed an order!", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(PostActivity.this, UserFeedActivity.class);
+                intent.putExtra("user", changedUser);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                Toast.makeText(PostActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //Toast.makeText(this, "Your order is confirmed!", Toast.LENGTH_LONG).show();
     }
 
     public void onFeedBtnClick(View view) {
         Intent intent = new Intent(this, UserFeedActivity.class);
-        intent.putExtra("manageData", md);
-        intent.putExtra("user", username);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
     public void onProfileButtonClick(View view) {
         Intent intent = new Intent(this, UserProfileActivity.class);
-        intent.putExtra("manageData", md);
-        intent.putExtra("user", username);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
-
+    public void onDMClick(View view) {
+        try {
+            Intent i = new Intent(this, AllMsgActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
 }
