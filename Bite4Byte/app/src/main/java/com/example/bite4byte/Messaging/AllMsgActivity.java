@@ -149,7 +149,7 @@ public class AllMsgActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ConversationResult>> call, Throwable t) {
-
+                Toast.makeText(AllMsgActivity.this,"fuck", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -152,10 +152,10 @@ app.use('/all', (req, res) => {
 
 app.use('/convos', (req, res) => {
 	var queryObj = {};
-	
+
 	// need to figure out how this request looks
 	if (req.body.username) {
-		queryObj = {"participants": req.query.username};
+		queryObj = {"participants": req.body.username};
 	}
 
 	Convo.find( queryObj,
@@ -167,6 +167,8 @@ app.use('/convos', (req, res) => {
     	else {
     		var returnArray = [];
     		convos.forEach((convo) => {
+    			console.log(convo);
+
     			returnArray.push( {"convo_id" : convo.convo_id, "participants" : convo.participants});
     		});
 
@@ -210,7 +212,7 @@ app.use('/api', (req, res) => {
 			    returnArray.push( { "username" : person.name , "firstname" : account.firstname, "lastname" : account.lastname } );
 			});
 		    // send it back as JSON Array
-		    res.json(returnArray); 
+		    res.json(returnArray);
 		}
 		
 	    });
