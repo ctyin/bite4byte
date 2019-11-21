@@ -11,8 +11,8 @@ var accountSchema = new Schema({
 	lastname: {type: String, required: true, unique: false},
 	firstname: {type: String, required: true, unique: false},
 	password: {type: String, required: true, unique: false},
-	preferences: {type: String, required: false, unique: false},
-	allergies: {type: String, required: false, unique: false}
+	restrictions: {type: [String], required: false, unique: false},
+	allergies: {type: [String], required: false, unique: false}
     });
 
 // export personSchema as a class called Person

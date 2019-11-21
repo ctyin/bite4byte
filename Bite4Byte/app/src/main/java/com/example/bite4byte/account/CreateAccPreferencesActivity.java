@@ -37,6 +37,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
     String lastname;
     String password;
     Data manageData;
+    UserContents user;
 
     @Override
     public void onStop() {
@@ -131,23 +132,25 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
             i++;
         }
 
-        /*Call<UserContents> call = iMyService.loginUser(username, pass);
+        Call<UserContents> call = iMyService.foodPref(username, firstname, lastname, password, restrictArr, allergyArr);
 
         call.enqueue(new Callback<UserContents>() {
             @Override
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
-                System.out.println(response.body().getName());
+                user = response.body();
+                String s = "Welcome " + response.body().getFirstName() + "!";
+                System.out.println(s);
 
-                Toast.makeText(LoginActivity.this, response.body().getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccPreferencesActivity.this, s, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<UserContents> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccPreferencesActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
 
-        manageData.createAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
+        //manageData.createAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
         manageData.writeLoggedInUser(this, username, firstname, lastname, password, restrictArr, allergyArr);
 
         Intent intent = new Intent(this, UserFeedActivity.class);

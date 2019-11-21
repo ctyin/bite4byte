@@ -20,7 +20,10 @@ public interface IMyService {
 
     @POST("food_preferences")
     @FormUrlEncoded
-    Observable<String> foodPref(@Field("username") String username,
+    Call<UserContents> foodPref(@Field("username") String username,
+                                @Field("firstname") String firstname,
+                                @Field("lastname") String lastname,
+                                @Field("password") String password,
                                 @Field("restrictions") String[] restrictions,
                                 @Field("allergies") String[] allergies);
 

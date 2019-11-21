@@ -80,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         manageData = new Data(this);
-        if (manageData.userLoggedIn()) {
+        /*if (manageData.userLoggedIn()) {
             JSONObject currentUser = manageData.getLoggedInUser();
             Intent i = new Intent(this, UserFeedActivity.class);
             i.putExtra("manageData", manageData);
             i.putExtra("user", (String) currentUser.get("username"));
             startActivity(i);
-        }
+        }*/
 
 
     }

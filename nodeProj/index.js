@@ -47,19 +47,14 @@ app.post('/login', (req, res) => {
 app.use('/deleteacc', (req, res) => {
 	username = req.body.username;
 	Account.remove({username : username});
-})
+});
 
 // route for creating a new person
 // this is the action of the "create new person" form
 app.use('/register', (req, res) => {
-	// construct the Person from the form data which is in the request body
-	var newAccount = new Account ({
-		username: req.body.username
-	    });
+	var username = req.body.username;
 
-	console.log(newAccount.username);
-
-	Account.findOne({username: username}, function (err, account)) {
+	Account.findOne({username: username}, function (err, account) {
 		if (err) {
 			console.log("Create account, unique username validation error");
 			res.send("false");
@@ -69,34 +64,31 @@ app.use('/register', (req, res) => {
 		} else {
 			res.send("true");
 		}
-	}
-
-	// save the account to the database
-	newAccount.save( (err) => { 
-		if (err) {
-		    //res.type('html').status(200);
-		    //res.write('uh oh: ' + err);
-		    if (err.message.includes("duplicate")) {
-		    	console.log("Username already exists.")
-		    } else {
-		    	console.log(err);
-		    }
-		    res.end();
-		}
-		else {
-		    // display the "successfull created" page using EJS
-		    //res.render('created', {account : newAccount});
-		}
-	    } ); 
-    }
-    );
+	});
+});	
 
 app.post('/food_preferences', (req, res) => {
-	var name = req.body.username;
-	var preferenceArr = [].concat(req.body.preferences);
-	var allergyArr = [].concat(req.body.allergies);
 
-	Account.findOne({username: name}, function (err, account) {
+	var newAccount = new Account ({
+			username: req.body.username,
+			firstname: req.body.firstname,
+			lastname: req.body.lastname,
+			password: req.body.password,
+			restrictions: req.body.restrictions,
+			allergies: req.body.allergies
+	    });
+
+	newAccount.save((err) => {
+		if (err) {
+			console.log("Error saving new account to database");
+			console.log(err);
+			res.send(null);
+		} else {
+			console.log("Account saved correctly");
+			res.send(newAccount)
+		}
+	})
+	/*Account.findOne({username: name}, function (err, account) {
 		if (err || account == null) {		//Account doesn't exist
 			console.log("Invalid Username");
 		} else {
@@ -115,7 +107,7 @@ app.post('/food_preferences', (req, res) => {
 				}
 			});
 		}
-	});
+	});*/
 });
 
 // route for showing all the people

@@ -88,22 +88,28 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
 
+        System.out.println("Reached");
+
+        //System.out.println("Executed: " + call.isExecuted());
         if (usernameAvailable.equals("false")) {
-            System.out.println("Username taken");
+            //System.out.println("Username taken");
             Toast.makeText(
                     CreateAccountActivity.this,
                     "Username already exists",
                     Toast.LENGTH_SHORT).show();
             return;
+        } else {
+            //System.out.println("Reached else block " + usernameAvailable);
+            Intent i = new Intent(this, CreateAccPreferencesActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("firstname", firstname);
+            i.putExtra("lastname", lastname);
+            i.putExtra("password", password);
+            i.putExtra("manageData", manageData);
+            startActivity(i);
         }
 
-        Intent i = new Intent(this, CreateAccPreferencesActivity.class);
-        i.putExtra("username", username);
-        i.putExtra("firstname", firstname);
-        i.putExtra("lastname", lastname);
-        i.putExtra("password", password);
-        i.putExtra("manageData", manageData);
-        startActivity(i);
+
     }
 
 }
