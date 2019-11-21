@@ -57,9 +57,9 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<UserContents>() {
             @Override
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
-                System.out.println(response.body().getName());
+                System.out.println(response.toString().isEmpty());
 
-                Toast.makeText(LoginActivity.this, response.body().getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, response.body().getUsername(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
