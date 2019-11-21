@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Bite4Byte</string>
     <string name="buyBtn">ORDER</string>
+    <string name="message_hint">Chat with %1$s!</string>
 
     <string-array name="cuisines">
         <item>american</item>

@@ -151,19 +151,26 @@ app.use('/all', (req, res) => {
     });*/
 
 app.use('/convos', (req, res) => {
-	var un = req.username;
 	var queryObj = {};
 	
 	// need to figure out how this request looks
-	if (req.query.username) {
+	if (req.body.username) {
 		queryObj = {"participants": req.query.username};
 	}
 
 	Convo.find( queryObj,
-    function(err,docs) {
+    function(err, convos) {
     	if (err) {
     		console.log(err);
     		res.json({});
+    	}
+    	else {
+    		var returnArray = [];
+    		convos.forEach((convo) => {
+    			returnArray.push( {"convo_id" : convo.convo_id, "participants" : convo.participants});
+    		});
+
+    		res.json(returnArray);
     	}
     } );
 });

@@ -16,7 +16,7 @@
             android:layout_width="117dp"
             android:layout_height="match_parent"
             android:text="JS"
-            android:textSize="50sp"
+            android:textSize="60sp"
             android:textAlignment="center" />
 
         <LinearLayout

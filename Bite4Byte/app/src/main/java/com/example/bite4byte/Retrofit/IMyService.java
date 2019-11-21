@@ -1,5 +1,8 @@
 package com.example.bite4byte.Retrofit;
 
+import com.example.bite4byte.Messaging.ConversationResult;
+
+import java.util.List;
 import java.util.Set;
 
 import io.reactivex.Observable;
@@ -35,4 +38,8 @@ public interface IMyService {
     @FormUrlEncoded
     Call<UserContents> loginUser(@Field("username") String username,
                                  @Field("password") String password);
+
+    @POST("convos")
+    @FormUrlEncoded
+    Call<List<ConversationResult>> getConversations(@Field("username") String username);
 }
