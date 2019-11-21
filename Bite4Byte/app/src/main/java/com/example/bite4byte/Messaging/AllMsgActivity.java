@@ -86,7 +86,7 @@ public class AllMsgActivity extends AppCompatActivity {
 //        uc = (UserContents) getIntent().getSerializableExtra("user");
 
         uc = new UserContents();
-        uc.setName("chris");
+        uc.setName("jon");
 
 //        Gson g = new Gson();
 //        JSONObject jo = g.fromJson(g.toJson(uc), JSONObject.class);
@@ -155,7 +155,7 @@ public class AllMsgActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ConversationResult>> call, Throwable t) {
-                Toast.makeText(AllMsgActivity.this,"fuck", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AllMsgActivity.this,"Failed to get response", Toast.LENGTH_SHORT).show();
             }
         });
     }

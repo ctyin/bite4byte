@@ -221,7 +221,6 @@ app.use('/convos', (req, res) => {
     	else {
     		var returnArray = [];
     		convos.forEach((convo) => {
-    			console.log("hi");
     			returnArray.push( {"convo_id" : convo.convo_id, "participants" : convo.participants});
     		});
 
