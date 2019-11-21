@@ -84,17 +84,17 @@ public class OtherUserProfileActivity extends AppCompatActivity {
                     }
                 }
 
-                /*JSONArray orderIds = (JSONArray) userAccount.get("orders");
+                String [] orderIds = user.getOrders();
                 String orderStr = "";
                 if (orderIds != null) {
-                    for (Object j : orderIds) {
-                        orderStr += foodMap.get(Integer.parseInt((String)j)).get("foodName") + "\n";
+                    for (String j : orderIds) {
+                        orderStr += j + " ";
                     }
-                }*/
+                }
 
                 ((TextView) findViewById(R.id.restrictionsText)).setText(restricts);
                 ((TextView) findViewById(R.id.allergiesText)).setText(allers);
-                //((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
+                ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
 
 
 

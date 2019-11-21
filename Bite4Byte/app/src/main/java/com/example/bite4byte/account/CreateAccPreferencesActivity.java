@@ -132,7 +132,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
             i++;
         }
 
-        Call<UserContents> call = iMyService.foodPref(username, firstname, lastname, password, restrictArr, allergyArr);
+        Call<UserContents> call = iMyService.foodPref(username, firstname, lastname, password, restrictArr, allergyArr, new String[]{});
 
         call.enqueue(new Callback<UserContents>() {
             @Override

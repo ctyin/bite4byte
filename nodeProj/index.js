@@ -49,7 +49,7 @@ app.post('/login', (req, res) => {
 		} else {
 			console.log(account);
 			if (password == account.password) { //Account exists and pswd matches
-				res.json({"username":account.username, "password":account.password, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+				res.json({"username":account.username, "password":account.password, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders});
 				console.log("Welcome Back!");
 			} else {
 				res.json({});							//Accoutn exists but incorrect pswd
@@ -107,7 +107,8 @@ app.post('/food_preferences', (req, res) => {
 			lastname: req.body.lastname,
 			password: req.body.password,
 			restrictions: req.body.restrictions,
-			allergies: req.body.allergies
+			allergies: req.body.allergies,
+			orders: req.body.orders
 	    });
 
 	newAccount.save(function (err) {
@@ -117,7 +118,7 @@ app.post('/food_preferences', (req, res) => {
 			res.json({});
 		} else {
 			console.log("Account saved correctly");
-			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies});
+			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies, "orders":newAccount.orders});
 		}
 	});
 	/*Account.findOne({username: name}, function (err, account) {
@@ -163,7 +164,7 @@ app.use('/edit_account', (req, res) => {
 			account.allergies = req.body.allergies;
 			account.save();
 			console.log(account.restrictions);
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders});
 		}
 	});
 	
@@ -194,7 +195,7 @@ app.use('/get_account', (req, res) => {
 			console.log(err);
 			console.log("Account not found");
 		} else {
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders});
 		}
 	});
 });
@@ -284,6 +285,33 @@ app.use('/req_food', (req, res) => {
 					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
 					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
 					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
+		}
+	});
+});
+
+app.use('/order_food', (req, res) => {
+	console.log("reached order food");
+	Food.findOne({id:req.body.id}, function (err, food) {
+		if (err) {
+			console.log(err);
+			console.log("Failed to order food");
+			//res.json({});
+		} else {
+			console.log("Food ordered");
+			food.isAvailable = false;
+			food.save();
+		}
+	});
+	Account.findOne({username:req.body.username}, function (err, account) {
+		if (err) {
+			console.log(err);
+			console.log("Order account retrieval failed");
+			res.json({});
+		} else {
+			console.log("Order Account found");
+			account.orders.push(req.body.foodName);
+			account.save();
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders})
 		}
 	});
 });

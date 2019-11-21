@@ -30,7 +30,8 @@ public interface IMyService {
                                 @Field("lastname") String lastname,
                                 @Field("password") String password,
                                 @Field("restrictions") String[] restrictions,
-                                @Field("allergies") String[] allergies);
+                                @Field("allergies") String[] allergies,
+                                @Field("orders") String[] orders);
 
     // Body HTTP example requires single json object
 //    @POST("example")
@@ -86,4 +87,10 @@ public interface IMyService {
     @POST("req_food")
     @FormUrlEncoded
     Call<FoodContents> getOneFood(@Field("id") String id);
+
+    @POST("order_food")
+    @FormUrlEncoded
+    Call<UserContents> orderFood(@Field("id") String id,
+                                 @Field("foodName") String foodName,
+                                 @Field("username") String username);
 }

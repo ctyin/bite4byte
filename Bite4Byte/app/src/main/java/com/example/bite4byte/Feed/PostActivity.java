@@ -73,15 +73,33 @@ public class PostActivity extends Activity {
             }
         });
     }
-/*
+
     public void onOrderBtnClick(View v) {
         // set the current food's availability to false
-        food.setIsAvailable();
+        //food.setIsAvailable();
 
-        md.addToAccountOrders(username, order_id, this);
+        Call<UserContents> call = iMyService.orderFood(order_id, food.getFoodName(), user.getUsername());
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                UserContents changedUser = response.body();
 
-        Toast.makeText(this, "Your order is confirmed!", Toast.LENGTH_LONG).show();
-    }*/
+                Toast.makeText(PostActivity.this, "You have placed an order!", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(PostActivity.this, UserFeedActivity.class);
+                intent.putExtra("user", changedUser);
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                Toast.makeText(PostActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //Toast.makeText(this, "Your order is confirmed!", Toast.LENGTH_LONG).show();
+    }
 
     public void onFeedBtnClick(View view) {
         Intent intent = new Intent(this, UserFeedActivity.class);

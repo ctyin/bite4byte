@@ -10,6 +10,7 @@ public class UserContents implements Serializable {
     protected String[] restrictions;
     protected String[] allergies;
     protected String[] friends;
+    protected String[] orders;
 
     public String getUsername() {
         return username;
@@ -24,6 +25,8 @@ public class UserContents implements Serializable {
     public String[] getRestrictions() { return restrictions; }
 
     public String[] getAllergies() { return allergies; }
+
+    public String[] getOrders() { return orders; }
 
     public String[] getFriendsList() { return friends; }
 
