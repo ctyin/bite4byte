@@ -198,6 +198,12 @@ public class UserFeedActivity extends Activity {
         results.removeAll(usersPost);
 
         for (FoodContents item : results) {
+            if (!item.isAvailable()) {
+                results.remove(item);
+            }
+        }
+
+        for (FoodContents item : results) {
             String[] ingreds = item.getIngredients();
             for (String s : ingreds) {
                 String ingredient = s.trim();
