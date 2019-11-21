@@ -19,6 +19,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class CreateAccountActivity extends AppCompatActivity {
@@ -26,6 +29,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
     Data manageData;
+    String usernameAvailable = "";
 
     @Override
     public void onStop() {
@@ -68,22 +72,23 @@ public class CreateAccountActivity extends AppCompatActivity {
             return;
         }
 
-        /*
-        compositeDisposable.add(iMyService.registerUser(username, firstname, lastname, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String response) throws Exception {
-                        Toast.makeText(
-                                CreateAccountActivity.this,
-                                ""+response,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }));
-         */
+        Call<String> call = iMyService.registerUser(username);
 
-        if (!manageData.verifyAvailableUsername(username)) {
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                System.out.println(response.body());
+                usernameAvailable = response.body();
+                //Toast.makeText(CreateAccountActivity.this, response.body(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(CreateAccountActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        if (usernameAvailable.equals("false")) {
             System.out.println("Username taken");
             Toast.makeText(
                     CreateAccountActivity.this,

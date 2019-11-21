@@ -13,6 +13,7 @@ import com.example.bite4byte.InternalData.Data;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
+import com.example.bite4byte.Retrofit.UserContents;
 
 import java.util.HashSet;
 
@@ -20,6 +21,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class CreateAccPreferencesActivity extends AppCompatActivity {
@@ -127,18 +131,21 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
             i++;
         }
 
-        /*compositeDisposable.add(iMyService.foodPref(username, preferenceArr, allergyArr)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String response) throws Exception {
-                        Toast.makeText(
-                                CreateAccPreferencesActivity.this,
-                                ""+response,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }));*/
+        /*Call<UserContents> call = iMyService.loginUser(username, pass);
+
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                System.out.println(response.body().getName());
+
+                Toast.makeText(LoginActivity.this, response.body().getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });*/
 
         manageData.createAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
         manageData.writeLoggedInUser(this, username, firstname, lastname, password, restrictArr, allergyArr);

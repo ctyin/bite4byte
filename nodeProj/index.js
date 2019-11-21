@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // import the Account class from Account.js
 var Account = require('./Account.js');
-
+	
 /***************************************/
 
 app.post('/login', (req, res) => {
@@ -51,13 +51,22 @@ app.use('/deleteacc', (req, res) => {
 app.use('/register', (req, res) => {
 	// construct the Person from the form data which is in the request body
 	var newAccount = new Account ({
-		username: req.body.username,
-		lastname: req.body.lastname,
-		firstname: req.body.firstname,
-		password: req.body.password
+		username: req.body.username
 	    });
 
-	console.log(newAccount.username + " " + newAccount.firstname + " " + newAccount.lastname + " "  + newAccount.password);
+	console.log(newAccount.username);
+
+	Account.findOne({username: username}, function (err, account)) {
+		if (err) {
+			console.log("Create account, unique username validation error");
+			res.send("false");
+		}
+		if (account != null) {
+			res.send("false");
+		} else {
+			res.send("true");
+		}
+	}
 
 	// save the account to the database
 	newAccount.save( (err) => { 

@@ -16,10 +16,7 @@ public interface IMyService {
     // arbitrary end point based on the YouTube Tutorial
     @POST("register")
     @FormUrlEncoded
-    Call<String> registerUser(@Field("username") String username,
-                                    @Field("firstname") String firstname,
-                                    @Field("lastname") String lastname,
-                                    @Field("password") String password);
+    Call<String> registerUser(@Field("username") String username);
 
     @POST("food_preferences")
     @FormUrlEncoded
