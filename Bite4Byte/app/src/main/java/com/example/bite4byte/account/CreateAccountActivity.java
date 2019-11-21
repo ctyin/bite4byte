@@ -50,14 +50,14 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     public void onCreateAccSubmitClick(View view) {
         EditText usernameView = (EditText) findViewById(R.id.create_acc_username);
-        final String username = usernameView.getText().toString();
+        final String username = usernameView.getText().toString().trim();
 
         EditText firstnameView = (EditText) findViewById(R.id.create_acc_firstname);
-        String first = firstnameView.getText().toString();
+        String first = firstnameView.getText().toString().trim();
         final String firstname = first.substring(0, 1).toUpperCase() + first.substring(1).toLowerCase();
 
         EditText lastnameView = (EditText) findViewById(R.id.create_acc_lastname);
-        String last = lastnameView.getText().toString();
+        String last = lastnameView.getText().toString().trim();
         final String lastname = last.substring(0, 1).toUpperCase() + last.substring(1).toLowerCase();
 
         EditText passView = (EditText) findViewById(R.id.create_acc_password);
