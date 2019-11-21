@@ -57,9 +57,14 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<UserContents>() {
             @Override
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
-                System.out.println(response.toString().isEmpty());
-
-                Toast.makeText(LoginActivity.this, response.body().getUsername(), Toast.LENGTH_SHORT).show();
+                if (response.body().getUsername() == null) {
+                    Toast.makeText(LoginActivity.this, "Invalid Username or Password!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Welcome" + " " + response.body().getUsername() + "!", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(LoginActivity.this, UserFeedActivity.class);
+                    i.putExtra("user", response.body());
+                    startActivity(i);
+                }
             }
 
             @Override
@@ -69,18 +74,18 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //get current account - will return null if invalid username or password
-        JSONObject currentAccount = manageData.login(username, pass);
-
+        //JSONObject currentAccount = manageData.login(username, pass);
+        /*
         if (currentAccount == null) {
             System.out.println("Invalid Username/Password");
             Toast.makeText(this, "Invalid Username/Password", Toast.LENGTH_LONG).show();
         } else {
             System.out.println("Welcome" + " " + (String) currentAccount.get("firstname"));
-            Toast.makeText(this, "Welcome" + " " + (String) currentAccount.get("firstname") + "!", Toast.LENGTH_LONG).show();
+
             try {
 
-                /*manageData.writeLoggedInUser(this, (String) currentAccount.get("username"), (String) currentAccount.get("firstname"), (String) currentAccount.get("lastname"),
-                        (String) currentAccount.get("password"), (String) currentAccount.get())*/
+                //manageData.writeLoggedInUser(this, (String) currentAccount.get("username"), (String) currentAccount.get("firstname"), (String) currentAccount.get("lastname"),
+                        (String) currentAccount.get("password"), (String) currentAccount.get())
                 Intent i = new Intent(this, UserFeedActivity.class);
                 i.putExtra("manageData", manageData);
                 i.putExtra("user", username);
@@ -89,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println(e);
             }
         }
-
+        */
     }
 
 }

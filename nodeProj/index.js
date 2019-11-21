@@ -2,7 +2,7 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/myDatabase');
+mongoose.connect('mongodb://127.0.0.1:27017/myDatabase');
 
 // set up EJS
 app.set('view engine', 'ejs');
@@ -22,15 +22,15 @@ app.post('/login', (req, res) => {
 	Account.findOne({username: name}, function (err, account) {
 		if (err || account == null) {		//Account doesn't exist
 			res.json({});
-			//console.log("Invalid Username");
+			console.log("Invalid Username");
 		} else {
-			//console.log(account);
+			console.log(account);
 			if (password == account.password) { //Account exists and pswd matches
 				res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
-				//console.log("Welcome Back!");
+				console.log("Welcome Back!");
 			} else {
 				res.json({});							//Accoutn exists but incorrect pswd
-				//console.log("Incorrect password");
+				console.log("Incorrect password");
 			}
 		}
 	});
