@@ -21,13 +21,16 @@ app.post('/login', (req, res) => {
 	var password = req.body.password;
 	Account.findOne({username: name}, function (err, account) {
 		if (err || account == null) {		//Account doesn't exist
-			console.log("Invalid Username");
+			res.json({});
+			//console.log("Invalid Username");
 		} else {
-			console.log(account);
+			//console.log(account);
 			if (password == account.password) { //Account exists and pswd matches
-				console.log("Welcome Back!");
-			} else {							//Accoutn exists but incorrect pswd
-				console.log("Incorrect password");
+				res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies});
+				//console.log("Welcome Back!");
+			} else {
+				res.json({});							//Accoutn exists but incorrect pswd
+				//console.log("Incorrect password");
 			}
 		}
 	});
@@ -38,7 +41,7 @@ app.post('/login', (req, res) => {
 	})*/ 
 	console.log(name + " " + password);
 
-	res.json({"username":"hardCodedTest"});
+	//res.json({"username":"hardCodedTest"});
 });
 
 app.use('/deleteacc', (req, res) => {
