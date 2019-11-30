@@ -111,11 +111,7 @@ public class AllMsgActivity extends AppCompatActivity {
                 ViewGroup parent = (ViewGroup) AllMsgActivity.this.findViewById(R.id.conversation_container);
                 parent.removeAllViews();
 
-                System.out.println("reaches reponse");
-
                 for (ConversationResult cr : convos) {
-                    System.out.println("reaches 2");
-
                     View view = LayoutInflater.from(AllMsgActivity.this).inflate(R.layout.convo, parent, false);
                     parent.addView(view);
 
@@ -165,13 +161,14 @@ public class AllMsgActivity extends AppCompatActivity {
 
     public void onNewMessageClick(View view) {
         EditText et = findViewById(R.id.newConversation);
-        String inputFriend = et.getText().toString();
+        String inputFriend = et.getText().toString().trim();
         if (inputFriend.equals("")) {
             Toast.makeText(this, "Enter a friend's username!", Toast.LENGTH_SHORT).show();
-        } else {
-            // search for friend
-            inputFriend.trim();
+            return;
         }
+
+        // search for a friend
+        
     }
 
     @Override

@@ -74,6 +74,11 @@ public interface IMyService {
     Call<String> saveMessage(@Field("sender") String sender, @Field("convo_id") String convo_id,
                              @Field("contents") String contents, @Field("created_at") Long created_at);
 
+    @POST("startConvo")
+    @FormUrlEncoded
+    Call<String []> newConvo(@Field("reqUsername") String reqUN,
+                    @Field("currUser") String username);
+
     @POST("post_food")
     @FormUrlEncoded
     Call<FoodContents> uploadFood(@Field("id") String id,

@@ -82,6 +82,7 @@ public class MessageAdapter extends ArrayAdapter<ChatBubble> {
     public int getItemViewType(int position) {
         // return a value between 0 and (getViewTypeCount - 1)
         // think this was the bug for switching the views when they're saving correctly
+
         ChatBubble cb = getItem(position);
         if (cb.getSender().equals(currUser)) {
             return 0;
