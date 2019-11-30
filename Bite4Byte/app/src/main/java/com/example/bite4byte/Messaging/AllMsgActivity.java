@@ -85,10 +85,11 @@ public class AllMsgActivity extends AppCompatActivity {
         iMyService = retrofitClient.create(IMyService.class);
 
         mSocket = MsgApplication.getInstance();
-//        uc = (UserContents) getIntent().getSerializableExtra("user");
+        uc = (UserContents) getIntent().getSerializableExtra("user");
 
-        uc = new UserContents();
-        uc.setName("jon");
+//        Do NOT uncomment. only for hard coded
+//        uc = new UserContents();
+//        uc.setName("jon");
 
 //        Gson g = new Gson();
 //        JSONObject jo = g.fromJson(g.toJson(uc), JSONObject.class);

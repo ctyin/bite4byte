@@ -82,9 +82,8 @@ public class DirectMessagingActivity extends AppCompatActivity {
                         } else {
                             //add message to list
                             Long created_at = System.currentTimeMillis();
-//                            System.out.println(uc.getUsername());
-                            ChatBubble ChatBubble = new ChatBubble(editText.getText().toString(), uc.getUsername(), convo_id, created_at);
-                            ChatBubbles.add(ChatBubble);
+                            ChatBubble c = new ChatBubble(editText.getText().toString(), uc.getUsername(), convo_id, created_at);
+                            ChatBubbles.add(c);
                             adapter.notifyDataSetChanged();
 
                             sendChatToServer(editText.getText().toString(), uc.getUsername(),

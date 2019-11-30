@@ -40,6 +40,9 @@ public class MessageAdapter extends ArrayAdapter<ChatBubble> {
         if (ChatBubble.getSender().equals(currUser)) {
             layoutResource = R.layout.sent_message;
         } else {
+            System.out.println("CurrUser: " + currUser);
+            System.out.println("Bubble: " + ChatBubble.getSender());
+            System.out.println("Msg: " + ChatBubble.getContent() + "\n");
             layoutResource = R.layout.shape_bg_incoming_bubble;
         }
 
@@ -48,6 +51,7 @@ public class MessageAdapter extends ArrayAdapter<ChatBubble> {
         } else {
             convertView = inflater.inflate(layoutResource, parent, false);
 
+            // set the time stamp
             Date date = new Date(ChatBubble.getCreated_at());
             DateFormat formatter = new SimpleDateFormat("HH:mm");
             formatter.setTimeZone(TimeZone.getTimeZone("EST"));
