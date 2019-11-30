@@ -35,14 +35,11 @@ public class MessageAdapter extends ArrayAdapter<ChatBubble> {
 
         int layoutResource = 0; // determined by view type
         ChatBubble ChatBubble = getItem(position);
-        int viewType = getItemViewType(position);
+//        int viewType = getItemViewType(position);
 
         if (ChatBubble.getSender().equals(currUser)) {
             layoutResource = R.layout.sent_message;
         } else {
-            System.out.println("CurrUser: " + currUser);
-            System.out.println("Bubble: " + ChatBubble.getSender());
-            System.out.println("Msg: " + ChatBubble.getContent() + "\n");
             layoutResource = R.layout.shape_bg_incoming_bubble;
         }
 
@@ -84,7 +81,12 @@ public class MessageAdapter extends ArrayAdapter<ChatBubble> {
     @Override
     public int getItemViewType(int position) {
         // return a value between 0 and (getViewTypeCount - 1)
-        return position % 2;
+        ChatBubble cb = getItem(position);
+        if (cb.getSender().equals(currUser)) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     private class ViewHolder {
