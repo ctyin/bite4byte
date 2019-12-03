@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ public class AllMsgActivity extends AppCompatActivity {
     IMyService iMyService;
     private UserContents uc;
     String receiver = "";
+    String inputFriend = "";
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
@@ -84,7 +86,7 @@ public class AllMsgActivity extends AppCompatActivity {
         Retrofit retrofitClient = RetrofitClient.getInstance();
         iMyService = retrofitClient.create(IMyService.class);
 
-        mSocket = MsgApplication.getInstance();
+//        mSocket = MsgApplication.getInstance();
         uc = (UserContents) getIntent().getSerializableExtra("user");
 
 //        Do NOT uncomment. only for hard coded
@@ -97,8 +99,8 @@ public class AllMsgActivity extends AppCompatActivity {
 
         updateFeed();
 
-        mSocket.on("new message", onNewMessage);
-        mSocket.connect();
+//        mSocket.on("new message", onNewMessage);
+//        mSocket.connect();
     }
 
     public void updateFeed() {
@@ -161,14 +163,58 @@ public class AllMsgActivity extends AppCompatActivity {
 
     public void onNewMessageClick(View view) {
         EditText et = findViewById(R.id.newConversation);
-        String inputFriend = et.getText().toString().trim();
+        inputFriend = et.getText().toString().trim();
         if (inputFriend.equals("")) {
             Toast.makeText(this, "Enter a friend's username!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // search for a friend
-        
+        // search for a friend within the view
+        ViewGroup vg = (ViewGroup) this.findViewById(R.id.conversation_container);
+        boolean foundFlag = false;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+            View nextChild = vg.getChildAt(i);
+            TextView tv = nextChild.findViewById(R.id.convoName);
+            if (tv.getText().toString().trim().toLowerCase().contains(inputFriend.toLowerCase().trim())) {
+                // found a match so we don't need to create a new convo
+                nextChild.setVisibility(View.VISIBLE);
+                foundFlag = true;
+            } else {
+                System.out.println(tv.getText().toString().trim().toLowerCase());
+                System.out.println(inputFriend.toLowerCase().trim());
+                nextChild.setVisibility(View.GONE);
+            }
+        }
+
+        // don't need to start a new convo
+        if (foundFlag) return;
+
+        // start a new convo
+        Call<String []> call = iMyService.newConvo(inputFriend, uc.getUsername());
+        call.enqueue(new Callback<String[]>() {
+            @Override
+            public void onResponse(Call<String[]> call, Response<String[]> response) {
+                String[] s = response.body();
+
+                // no conversation matches
+                if (s.length == 0) return;
+
+                // new conversation started
+                String convo_id = s[0];
+                Intent intent = new Intent(AllMsgActivity.this, DirectMessagingActivity.class);
+                intent.putExtra("user", uc);
+                intent.putExtra("convo_id", (String) convo_id);
+                intent.putExtra("receiver", inputFriend);
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<String[]> call, Throwable t) {
+                Toast.makeText(AllMsgActivity.this, "Failed to create new convo", Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
     }
 
     @Override

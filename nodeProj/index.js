@@ -29,16 +29,16 @@ var server = app.listen(3000,  () => {
     });
 var io = require('socket.io').listen(server);
 
-io.on('connection', (socket)=> {
-	console.log('a user connected');
-	socket.on('join', (data) => {
-		console.log(data);
+// io.on('connection', (socket)=> {
+// 	console.log('a user connected');
+// 	socket.on('join', (data) => {
+// 		console.log(data);
 
-		dataJson = JSON.parse(data);
+// 		dataJson = JSON.parse(data);
 
-		console.log('username: ' + dataJson.username);
-	});
-});
+// 		console.log('username: ' + dataJson.username);
+// 	});
+// });
 
 app.post('/login', (req, res) => {
 	var name = req.body.username;
@@ -414,43 +414,44 @@ app.use('/saveMessage', (req, res) => {
 	})
 });
 
-app.use('startConvo', (req, res) => {
+app.use('/startConvo', (req, res) => {
 	var gen_id = uuidv4();
+	var receiver = req.body.receiver;
+	var sender = req.body.currUser;
+	var returnArray = []
 
-	var newConvo = new Message({
-		convo_id: gen_id,
-		participants: [req.body.person1, req.body.person2]
-	});
-
-	gen_id.save((err) => {
-		if (err) {
-			console.log(err);
-			res.json({});
+	Account.findOne({username:receiver}, (err, account) => {
+		if (err || account == null) {
+			console.log("Starting a convo: username that doesn't exist");
+			res.send([]);
+			return;
 		} else {
-			console.log("Created new conversation!");
-			res.json({convo_id: gen_id});
-		}
-	});
-});
+			// receiver name is valid
 
-app.use('/verifyValidUsername', (req, res) => {
-	var sender = req.body.sender;
-	var recipient = req.body.recipient;
+			// make sure we're not creating a duplicate 
+			Convo.findOne({$and: [{"participants": sender}, {"participants": receiver}]}, (err, convo) => {
+				if (err || convo != null) {
+					console.log(convo.convo_id);
+					console.log("Starting a convo: conversation already exists")
+					res.send([]);
+				} else {
+					var newConvo = new Convo({
+						convo_id: gen_id,
+						participants: [receiver, sender]
+					});
 
-	Account.findOne({username: username}, function (err, account) {
-		if (err) {
-			console.log("Create account, unique username validation error");
-			res.json({});
-		}
-		if (account != null) {
-			// username is valid, check the DB for the conversation
-			
-			Convo.find({$and: [{"participants": sender}, {"participants": recipient}]});
-
-			res.json();
-		} else {
-			// username is invalid
-			res.json({});
+					newConvo.save((err) => {
+						if (err) {
+							console.log(err);
+							res.send([]);
+						} else {
+							console.log("Created new conversation!");
+							returnArray.push(gen_id);
+							res.send(returnArray);
+						}
+					});
+				}
+			});
 		}
 	});
 });

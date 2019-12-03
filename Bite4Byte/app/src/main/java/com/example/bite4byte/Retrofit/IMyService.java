@@ -76,7 +76,7 @@ public interface IMyService {
 
     @POST("startConvo")
     @FormUrlEncoded
-    Call<String []> newConvo(@Field("reqUsername") String reqUN,
+    Call<String []> newConvo(@Field("receiver") String receiver,
                     @Field("currUser") String username);
 
     @POST("post_food")
