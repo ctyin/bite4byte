@@ -206,7 +206,18 @@
                 android:text="Submit Rating"
                 android:onClick="onRateUserButtonClick"/>
 
+            <Button
+                android:id="@+id/report_user_button"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:text="Report"
+                android:onClick="onReportUserButtonClick"/>
+
         </LinearLayout>
+
+
 
 
 

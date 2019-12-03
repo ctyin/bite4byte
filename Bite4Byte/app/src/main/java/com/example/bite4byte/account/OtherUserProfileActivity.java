@@ -1,6 +1,9 @@
 package com.example.bite4byte.account;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -165,6 +168,40 @@ public class OtherUserProfileActivity extends AppCompatActivity {
                 Toast.makeText(OtherUserProfileActivity.this, "Unable to update rating", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void onReportUserButtonClick(View view) {
+        showAddItemDialog(this);
+    }
+
+    private void showAddItemDialog(Context c) {
+        final EditText taskEditText = new EditText(c);
+        AlertDialog dialog = new AlertDialog.Builder(c)
+                .setTitle("File a Report")
+                .setMessage("Why are you filing a report?")
+                .setView(taskEditText)
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String task = String.valueOf(taskEditText.getText());
+                        Call<String> call = iMyService.fileReport(user.getUsername(), otherUsername, task);
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                Toast.makeText(OtherUserProfileActivity.this, response.body(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                t.printStackTrace();
+                                Toast.makeText(OtherUserProfileActivity.this, "Unable to file report", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
     }
 
     public void onPostButtonClick(View view) {

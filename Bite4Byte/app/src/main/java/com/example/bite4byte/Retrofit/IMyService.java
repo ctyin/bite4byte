@@ -109,4 +109,10 @@ public interface IMyService {
     Call<UserContents> orderFood(@Field("id") String id,
                                  @Field("foodName") String foodName,
                                  @Field("username") String username);
+
+    @POST("fileReport")
+    @FormUrlEncoded
+    Call<String> fileReport(@Field("filingUser") String filingUser,
+                            @Field("reportedUser") String reportedUser,
+                            @Field("reason") String reason);
 }

@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var Account = require('./Account.js');
 var Convo = require('./Convo.js');
 var Message = require('./Message');
-
+var Report = require('./Report');
 var Food = require('./Food.js');
 
 /***************************************/
@@ -491,6 +491,26 @@ app.use('/verifyValidUsername', (req, res) => {
 		} else {
 			// username is invalid
 			res.json({});
+		}
+	});
+});
+
+app.use('/fileReport', (req, res) => {
+
+	var newReport = new Report ({
+			filingUser: req.body.filingUser,
+			reportedUser: req.body.reportedUser,
+			reason: req.body.reason
+    });
+
+	newReport.save(function (err) {
+		if (err) {
+			console.log("Error saving new report to database");
+			console.log(err);
+			res.json({});
+		} else {
+			console.log("Report filed correctly");
+			res.json("Your report against " + newReport.reportedUser + " has been filed and will be reviewed.");
 		}
 	});
 });
