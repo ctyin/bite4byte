@@ -88,11 +88,7 @@ public class AllMsgActivity extends AppCompatActivity {
 
 //        mSocket = MsgApplication.getInstance();
         uc = (UserContents) getIntent().getSerializableExtra("user");
-
-//        Do NOT uncomment. only for hard coded
-//        uc = new UserContents();
-//        uc.setName("jon");
-
+        
 //        Gson g = new Gson();
 //        JSONObject jo = g.fromJson(g.toJson(uc), JSONObject.class);
 //        mSocket.emit("join", jo);

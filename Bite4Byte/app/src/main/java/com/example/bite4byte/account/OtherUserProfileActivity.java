@@ -1,10 +1,16 @@
 package com.example.bite4byte.account;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +49,8 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
 
+    int newRating = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +66,24 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         //Map<Integer, JSONObject> foodMap = manageData.getFoodItems();
 
         setContentView(R.layout.activity_other_user_profile);
+
+        Integer[] ratings = new Integer[]{1, 2, 3, 4, 5};
+        Spinner quantitySpinner = findViewById(R.id.rating_spinner);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
+                R.layout.support_simple_spinner_dropdown_item, ratings);
+        quantitySpinner.setAdapter(adapter);
+
+        quantitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                newRating = (int) adapterView.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                newRating = adapterView.getSelectedItemPosition() + 1;
+            }
+        });
 
         Call<UserContents> call = iMyService.getAccount(otherUsername);
 
@@ -96,13 +122,13 @@ public class OtherUserProfileActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.restrictionsText)).setText(restricts);
                 ((TextView) findViewById(R.id.allergiesText)).setText(allers);
                 ((TextView) findViewById(R.id.pastOrders)).setText(orderStr);
-
-
+                ((TextView) findViewById(R.id.userRating)).setText(String.format("%.2f", user.getRating()));
 
             }
 
             @Override
             public void onFailure(Call<UserContents> call, Throwable t) {
+                System.out.println(t);
                 Toast.makeText(OtherUserProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
@@ -121,6 +147,61 @@ public class OtherUserProfileActivity extends AppCompatActivity {
 
     public void onFriendRequestButtonClick(View view) {
 
+    }
+
+    public void onRateUserButtonClick(View view) {
+        Call<UserContents> call = iMyService.updateUserRating(otherUsername, newRating);
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                //((TextView) findViewById(R.id.userRating)).setText("" + res.getRating());
+                //UserContents updatedOtherUser = response.body();
+                Intent intent = new Intent(OtherUserProfileActivity.this, OtherUserProfileActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("otherUser", otherUsername);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                System.out.println("Unable to update rating");
+                Toast.makeText(OtherUserProfileActivity.this, "Unable to update rating", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void onReportUserButtonClick(View view) {
+        showAddItemDialog(this);
+    }
+
+    private void showAddItemDialog(Context c) {
+        final EditText taskEditText = new EditText(c);
+        AlertDialog dialog = new AlertDialog.Builder(c)
+                .setTitle("File a Report")
+                .setMessage("Why are you filing a report?")
+                .setView(taskEditText)
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String task = String.valueOf(taskEditText.getText());
+                        Call<String> call = iMyService.fileReport(user.getUsername(), otherUsername, task);
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                Toast.makeText(OtherUserProfileActivity.this, response.body(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                t.printStackTrace();
+                                Toast.makeText(OtherUserProfileActivity.this, "Unable to file report", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
     }
 
     public void onPostButtonClick(View view) {

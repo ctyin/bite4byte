@@ -7,6 +7,8 @@ public class UserContents implements Serializable {
     protected String password;
     protected String firstname;
     protected String lastname;
+    protected double rating;
+    protected int numRatedBy;
     protected String[] restrictions;
     protected String[] allergies;
     protected String[] friends;
@@ -27,6 +29,10 @@ public class UserContents implements Serializable {
     public String[] getAllergies() { return allergies; }
 
     public String[] getOrders() { return orders; }
+
+    public double getRating() { return rating; }
+
+    public double getNumRatedBy() { return numRatedBy; }
 
     public String[] getFriendsList() { return friends; }
 

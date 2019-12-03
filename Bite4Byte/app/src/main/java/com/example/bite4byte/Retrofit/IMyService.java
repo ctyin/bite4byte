@@ -32,7 +32,9 @@ public interface IMyService {
                                 @Field("password") String password,
                                 @Field("restrictions") String[] restrictions,
                                 @Field("allergies") String[] allergies,
-                                @Field("orders") String[] orders);
+                                @Field("orders") String[] orders,
+                                @Field("rating") double rating,
+                                @Field("numRatedBy") int numRatedBy);
 
     // Body HTTP example requires single json object
 //    @POST("example")
@@ -60,6 +62,11 @@ public interface IMyService {
     @POST("get_account")
     @FormUrlEncoded
     Call<UserContents> getAccount(@Field("username") String username);
+
+    @POST("update_user_rating")
+    @FormUrlEncoded
+    Call<UserContents> updateUserRating(@Field("username") String username,
+                                  @Field("rating") Integer rating);
 
     @POST("convos")
     @FormUrlEncoded
@@ -107,4 +114,10 @@ public interface IMyService {
     Call<UserContents> orderFood(@Field("id") String id,
                                  @Field("foodName") String foodName,
                                  @Field("username") String username);
+
+    @POST("fileReport")
+    @FormUrlEncoded
+    Call<String> fileReport(@Field("filingUser") String filingUser,
+                            @Field("reportedUser") String reportedUser,
+                            @Field("reason") String reason);
 }
