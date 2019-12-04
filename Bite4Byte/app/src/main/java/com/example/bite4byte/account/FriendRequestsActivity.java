@@ -143,7 +143,7 @@ public class FriendRequestsActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<UserContents> call, Response<UserContents> response) {
                             Intent intent = new Intent(FriendRequestsActivity.this, FriendRequestsActivity.class);
-                            intent.putExtra("user", user);
+                            intent.putExtra("user", response.body());
                             startActivity(intent);
                         }
 

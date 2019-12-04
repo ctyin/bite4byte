@@ -137,5 +137,5 @@ public interface IMyService {
     @FormUrlEncoded
     Call<UserContents> declineFriend(@Field("decliner") String decliner,
                                      @Field("sender") String sender);
-    
+
 }
