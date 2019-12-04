@@ -27,7 +27,7 @@ var Food = require('./Food.js');
 var server = app.listen(3000,  () => {
 	console.log('Listening on port 3000');
     });
-var io = require('socket.io').listen(server);
+// var io = require('socket.io').listen(server);
 
 // io.on('connection', (socket)=> {
 // 	console.log('a user connected');
@@ -564,11 +564,48 @@ app.use('/api', (req, res) => {
 
 app.use('/public', express.static('public'));
 
+app.get('/login', (req, res) => {
+	res.render('./pages/login', {title: "Login - Bite 4 Byte", invalid: 0});
+});
+
+app.post('/loginAdmin', (req, res) => {
+	var name = req.body.username;
+	var password = req.body.password;
+	Account.findOne({username: name}, function (err, account) {
+		if (err || account == null) {		//Account doesn't exist
+			res.render('./pages/login', {title:"Login - Bite 4 Byte", invalid: 1});
+			console.log("Invalid Username");
+		} else {
+			if (password == account.password) { //Account exists and pswd matches
+				res.render("./pages/index");
+				console.log("Welcome Back!");
+			} else {
+				res.render('./pages/login', {title:"Login - Bite 4 Byte", invalid: 1});			//Account exists but incorrect pswd
+				console.log("Incorrect password");
+			}
+		}
+	});
+	/* Code block print all documents to the console
+	Account.find(function (err, accounts) {
+	  	if (err) return console.error(err);
+	  	console.log(accounts);
+	})*/ 
+	console.log(name + " " + password);
+
+	//res.json({"username":"hardCodedTest"});
+});
+
 app.use('/account', (req, res) => {
 	Account.find({}, (err, accounts) => {
-		res.render('./pages/account', {accounts: accounts});
+		res.render('./pages/account', {accounts: accounts, title: "Account Data"});
 	});
 });
 
-app.use('/', (req, res) => {
-	res.render('./pages/index'); } );
+app.use('/food', (req, res) => {
+	Food.find({}, (err, foods) => {
+		res.render('./pages/food', {foods: foods, title: "Food Data"});
+	});
+});
+
+app.use('/home', (req, res) => {
+	res.render('./pages/index', {title: "Bite 4 Byte"}); } );
