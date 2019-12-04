@@ -32,6 +32,8 @@
         <activity android:name=".Feed.UploadItemActivity" android:exported="true"/>
         <activity android:name=".account.UserSearchActivity" android:exported="true"/>
         <activity android:name=".account.OtherUserProfileActivity" android:exported="true"/>
+        <activity android:name=".account.FriendRequestsActivity" android:exported="true" />
+        <activity android:name=".account.FriendsListActivity" android:exported="true" />
         <activity android:name=".Messaging.AllMsgActivity" android:exported="true"/>
         <activity android:name=".Messaging.DirectMessagingActivity" android:exported="true"/>
 

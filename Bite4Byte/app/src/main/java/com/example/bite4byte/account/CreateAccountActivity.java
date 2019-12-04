@@ -106,10 +106,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         System.out.println("Reached");
 
-        //System.out.println("Executed: " + call.isExecuted());
-
-
-
     }
 
 }

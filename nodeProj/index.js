@@ -50,7 +50,7 @@ app.post('/login', (req, res) => {
 		} else {
 			console.log(account);
 			if (password == account.password) { //Account exists and pswd matches
-				res.json({"username":account.username, "password":account.password, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy});
+				res.json({"username":account.username, "password":account.password, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
 				console.log("Welcome Back!");
 			} else {
 				res.json({});							//Accoutn exists but incorrect pswd
@@ -120,7 +120,9 @@ app.post('/food_preferences', (req, res) => {
 			allergies: req.body.allergies,
 			orders: req.body.orders,
 			rating: req.body.rating,
-			numRatedBy: req.body.numRatedBy
+			numRatedBy: req.body.numRatedBy,
+			friends: req.body.friends,
+			friend_requests: req.body.friendRequests
 	    });
 
 	newAccount.save(function (err) {
@@ -130,7 +132,7 @@ app.post('/food_preferences', (req, res) => {
 			res.json({});
 		} else {
 			console.log("Account saved correctly");
-			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies, "orders":newAccount.orders, "rating":newAccount.rating, "numRatedBy":newAccount.numRatedBy});
+			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies, "orders":newAccount.orders, "rating":newAccount.rating, "numRatedBy":newAccount.numRatedBy, "friends":newAccount.friends, "friend_requests":newAccount.friend_requests});
 		}
 	});
 	/*Account.findOne({username: name}, function (err, account) {
@@ -176,7 +178,7 @@ app.use('/edit_account', (req, res) => {
 			account.allergies = req.body.allergies;
 			account.save();
 			console.log(account.restrictions);
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
 		}
 	});
 	
@@ -232,7 +234,7 @@ app.use('/update_user_rating', (req, res) => {
 			account.numRatedBy = updatedCount;
 			account.rating = updatedRating;
 			account.save();
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
 			console.log("Updated numRatedBy: " + account.numRatedBy + " Updated rating: " + account.rating);
 		}
 	});
@@ -245,7 +247,7 @@ app.use('/get_account', (req, res) => {
 			console.log("Account not found");
 		} else {
 			console.log(account.username);
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
 		}
 	});
 });
@@ -361,7 +363,65 @@ app.use('/order_food', (req, res) => {
 			console.log("Order Account found");
 			account.orders.push(req.body.foodName);
 			account.save();
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy})
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+		}
+	});
+});
+
+app.use('/friend_request', (req, res) => {
+	Account.findOne({username:req.body.recipient}, function (err, account) {
+		if (err) {
+			console.log(err);
+			console.log("Friend Request Failed");
+			res.json({});
+		} else {
+			if (account.friend_requests.includes(req.body.sender)) {
+				console.log("Friend request already made");
+			} else {
+				console.log("Friend request made");
+				account.friend_requests.push(req.body.sender);
+				account.save();
+			}
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+		}
+	});
+});
+
+app.use('/accept_friend_request', (req, res) => {
+	Account.findOne({username:req.body.sender}, function (err, account) {
+		if (err) {
+			console.log(err);
+			console.log("Acceptor could not accept");
+			res.json({});
+		} else {
+			account.friends.push(req.body.acceptor);
+			account.save();
+		}
+	});
+	Account.findOne({username:req.body.acceptor}, function (err, account) { 
+		if (err) {
+			console.log(err);
+			console.log("Sender could not accept");
+			res.json({});
+		} else {
+			account.friends.push(req.body.sender);
+			account.friend_requests.pull(req.body.sender);
+			account.save();
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+		}
+	});
+});
+
+app.use('/decline_friend_request', (req, res) => {
+	Account.findOne({username:req.body.decliner}, function (err, account) {
+		if (err) {
+			console.log(err);
+			console.log("Could not decline");
+			res.json({});
+		} else {
+			account.friend_requests.pull(req.body.sender);
+			account.save();
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
 		}
 	});
 });
@@ -554,8 +614,8 @@ app.use('/api', (req, res) => {
 		    res.json(returnArray);
 		}
 		
-	    });
-    });
+	});
+});
 
 
 

@@ -142,4 +142,10 @@ public class UserProfileActivity extends AppCompatActivity {
         }
     }
 
+    public void onFriendClick(View view) {
+        Intent i = new Intent(this, FriendsListActivity.class);
+        i.putExtra("user", user);
+        startActivity(i);
+    }
+
 }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/friends_list_button"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:text="Friends"
+                android:onClick="onFriendsButtonClick"/>
+
+            <Button
+                android:id="@+id/friend_request_list_button"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:text="Friend Requests" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
+
+        <LinearLayout
+            android:id="@+id/friend_request_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/feed"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="Feed"
+            android:onClick="onFeedButtonClick"/>
+
+        <Button
+            android:id="@+id/uploadBtnFeed"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="UPLOAD"
+            android:onClick="onUploadClick"/>
+
+        <Button
+            android:id="@+id/messaging"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="DM's"
+            android:onClick="onDMClick"/>
+
+        <Button
+            android:id="@+id/profile"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="Profile"
+            android:onClick="onProfileClick"/>
+
+    </LinearLayout>
+</LinearLayout>

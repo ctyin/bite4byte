@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
@@ -184,6 +185,14 @@
                 android:text="Delete Account" />
 
         </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friends"
+            android:gravity="center_horizontal"
+            android:id="@+id/profile_friends_button"
+            android:onClick="onFriendClick" />
 
     </LinearLayout>
 

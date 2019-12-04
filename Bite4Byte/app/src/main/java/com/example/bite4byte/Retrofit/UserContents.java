@@ -13,6 +13,7 @@ public class UserContents implements Serializable {
     protected String[] allergies;
     protected String[] friends;
     protected String[] orders;
+    protected String[] friend_requests;
 
     public String getUsername() {
         return username;
@@ -35,6 +36,8 @@ public class UserContents implements Serializable {
     public double getNumRatedBy() { return numRatedBy; }
 
     public String[] getFriendsList() { return friends; }
+
+    public String[] getFriendRequests() { return friend_requests; }
 
     public void setName(String name) {
         username = name;

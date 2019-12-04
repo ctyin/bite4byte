@@ -34,7 +34,9 @@ public interface IMyService {
                                 @Field("allergies") String[] allergies,
                                 @Field("orders") String[] orders,
                                 @Field("rating") double rating,
-                                @Field("numRatedBy") int numRatedBy);
+                                @Field("numRatedBy") int numRatedBy,
+                                @Field("friends") String[] friends,
+                                @Field("friendRequests") String[] friendRequests);
 
     // Body HTTP example requires single json object
 //    @POST("example")
@@ -120,4 +122,20 @@ public interface IMyService {
     Call<String> fileReport(@Field("filingUser") String filingUser,
                             @Field("reportedUser") String reportedUser,
                             @Field("reason") String reason);
+
+    @POST("friend_request")
+    @FormUrlEncoded
+    Call<UserContents> requestFriend(@Field("recipient") String recipient,
+                                     @Field("sender") String sender);
+
+    @POST("accept_friend_request")
+    @FormUrlEncoded
+    Call<UserContents> acceptFriend(@Field("acceptor") String acceptor,
+                                    @Field("sender") String sender);
+
+    @POST("decline_friend_request")
+    @FormUrlEncoded
+    Call<UserContents> declineFriend(@Field("decliner") String decliner,
+                                     @Field("sender") String sender);
+    
 }

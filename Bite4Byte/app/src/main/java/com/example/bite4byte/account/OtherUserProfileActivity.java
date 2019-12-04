@@ -32,6 +32,7 @@ import org.json.simple.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -60,6 +61,12 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         otherUsername = (String) getIntent().getStringExtra("otherUser");
         //userAccount = manageData.getAccount(otherUsername);
 
+        /*
+        if (Arrays.asList(user.getFriendsList()).contains(otherUsername)) {
+            findViewById(R.id.friend_request_button).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.friend_request_button).setVisibility(View.VISIBLE);
+        }*/
 
         Retrofit retrofitClient = new RetrofitClient().getInstance();
         iMyService = retrofitClient.create(IMyService.class);
@@ -146,7 +153,25 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     }
 
     public void onFriendRequestButtonClick(View view) {
+        Call<UserContents> call = iMyService.requestFriend(otherUsername, user.getUsername());
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                View friendReqButton = findViewById(R.id.friend_request_button);
+                System.out.println("friend request sent");
 
+                Intent intent = new Intent(OtherUserProfileActivity.this, OtherUserProfileActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("otherUser", otherUsername);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                System.out.println("Unable to send friend request");
+                Toast.makeText(OtherUserProfileActivity.this, "Unable to update rating", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void onRateUserButtonClick(View view) {
