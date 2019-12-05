@@ -8,14 +8,10 @@
 <body class="container">
 
 <header>
-    <% include ../partials/header %>
+    <% include ../partials/modifiedHeader %>
 </header>
 
 <main>
-<!-- 	<% if (invalid == 1) { %>
-		<%= Invalid password or username %>
-	<% } %> -->
-
     <div class="jumbotron">
         <div class="container">
 	<div class="d-flex justify-content-center h-100">
@@ -39,6 +35,9 @@
 						</div>
 						<input name="password" type="password" class="form-control" placeholder="password">
 					</div>
+					<% if (invalid == 1) { %>
+						<div class="alert alert-danger" role="alert">Invalid password or username</div>
+					<% } %>
 					<div class="form-group">
 						<input type="submit" value="Login" class="btn float-right login_btn">
 					</div>
@@ -46,10 +45,7 @@
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					Don't have an account?<a href="#">Sign Up</a>
-				</div>
-				<div class="d-flex justify-content-center">
-					<a href="#">Forgot your password?</a>
+					Don't have an account?<a href="/createAccount">Sign Up</a>
 				</div>
 			</div>
 		</div>

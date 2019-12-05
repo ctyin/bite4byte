@@ -1,11 +1,29 @@
 // set up Express
 const uuidv4 = require('uuid/v4');
 var express = require('express');
+var session = require('express-session');
 var app = express();
 var fs = require('fs');
 var mongoose = require("mongoose");
 var Grid = require('gridfs-stream');
 mongoose.connect('mongodb://127.0.0.1:27017/myDatabase');
+
+// Redis for session store
+// const redis = require('redis');
+// const redisStore = require('connect-redis')(session);
+// const client  = redis.createClient();
+// const router = express.Router();
+
+// Start using the express-session code
+app.use(session({
+    secret: 'TY@[$xs2+2~59pkVVAaS!jRf',
+    // create new redis store.
+    // store: new redisStore({ host: 'localhost', port: 6379, client: client,ttl : 260}),
+    saveUninitialized: true,
+    resave: true
+}));
+
+var sess = null;
 
 // set up EJS
 app.set('view engine', 'ejs');
@@ -20,6 +38,7 @@ var Convo = require('./Convo.js');
 var Message = require('./Message');
 var Report = require('./Report');
 var Food = require('./Food.js');
+var Admin = require('./Admin.js');
 
 /***************************************/
 
@@ -27,18 +46,6 @@ var Food = require('./Food.js');
 var server = app.listen(3000,  () => {
 	console.log('Listening on port 3000');
     });
-// var io = require('socket.io').listen(server);
-
-// io.on('connection', (socket)=> {
-// 	console.log('a user connected');
-// 	socket.on('join', (data) => {
-// 		console.log(data);
-
-// 		dataJson = JSON.parse(data);
-
-// 		console.log('username: ' + dataJson.username);
-// 	});
-// });
 
 app.post('/login', (req, res) => {
 	var name = req.body.username;
@@ -564,20 +571,27 @@ app.use('/api', (req, res) => {
 
 app.use('/public', express.static('public'));
 
-app.get('/login', (req, res) => {
+app.get(['/', '/login'], (req, res) => {
+	sess = req.session;
+	if (sess.username) {
+		return res.redirect('/home');
+	}
+
 	res.render('./pages/login', {title: "Login - Bite 4 Byte", invalid: 0});
 });
 
 app.post('/loginAdmin', (req, res) => {
+	sess = req.session;
 	var name = req.body.username;
 	var password = req.body.password;
-	Account.findOne({username: name}, function (err, account) {
+	Admin.findOne({username: name}, (err, account) => {
 		if (err || account == null) {		//Account doesn't exist
 			res.render('./pages/login', {title:"Login - Bite 4 Byte", invalid: 1});
 			console.log("Invalid Username");
 		} else {
 			if (password == account.password) { //Account exists and pswd matches
-				res.render("./pages/index");
+				sess.username = name;
+				res.render("./pages/index", {title:"Bite 4 Byte"});
 				console.log("Welcome Back!");
 			} else {
 				res.render('./pages/login', {title:"Login - Bite 4 Byte", invalid: 1});			//Account exists but incorrect pswd
@@ -585,27 +599,123 @@ app.post('/loginAdmin', (req, res) => {
 			}
 		}
 	});
-	/* Code block print all documents to the console
-	Account.find(function (err, accounts) {
-	  	if (err) return console.error(err);
-	  	console.log(accounts);
-	})*/ 
-	console.log(name + " " + password);
-
-	//res.json({"username":"hardCodedTest"});
 });
 
+app.get('/createAccount', (req, res) => {
+	res.render('./pages/createAccount', {title: "Create account", invalid:0});
+});
+
+app.post('/createAccount', (req, res) => {
+	var name = req.body.username;
+	sess = req.session;
+
+	if (req.body.password !== req.body.password2) {
+		// passwords don't match
+		res.render('./pages/createAccount', {title: "Create account", invalid:1});
+	} else {
+		Admin.findOne({username: name}, (err, account) => {
+			if (err || account !== null) {
+				// admin username already exists
+				res.render('./pages/createAccount', {title: "Create account", invalid:2});
+			} else {
+				// create the session
+				sess.username = name;
+
+				// want to save the new admin then redirect
+				var newAdmin = new Admin ({
+						username: req.body.username,
+						firstname: req.body.firstname,
+						lastname: req.body.lastname,
+						password: req.body.password
+			    });
+
+			    newAdmin.save((err) => {
+			    	if (err) {
+			    		console.log("Error saving new admin to database");
+			    		console.log(err);
+			    		res.render('./pages/createAccount', {title: "Create account", invalid:3});
+			    	} else {
+			    		console.log("New admin saved correctly");
+			    		res.redirect('/home');
+			    	}	
+			    })
+			}
+		});
+	}
+
+})
+
 app.use('/account', (req, res) => {
-	Account.find({}, (err, accounts) => {
-		res.render('./pages/account', {accounts: accounts, title: "Account Data"});
-	});
+	sess = req.session;
+	if (sess.username) {
+		Account.find({}, (err, accounts) => {
+			res.render('./pages/account', {accounts: accounts, title: "Account Data"});
+		});
+	} else {
+		res.write('<h1>Please login first.</h1>');
+        res.end('<a href='+'/'+'>Login</a>');
+	}
+});
+
+app.get('/deleteAccount/:id', (req, res) => {
+	sess = req.session;
+	if (sess.username) {
+		Account.deleteOne({_id:req.params.id}, (err, result) => {
+			if (err) {
+				console.log(err);
+			} else {
+				res.redirect('/account');
+			}
+		});	
+	} else {
+		res.write('<h1>Please login first.</h1>');
+        res.end('<a href='+'/'+'>Login</a>');
+	}
 });
 
 app.use('/food', (req, res) => {
-	Food.find({}, (err, foods) => {
-		res.render('./pages/food', {foods: foods, title: "Food Data"});
-	});
+	sess = req.session;
+	if (sess.username) {
+		Food.find({}, (err, foods) => {
+			res.render('./pages/food', {foods: foods, title: "Food Data"});
+		});
+	} else {
+		res.write('<h1>Please login first.</h1>');
+        res.end('<a href='+'/'+'>Login</a>');
+	}
+});
+
+app.get('/deleteFood/:id', (req, res) => {
+	sess = req.session;
+	if (sess.username) {
+		Food.deleteOne({_id:req.params.id}, (err, result) => {
+			if (err) {
+				console.log(err);
+			} else {
+				res.redirect('/food');
+			}
+		});
+	} else {
+		res.write('<h1>Please login first.</h1>');
+        res.end('<a href='+'/'+'>Login</a>');
+	}
 });
 
 app.use('/home', (req, res) => {
-	res.render('./pages/index', {title: "Bite 4 Byte"}); } );
+	sess = req.session;
+	if (sess.username) {
+		res.render('./pages/index', {title: "Bite 4 Byte"});
+	} else {
+		res.write('<h1>Please login first.</h1>');
+        res.end('<a href='+'/'+'>Login</a>');
+	}
+});
+
+app.get('/logout', (req,res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return console.log(err);
+        }
+        res.redirect('/');
+    });
+});

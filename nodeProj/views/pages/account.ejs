@@ -34,9 +34,12 @@
     	   							<%= acct.restrictions[i] %>, 
     	   						<% }
     	   					}
-    	   					}
-    	   				}); %>
+    	   					}%>
     	   			</td>
+    	   			<td>
+    	   				<a href="/deleteAccount/<%= acct._id %>" role="button" class="btn btn-outline-danger">Delete account</a>
+    	   			</td>
+    	   			<% }) %>
     	   		</tr>
     	</table>
     </div>

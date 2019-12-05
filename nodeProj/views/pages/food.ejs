@@ -15,7 +15,7 @@
     <div class="jumbotron">
     	<table class="table">
     	   	<tr>
-    	      	<th>Food name</th><th>Seller</th><th>Quantity</th><th>Availability</th><th>Restrictions</th><th>Location</th>
+    	      	<th>Food name</th><th>Seller</th><th>Quantity</th><th>Availability</th><th>Location</th><th>Restriction</th>
     	   	</tr>
 
     	   	<% foods.forEach((food) => { %>
@@ -38,6 +38,9 @@
     	   					}
     	   					} %>
     	   			</td>
+                    <td>
+                        <a href="/deleteFood/<%= food._id %>" role="button" class="btn btn-outline-danger">Delete food</a>
+                    </td>
                 <% }); %>
     	   		</tr>
     	</table>
