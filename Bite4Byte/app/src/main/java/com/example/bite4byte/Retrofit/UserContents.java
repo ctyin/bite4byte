@@ -14,6 +14,7 @@ public class UserContents implements Serializable {
     protected String[] friends;
     protected String[] orders;
     protected String[] friend_requests;
+    protected String [] groupNames;
 
     public String getUsername() {
         return username;
@@ -38,6 +39,8 @@ public class UserContents implements Serializable {
     public String[] getFriendsList() { return friends; }
 
     public String[] getFriendRequests() { return friend_requests; }
+
+    public String[] getGroupNames() { return groupNames; }
 
     public void setName(String name) {
         username = name;

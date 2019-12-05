@@ -122,7 +122,8 @@ app.post('/food_preferences', (req, res) => {
 			rating: req.body.rating,
 			numRatedBy: req.body.numRatedBy,
 			friends: req.body.friends,
-			friend_requests: req.body.friendRequests
+			friend_requests: req.body.friendRequests,
+			groupNames: req.body.groupNames
 	    });
 
 	newAccount.save(function (err) {
@@ -132,7 +133,7 @@ app.post('/food_preferences', (req, res) => {
 			res.json({});
 		} else {
 			console.log("Account saved correctly");
-			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies, "orders":newAccount.orders, "rating":newAccount.rating, "numRatedBy":newAccount.numRatedBy, "friends":newAccount.friends, "friend_requests":newAccount.friend_requests});
+			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies, "orders":newAccount.orders, "rating":newAccount.rating, "numRatedBy":newAccount.numRatedBy, "friends":newAccount.friends, "friend_requests":newAccount.friend_requests}, "groupNames":newAccount.groupNames);
 		}
 	});
 	/*Account.findOne({username: name}, function (err, account) {
@@ -178,7 +179,7 @@ app.use('/edit_account', (req, res) => {
 			account.allergies = req.body.allergies;
 			account.save();
 			console.log(account.restrictions);
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
 		}
 	});
 	
@@ -234,7 +235,7 @@ app.use('/update_user_rating', (req, res) => {
 			account.numRatedBy = updatedCount;
 			account.rating = updatedRating;
 			account.save();
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
 			console.log("Updated numRatedBy: " + account.numRatedBy + " Updated rating: " + account.rating);
 		}
 	});
@@ -247,7 +248,7 @@ app.use('/get_account', (req, res) => {
 			console.log("Account not found");
 		} else {
 			console.log(account.username);
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
 		}
 	});
 });
@@ -363,7 +364,7 @@ app.use('/order_food', (req, res) => {
 			console.log("Order Account found");
 			account.orders.push(req.body.foodName);
 			account.save();
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
 		}
 	});
 });
@@ -382,7 +383,7 @@ app.use('/friend_request', (req, res) => {
 				account.friend_requests.push(req.body.sender);
 				account.save();
 			}
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
 		}
 	});
 });
@@ -407,7 +408,7 @@ app.use('/accept_friend_request', (req, res) => {
 			account.friends.push(req.body.sender);
 			account.friend_requests.pull(req.body.sender);
 			account.save();
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
 		}
 	});
 });
@@ -421,7 +422,7 @@ app.use('/decline_friend_request', (req, res) => {
 		} else {
 			account.friend_requests.pull(req.body.sender);
 			account.save();
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
 		}
 	});
 });

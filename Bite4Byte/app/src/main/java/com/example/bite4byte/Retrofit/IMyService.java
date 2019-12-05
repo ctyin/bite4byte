@@ -36,7 +36,8 @@ public interface IMyService {
                                 @Field("rating") double rating,
                                 @Field("numRatedBy") int numRatedBy,
                                 @Field("friends") String[] friends,
-                                @Field("friendRequests") String[] friendRequests);
+                                @Field("friendRequests") String[] friendRequests,
+                                @Field("groupNames") String[] groupNames);
 
     // Body HTTP example requires single json object
 //    @POST("example")
