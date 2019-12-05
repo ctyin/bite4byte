@@ -14,7 +14,7 @@ public class UserContents implements Serializable {
     protected String[] friends;
     protected String[] orders;
     protected String[] friend_requests;
-    protected String [] groupNames;
+    protected String[] groupNames;
 
     public String getUsername() {
         return username;

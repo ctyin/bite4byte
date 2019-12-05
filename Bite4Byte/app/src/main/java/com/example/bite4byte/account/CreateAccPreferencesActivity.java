@@ -139,6 +139,9 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
                 UserContents user = response.body();
+                if (user.getGroupNames() == null) {
+                    System.out.println("FUCK");
+                }
                 String s = "Welcome " + response.body().getFirstName() + "!";
                 System.out.println(s);
 

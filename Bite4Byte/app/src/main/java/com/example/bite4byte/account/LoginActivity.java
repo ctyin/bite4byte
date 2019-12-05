@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Intent i = new Intent(LoginActivity.this, UserFeedActivity.class);
                     i.putExtra("user", response.body());
+
                     startActivity(i);
                 }
             }

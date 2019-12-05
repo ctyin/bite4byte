@@ -303,6 +303,9 @@ public class UserFeedActivity extends Activity {
 
     public void onGroupsClick(View view) {
         Intent i = new Intent(this, GroupListActivity.class);
+        if (user.getGroupNames() == null) {
+            System.out.println("Null groups");
+        }
         i.putExtra("user", user);
         startActivity(i);
     }

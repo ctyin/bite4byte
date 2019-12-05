@@ -58,7 +58,7 @@ app.post('/login', (req, res) => {
 		} else {
 			console.log(account);
 			if (password == account.password) { //Account exists and pswd matches
-				res.json({"username":account.username, "password":account.password, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests});
+				res.json({"username":account.username, "password":account.password, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames": account.groupNames});
 				console.log("Welcome Back!");
 			} else {
 				res.json({});							//Accoutn exists but incorrect pswd
@@ -607,6 +607,17 @@ app.use('/createGroup', (req, res) => {
 					res.json({});
 				} else {
 					console.log("Group saved");
+					newGroup.users.forEach(function (username) {
+						Account.findOne({username: username}, function (err, account) {
+							if (err) {
+								console.log("Error adding group to user");
+							} else {
+								account.groupNames.push(newGroup.name);
+								account.save();
+								console.log("Group name " + newGroup.name + " added to account " + account.username);
+							}
+						});
+					});
 					res.json({"name": newGroup.name, "users": newGroup.users, "posts": newGroup.posts});
 				}
 			});

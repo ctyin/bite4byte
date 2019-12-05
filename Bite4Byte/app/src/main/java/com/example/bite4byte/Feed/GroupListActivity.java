@@ -52,6 +52,7 @@ public class GroupListActivity extends AppCompatActivity {
 
         //manageData = (Data) getIntent().getSerializableExtra("manageData");
         user = (UserContents) getIntent().getSerializableExtra("user");
+
         //userAccount = manageData.getAccount(username);
 
         setContentView(R.layout.activity_group_list);
@@ -111,7 +112,7 @@ public class GroupListActivity extends AppCompatActivity {
     }
 
     public void onNewGroupClick(View view) {
-        Intent i = new Intent(this, FriendRequestsActivity.class);
+        Intent i = new Intent(this, CreateGroupActvity.class);
         i.putExtra("user", user);
         startActivity(i);
     }
