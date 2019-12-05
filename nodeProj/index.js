@@ -20,6 +20,7 @@ var Convo = require('./Convo.js');
 var Message = require('./Message');
 var Report = require('./Report');
 var Food = require('./Food.js');
+var Group = require('./Group.js')
 
 /***************************************/
 
@@ -577,6 +578,48 @@ app.use('/fileReport', (req, res) => {
 		}
 	});
 });
+
+app.use('/createGroup', (req, res) => {
+	
+	Group.findOne({name: req.body.name}, function (err, group) {
+		if (err) {
+			console.log("Create group, unique group name validation error");
+			res.json({});
+		}
+		if (group != null) {
+			res.json({});
+		} else {
+			var newGroup = new Group({
+				name: req.body.name,
+				users: req.body.users,
+				posts: req.body.posts
+			});
+			newGroup.save(function (err) {
+				if (err) {
+					console.log("Error saving group");
+					res.json({});
+				} else {
+					console.log("Group saved");
+					res.json({});
+				}
+			});
+		}
+	});
+});
+
+app.use('/postToGroup', (req, res) => {
+	Group.findOne({name: req.body.name}, function (err, group) {
+		if (err) {
+			console.log("Post to group, group not found");
+		} else {
+			group.posts.push(req.body.posts);
+			group.save();
+			console.log("Post added to group");
+		}
+	});
+});
+
+
 
 // route for accessing data via the web api
 // to use this, make a request for /api to get an array of all Person objects
