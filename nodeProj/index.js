@@ -640,7 +640,7 @@ app.use('/createGroup', (req, res) => {
 });
 
 app.use('/postToGroup', (req, res) => {
-	Group.findOne({name: req.body.name}, function (err, group) {
+	Group.findOne({name: req.body.groupName}, function (err, group) {
 		if (err) {
 			console.log("Post to group, group not found");
 			res.json({});

@@ -44,7 +44,8 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="100dp"
             android:layout_height="60dp"
-            android:text="Feed" />
+            android:text="Feed"
+            android:onClick="onFeedBtnClick"/>
 
         <Button
             android:id="@+id/uploadBtnFeed"

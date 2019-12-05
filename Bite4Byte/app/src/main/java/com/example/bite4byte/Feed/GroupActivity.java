@@ -95,9 +95,10 @@ public class GroupActivity extends AppCompatActivity {
                     food.enqueue(new Callback<FoodContents>() {
                         @Override
                         public void onResponse(Call<FoodContents> call, Response<FoodContents> response) {
+                            System.out.println(response.body().getFoodName());
                             feed.add(response.body());
 
-                            updateGroupFeed(filterByParam(feed));
+                            updateGroupFeed(filter(feed));
                         }
 
                         @Override
@@ -169,23 +170,14 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
-    public Set<FoodContents> filterByParam(Set<FoodContents> set) {
+    public Set<FoodContents> filter(Set<FoodContents> set) {
         Set<FoodContents> results = set;
         Set<FoodContents> toRemove = new HashSet<FoodContents>();
 
         for (FoodContents item : results) {
-            if (item.isInGroup()) {
-                toRemove.add(item);
-            }
-        }
-
-        results.removeAll(toRemove);
-        toRemove.clear();
-
-        for (FoodContents item : results) {
             String seller = item.getSellerUserName();
 
-            if (!seller.equals(user.getUsername())) {
+            if (seller.equals(user.getUsername())) {
                 toRemove.add(item);
             }
         }
@@ -237,14 +229,31 @@ public class GroupActivity extends AppCompatActivity {
             toRemove.clear();
         }
 
+
         return results;
     }
 
     public void onUploadToGroupClick(View view) {
         try {
-            Intent i = new Intent(this, UploadItemActivity.class);
+            Intent i = new Intent(this, UploadToGroupActivity.class);
             i.putExtra("user", user);
             i.putExtra("groupName", groupName);
+            startActivity(i);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void onFeedBtnClick(View view) {
+        Intent intent = new Intent(this, UserFeedActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    public void onUploadClick(View view) {
+        try {
+            Intent i = new Intent(this, UploadItemActivity.class);
+            i.putExtra("user", user);
             startActivity(i);
         } catch (Exception e) {
             System.out.println(e);
