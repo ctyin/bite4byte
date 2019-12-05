@@ -1,0 +1,53 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+<main>
+    <div class="jumbotron">
+    	<table class="table">
+    	   	<tr>
+    	      	<th>Usernames</th><th>First names</th><th>Lastnames</th><th>Restrictions</th>
+    	   	</tr>
+
+    	   	<% accounts.forEach((acct) => { %>
+    	   		<tr>
+    	   			<td><%= acct.username %></td>
+    	   			<td><%= acct.firstname %></td>
+    	   			<td><%= acct.lastname %></td>
+    	   			<td>
+    	   				<% if (acct.restrictions.length == 1) { %>
+    	   					<%= acct.restrictions[0] %>
+    	   				<% } else {
+    	   					for (var i=0; i < acct.restrictions.length; i++) {
+    	   						if (i == acct.restrictions.length - 1) { %>
+    	   							<%= acct.restrictions[i] %>
+    	   						<% } else { %>
+    	   							<%= acct.restrictions[i] %>, 
+    	   						<% }
+    	   					}
+    	   					}%>
+    	   			</td>
+    	   			<td>
+    	   				<a href="/deleteAccount/<%= acct._id %>" role="button" class="btn btn-outline-danger">Delete account</a>
+    	   			</td>
+    	   			<% }) %>
+    	   		</tr>
+    	</table>
+    </div>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
