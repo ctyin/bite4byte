@@ -1,0 +1,79 @@
+<!-- views/pages/createAcct.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+    <% include ../partials/modifiedHeader %>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<% if (invalid == 1) { %>
+			<div style="width:400px" class="alert alert-danger" role="alert">Passwords need to match</div>
+		<% } %>
+		<% if (invalid == 2) { %>
+			<div style="width:400px" class="alert alert-danger" role="alert">Username already exists</div>
+		<% } %>
+		<% if (invalid == 3) { %>
+			<div style="width:400px" class="alert alert-danger" role="alert">Something went wrong</div>
+		<% } %>
+	</div>
+
+	<div class="d-flex justify-content-center h-100">
+		<div class="card" style="height:475px">
+			<div class="card-header">
+				<h3>Create an Account</h3>
+			</div>
+			<div class="card-body">
+				<form action="/createAccount" method="post" enctype="application/x-www-form-urlencoded">
+					<input name="webapp" type="hidden" value="true">
+					<div class="input-group form-group">
+						<input name="username" type="text" class="form-control" placeholder="Username">
+					</div>
+					<div class="input-group form-group">
+						<input name="password" type="password" class="form-control" placeholder="Password">
+					</div>
+					<div class="input-group form-group">
+						<input name="password2" type="password" class="form-control" placeholder="Re-enter your password">
+					</div>
+					<div class="input-group form-group">
+						<input name="firstname" type="text" class="form-control" placeholder="First Name">
+					</div>
+					<div class="input-group form-group">
+						<input name="lastname" type="text" class="form-control" placeholder="Last Name">
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Sign in" class="btn float-right login_btn">
+					</div>
+				</form>
+			</div>
+			<div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					Already have an account?<a href="/login">Log in</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+    </div>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
+
+
+<body>
+
+</body>
+</html>
