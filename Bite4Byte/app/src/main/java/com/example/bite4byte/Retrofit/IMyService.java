@@ -151,4 +151,22 @@ public interface IMyService {
     @FormUrlEncoded
     Call<GroupContents> getGroup(@Field("name") String groupName);
 
+    @POST("postToGroup")
+    @FormUrlEncoded
+    Call<FoodContents> uploadToGroup(@Field("groupName") String groupName,
+                                     @Field("id") String id,
+                                     @Field("quantity") int quantity,
+                                     @Field("foodName") String foodName,
+                                     @Field("sellerUserName") String username,
+                                     @Field("description") String foodDesc,
+                                     @Field("ingredients") String[] ingredientArr,
+                                     @Field("restrictions") String[] restrictionArr,
+                                     @Field("cuisines") String[] cuisineArr,
+                                     @Field("picture") String picture,
+                                     @Field("picturePath") String picPath,
+                                     @Field("isAvailable") boolean isAvailable,
+                                     @Field("location") String location,
+                                     @Field("postDate") Date date,
+                                     @Field("groupBool") boolean groupBool);
+
 }

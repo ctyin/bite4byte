@@ -32,6 +32,7 @@
         <activity android:name=".Feed.UploadItemActivity" android:exported="true"/>
         <activity android:name=".Feed.GroupListActivity" android:exported="true"/>
         <activity android:name=".Feed.CreateGroupActvity" android:exported="true"/>
+        <activity android:name=".Feed.UploadToGroupActivity" android:exported="true" />
         <activity android:name=".account.UserSearchActivity" android:exported="true"/>
         <activity android:name=".account.OtherUserProfileActivity" android:exported="true"/>
         <activity android:name=".account.FriendRequestsActivity" android:exported="true" />

@@ -631,12 +631,40 @@ app.use('/postToGroup', (req, res) => {
 			console.log("Post to group, group not found");
 			res.json({});
 		} else {
-			group.posts.push(req.body.posts);
+			group.posts.push(req.body.id);
 			group.save();
 			console.log("Post added to group");
-			res.json({"name": group.name, "users": group.users, "posts": group.posts});
 		}
 	});
+
+	var newFood = new Food ({
+		id: req.body.id,
+		quantity: req.body.quantity,
+		foodName: req.body.foodName,
+		sellerUserName: req.body.sellerUserName,
+		description: req.body.description,
+		ingredients: req.body.ingredients,
+		restrictions: req.body.restrictions,
+		cuisines: req.body.cuisines,
+		picture: req.body.picture,
+		picturePath: req.body.picturePath,
+		isAvailable: req.body.isAvailable,
+		location: req.body.location,
+		postDate: req.body.postDate,
+		group: req.body.groupBool
+	});
+
+	newFood.save((err) => {
+		if (err) {
+			console.log("Error saving food to database");
+			console.log(err);
+			res.send(null);
+		} else {
+			console.log("Food saved correctly");
+		}
+	});
+
+	res.json({});
 });
 
 app.use('/getGroup', (req, res) => {

@@ -18,8 +18,6 @@ import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
 import com.example.bite4byte.Retrofit.UserContents;
 import com.example.bite4byte.account.FriendRequestsActivity;
-import com.example.bite4byte.account.FriendsListActivity;
-import com.example.bite4byte.account.OtherUserProfileActivity;
 import com.example.bite4byte.account.UserProfileActivity;
 
 import org.json.simple.JSONObject;
@@ -57,32 +55,28 @@ public class GroupListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_group_list);
 
+        if (user.getGroupNames() != null) {
+            for (String group : user.getGroupNames()) {
+                Call<GroupContents> call = iMyService.getGroup(group);
 
-        for (String group : user.getGroupNames()) {
-            Call<GroupContents> call = iMyService.getGroup(group);
+                call.enqueue(new Callback<GroupContents>() {
+                    @Override
+                    public void onResponse(Call<GroupContents> call, Response<GroupContents> response) {
+                        res.add(response.body().getGroupName());
 
-            call.enqueue(new Callback<GroupContents>() {
-                @Override
-                public void onResponse(Call<GroupContents> call, Response<GroupContents> response) {
-                    res.add(response.body().getGroupName());
+                        updateGroupList(res);
+                    }
 
-                    updateFriendsList(res);
-
-                /*Intent intent = new Intent(UserSearchActivity.this, UserFeedActivity.class);
-                intent.putExtra("manageData", manageData);
-                intent.putExtra("user", username);
-                startActivity(intent);*/
-                }
-
-                @Override
-                public void onFailure(Call<GroupContents> call, Throwable t) {
-                    Toast.makeText(GroupListActivity.this, "error", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<GroupContents> call, Throwable t) {
+                        Toast.makeText(GroupListActivity.this, "error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 
-    public void updateFriendsList(List<String> results) {
+    public void updateGroupList(List<String> results) {
         ViewGroup parent = (ViewGroup) this.findViewById(R.id.group_list);
         parent.removeAllViews();
 
