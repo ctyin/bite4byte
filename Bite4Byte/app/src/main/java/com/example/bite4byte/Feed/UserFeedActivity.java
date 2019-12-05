@@ -87,6 +87,21 @@ public class UserFeedActivity extends Activity {
 
         cuisinesFilter = getResources().getStringArray(R.array.cuisines);
         cuisinesSelect = new boolean[cuisinesFilter.length];
+
+        String[] allergiesArr = user.getAllergies();
+        if (allergiesArr != null) {
+            for (int i = 0; i < allergiesArr.length; i++) {
+                allergies.add(allergiesArr[i]);
+            }
+        }
+
+        String[] restrictsArr = user.getRestrictions();
+        if (restrictsArr != null) {
+            for (int i = 0; i < restrictsArr.length; i++) {
+                restrictions.add(restrictsArr[i]);
+            }
+        }
+
         feed.clear();
 
         Call<List<FoodContents>> call = iMyService.getFoods();
@@ -98,20 +113,6 @@ public class UserFeedActivity extends Activity {
                     for (FoodContents f : food) {
                         feed.add(f);
                         System.out.println(f.getFoodName());
-                    }
-                }
-
-                String[] allergiesArr = user.getAllergies();
-                if (allergiesArr != null) {
-                    for (int i = 0; i < allergiesArr.length; i++) {
-                        allergies.add(allergiesArr[i]);
-                    }
-                }
-
-                String[] restrictsArr = user.getRestrictions();
-                if (restrictsArr != null) {
-                    for (int i = 0; i < restrictsArr.length; i++) {
-                        restrictions.add(restrictsArr[i]);
                     }
                 }
 
