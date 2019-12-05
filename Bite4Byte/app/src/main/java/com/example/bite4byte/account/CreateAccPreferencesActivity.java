@@ -17,10 +17,7 @@ import com.example.bite4byte.Retrofit.UserContents;
 
 import java.util.HashSet;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -133,7 +130,7 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
         }
 
         Call<UserContents> call = iMyService.foodPref(username, firstname, lastname, password,
-                restrictArr, allergyArr, new String[]{}, 0.0, 1, new String[]{}, new String[]{}, new String[]{});
+                restrictArr, allergyArr, new String[]{}, 5.0, 1, new String[]{}, new String[]{}, new String[]{});
 
         call.enqueue(new Callback<UserContents>() {
             @Override
@@ -158,12 +155,6 @@ public class CreateAccPreferencesActivity extends AppCompatActivity {
                 Toast.makeText(CreateAccPreferencesActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
-
-        //manageData.createAccount(this, username, firstname, lastname, password, restrictArr, allergyArr);
-        //manageData.writeLoggedInUser(this, username, firstname, lastname, password, restrictArr, allergyArr);
-
-
-
 
 
     }
