@@ -587,6 +587,8 @@ app.use('/fileReport', (req, res) => {
 });
 
 app.use('/createGroup', (req, res) => {
+	var creator = req.body.creator;
+	var tgt;
 	
 	Group.findOne({name: req.body.name}, function (err, group) {
 		if (err) {
@@ -607,10 +609,12 @@ app.use('/createGroup', (req, res) => {
 					res.json({});
 				} else {
 					console.log("Group saved");
+					
 					newGroup.users.forEach(function (username) {
 						Account.findOne({username: username}, function (err, account) {
 							if (err) {
 								console.log("Error adding group to user");
+								res.json({});
 							} else {
 								account.groupNames.push(newGroup.name);
 								account.save();
@@ -618,9 +622,19 @@ app.use('/createGroup', (req, res) => {
 							}
 						});
 					});
-					res.json({"name": newGroup.name, "users": newGroup.users, "posts": newGroup.posts});
+
+					Account.findOne({username: creator}, function (err, account) {
+						if (err) {
+							console.log("Error getting creator");
+							res.json({});
+						} else {
+							console.log("Im gay");
+							res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
+						}
+					});
 				}
 			});
+
 		}
 	});
 });

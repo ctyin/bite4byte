@@ -17,7 +17,6 @@ import com.example.bite4byte.Retrofit.GroupContents;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
 import com.example.bite4byte.Retrofit.UserContents;
-import com.example.bite4byte.account.FriendRequestsActivity;
 import com.example.bite4byte.account.UserProfileActivity;
 
 import org.json.simple.JSONObject;
@@ -106,7 +105,7 @@ public class GroupListActivity extends AppCompatActivity {
     }
 
     public void onNewGroupClick(View view) {
-        Intent i = new Intent(this, CreateGroupActvity.class);
+        Intent i = new Intent(this, CreateGroupActivity.class);
         i.putExtra("user", user);
         startActivity(i);
     }

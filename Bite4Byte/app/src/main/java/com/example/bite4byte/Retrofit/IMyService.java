@@ -143,9 +143,10 @@ public interface IMyService {
 
     @POST("createGroup")
     @FormUrlEncoded
-    Call<GroupContents> createGroup(@Field("name") String groupName,
+    Call<UserContents> createGroup(@Field("name") String groupName,
                                     @Field("users") String[] users,
-                                    @Field("posts") String[] posts);
+                                    @Field("posts") String[] posts,
+                                    @Field("creator") String creator);
 
     @POST("getGroup")
     @FormUrlEncoded

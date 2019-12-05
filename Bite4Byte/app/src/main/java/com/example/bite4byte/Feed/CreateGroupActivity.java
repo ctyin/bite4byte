@@ -11,17 +11,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bite4byte.InternalData.Data;
-import com.example.bite4byte.Messaging.AllMsgActivity;
 import com.example.bite4byte.R;
 import com.example.bite4byte.Retrofit.GroupContents;
 import com.example.bite4byte.Retrofit.IMyService;
 import com.example.bite4byte.Retrofit.RetrofitClient;
 import com.example.bite4byte.Retrofit.UserContents;
-import com.example.bite4byte.account.FriendRequestsActivity;
-import com.example.bite4byte.account.FriendsListActivity;
-import com.example.bite4byte.account.OtherUserProfileActivity;
-import com.example.bite4byte.account.UserProfileActivity;
 
 import org.json.simple.JSONObject;
 
@@ -34,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class CreateGroupActvity extends AppCompatActivity{
+public class CreateGroupActivity extends AppCompatActivity{
     UserContents user;
     JSONObject userAccount;
     View view;
@@ -86,7 +80,7 @@ public class CreateGroupActvity extends AppCompatActivity{
 
                 @Override
                 public void onFailure(Call<UserContents> call, Throwable t) {
-                    Toast.makeText(CreateGroupActvity.this, "error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateGroupActivity.this, "error", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -136,25 +130,27 @@ public class CreateGroupActvity extends AppCompatActivity{
         for (int i = 0; i < addedFriends.size(); i++) {
             users[i] = addedFriends.get(i);
         }
-        Call<GroupContents> call = iMyService.createGroup(name, users, new String[] {});
-        call.enqueue(new Callback<GroupContents>() {
+        Call<UserContents> call = iMyService.createGroup(name, users, new String[] {}, user.getUsername());
+        call.enqueue(new Callback<UserContents>() {
             @Override
-            public void onResponse(Call<GroupContents> call, Response<GroupContents> response) {
-                GroupContents grp = response.body();
-                if (grp == null) {
-                    Toast.makeText(CreateGroupActvity.this, "Group name exists already", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CreateGroupActvity.this, CreateGroupActvity.class);
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                if (response.body().getUsername() == null) {
+                    Toast.makeText(CreateGroupActivity.this, "Group name exists already", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CreateGroupActivity.this, CreateGroupActivity.class);
                     intent.putExtra("user", user);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(CreateGroupActvity.this, "Group successfully made", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateGroupActivity.this, "Group successfully made", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CreateGroupActivity.this, GroupListActivity.class);
+                    intent.putExtra("user", response.body());
+                    startActivity(intent);
                 }
             }
 
             @Override
-            public void onFailure(Call<GroupContents> call, Throwable t) {
+            public void onFailure(Call<UserContents> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(CreateGroupActvity.this, "Error thrown", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateGroupActivity.this, "Error thrown", Toast.LENGTH_SHORT).show();
             }
         });
     }
