@@ -3,6 +3,7 @@ package com.example.bite4byte.Retrofit;
 import com.example.bite4byte.Messaging.ChatBubble;
 import com.example.bite4byte.Messaging.ConversationResult;
 
+import java.security.acl.Group;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -139,5 +140,15 @@ public interface IMyService {
     @FormUrlEncoded
     Call<UserContents> declineFriend(@Field("decliner") String decliner,
                                      @Field("sender") String sender);
+
+    @POST("createGroup")
+    @FormUrlEncoded
+    Call<GroupContents> createGroup(@Field("name") String groupName,
+                                    @Field("users") String[] users,
+                                    @Field("posts") String[] posts);
+
+    @POST("getGroup")
+    @FormUrlEncoded
+    Call<GroupContents> getGroup(@Field("name") String groupName);
 
 }

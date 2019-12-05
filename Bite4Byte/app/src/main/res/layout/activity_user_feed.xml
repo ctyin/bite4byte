@@ -16,6 +16,13 @@
             android:text="filter"
             android:onClick="onFilterClick"/>
 
+        <Button
+            android:id="@+id/groups_button"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Groups"
+            android:onClick="onGroupsClick"/>
+
     </LinearLayout>
 
     <ScrollView

@@ -301,6 +301,12 @@ public class UserFeedActivity extends Activity {
         }
     }
 
+    public void onGroupsClick(View view) {
+        Intent i = new Intent(this, GroupListActivity.class);
+        i.putExtra("user", user);
+        startActivity(i);
+    }
+
     public void onFilterClick(View view) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserFeedActivity.this);
         mBuilder.setTitle("Filter by Cuisine");

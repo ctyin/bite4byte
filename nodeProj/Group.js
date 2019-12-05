@@ -7,8 +7,8 @@ var Schema = mongoose.Schema;
 
 var groupSchema = new Schema({
 	name: {type: String, required: true, unique: true},
-	users: {type: String, required: true, unique: false},
-	posts: {type: String, required: true, unique: false},
+	users: {type: [String], required: true, unique: false},
+	posts: {type: [String], required: true, unique: false},
 });
 
 module.exports = mongoose.model('Group', groupSchema);
