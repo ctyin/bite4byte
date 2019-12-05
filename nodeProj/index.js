@@ -607,7 +607,7 @@ app.use('/createGroup', (req, res) => {
 					res.json({});
 				} else {
 					console.log("Group saved");
-					res.json({});
+					res.json({"name": newGroup.name, "users": newGroup.users, "posts": newGroup.posts});
 				}
 			});
 		}
@@ -618,13 +618,27 @@ app.use('/postToGroup', (req, res) => {
 	Group.findOne({name: req.body.name}, function (err, group) {
 		if (err) {
 			console.log("Post to group, group not found");
+			res.json({});
 		} else {
 			group.posts.push(req.body.posts);
 			group.save();
 			console.log("Post added to group");
+			res.json({"name": group.name, "users": group.users, "posts": group.posts});
 		}
 	});
 });
+
+app.use('/getGroup', (req, res) => {
+	Group.findOne({name: req.body.name}, function (err, group) {
+		if (err) {
+			console.log("Error getting group");
+			res.json({});
+		} else {
+			res.json({"name": group.name, "users": group.users, "posts": group.posts});
+		}
+	});
+});
+
 
 
 
