@@ -622,16 +622,14 @@ app.use('/createGroup', (req, res) => {
 										console.log("Didn't save successfully");
 									} else {
 										console.log("Group name " + newGroup.name + " added to account " + account.username);
-										if (account.username == creator) {
-											Account.findOne({username: creator}, function (err, creator) {
-												if (err) {
-													console.log("Error getting creator");
-													res.json({});
-												} else {
-													res.json({"username":creator.username, "firstname":creator.firstname, "lastname":creator.lastname, "restrictions":creator.restrictions, "allergies":creator.allergies, "orders":creator.orders, "rating":creator.rating, "numRatedBy":creator.numRatedBy, "friends":creator.friends, "friend_requests":creator.friend_requests, "groupNames":creator.groupNames});
-												}
-											});
-										}
+										Account.findOne({username: creator}, function (err, account) {
+											if (err) {
+												console.log("Error getting creator");
+												res.json({});
+											} else {
+												res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
+											}
+										});
 									}
 								});
 							}
@@ -641,13 +639,14 @@ app.use('/createGroup', (req, res) => {
 			});
 
 		}
-	});
+	});00
 });
 
 app.use('/postToGroup', (req, res) => {
 	Group.findOne({name: req.body.groupName}, function (err, group) {
 		if (err) {
 			console.log("Post to group, group not found");
+			res.json({});
 		} else {
 			group.posts.push(req.body.id);
 			group.save();
@@ -679,9 +678,10 @@ app.use('/postToGroup', (req, res) => {
 			res.send(null);
 		} else {
 			console.log("Food saved correctly");
-			res.json({});
 		}
 	});
+
+	res.json({});
 });
 
 app.use('/getGroup', (req, res) => {
