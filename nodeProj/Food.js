@@ -17,7 +17,8 @@ var foodSchema = new Schema({
 	picturePath: {type:String, required:false, unique:true},
 	isAvailable: {type:Boolean, required:true, unique:false},
 	location: {type:String, required:true, unique:false},
-	postDate: {type: Date, required:true, unique:false}
+	postDate: {type:Date, required:true, unique:false},
+	group: {type:Boolean, required:true, unique:false}
 });
 
 module.exports = mongoose.model('Food', foodSchema);

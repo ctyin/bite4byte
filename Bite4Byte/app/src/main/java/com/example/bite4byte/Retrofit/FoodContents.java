@@ -45,6 +45,9 @@ public class FoodContents {
     @SerializedName("date")
     private Date date;
 
+    @SerializedName("group")
+    private boolean group;
+
     public String getID() {
         return id;
     }
@@ -100,5 +103,7 @@ public class FoodContents {
     public Date getDate() {
         return date;
     }
+
+    public boolean isInGroup() { return group; }
 
 }

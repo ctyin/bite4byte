@@ -164,7 +164,7 @@ public class UploadItemActivity extends AppCompatActivity {
         //String dateParam = date.toString();
 
         Call<FoodContents> call = iMyService.uploadFood(foodID, foodQuantity, foodName, user.getUsername(), foodDesc, ingredients,
-                restrictions, cuisines, filename + ".jpg", photoPath, true, location, date);
+                restrictions, cuisines, filename + ".jpg", photoPath, true, location, date, false);
 
         call.enqueue(new Callback<FoodContents>() {
             @Override
