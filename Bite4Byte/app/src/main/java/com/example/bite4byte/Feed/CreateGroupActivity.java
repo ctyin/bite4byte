@@ -21,6 +21,8 @@ import org.json.simple.JSONObject;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.Call;
@@ -34,7 +36,7 @@ public class CreateGroupActivity extends AppCompatActivity{
     View view;
     List<String[]> res = new LinkedList<String[]>();
 
-    List<String> addedFriends;
+    Set<String> addedFriends;
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
@@ -52,7 +54,7 @@ public class CreateGroupActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_create_group);
 
-        addedFriends = new LinkedList<String>();
+        addedFriends = new HashSet<String>();
         addedFriends.add(user.getUsername());
 
         for (String friend : user.getFriendsList()) {
@@ -127,8 +129,10 @@ public class CreateGroupActivity extends AppCompatActivity{
     public void onCreateGroupSubmitButtonClick(View view) {
         String name = ((EditText) findViewById(R.id.create_group_name)).getText().toString();
         String [] users = new String[addedFriends.size()];
-        for (int i = 0; i < addedFriends.size(); i++) {
-            users[i] = addedFriends.get(i);
+        int i = 0;
+        for (String u : addedFriends) {
+            users[i] = u;
+            i++;
         }
         Call<UserContents> call = iMyService.createGroup(name, users, new String[] {}, user.getUsername());
         call.enqueue(new Callback<UserContents>() {
