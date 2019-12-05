@@ -50,7 +50,7 @@ public class UploadItemActivity extends AppCompatActivity {
     int foodQuantity = 0;
     Integer[] quantities = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-    String photoPath = null, foodID, filename = null;
+    String photoPath = "", foodID, filename = null;
     UserContents user;
     ImageView foodPhoto;
     Retrofit retrofitClient;
