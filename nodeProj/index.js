@@ -617,20 +617,23 @@ app.use('/createGroup', (req, res) => {
 								res.json({});
 							} else {
 								account.groupNames.push(newGroup.name);
-								account.save();
-								console.log("Group name " + newGroup.name + " added to account " + account.username);
+								account.save((err) => {
+									if (err) {
+										console.log("Didn't save successfully");
+									} else {
+										console.log("Group name " + newGroup.name + " added to account " + account.username);
+										Account.findOne({username: creator}, function (err, account) {
+											if (err) {
+												console.log("Error getting creator");
+												res.json({});
+											} else {
+												res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
+											}
+										});
+									}
+								});
 							}
 						});
-					});
-
-					Account.findOne({username: creator}, function (err, account) {
-						if (err) {
-							console.log("Error getting creator");
-							res.json({});
-						} else {
-							console.log("Im gay");
-							res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
-						}
 					});
 				}
 			});

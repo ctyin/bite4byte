@@ -50,6 +50,10 @@ public class GroupListActivity extends AppCompatActivity {
         //manageData = (Data) getIntent().getSerializableExtra("manageData");
         user = (UserContents) getIntent().getSerializableExtra("user");
 
+        for (String gn : user.getGroupNames()) {
+            System.out.println(gn);
+        }
+
         //userAccount = manageData.getAccount(username);
 
         setContentView(R.layout.activity_group_list);

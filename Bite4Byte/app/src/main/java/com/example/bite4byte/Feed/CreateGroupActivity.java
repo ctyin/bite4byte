@@ -142,6 +142,12 @@ public class CreateGroupActivity extends AppCompatActivity{
                 } else {
                     Toast.makeText(CreateGroupActivity.this, "Group successfully made", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(CreateGroupActivity.this, GroupListActivity.class);
+
+                    UserContents uc = response.body();
+                    for (String s : uc.getGroupNames()) {
+                        System.out.println(s);
+                    }
+
                     intent.putExtra("user", response.body());
                     startActivity(intent);
                 }
