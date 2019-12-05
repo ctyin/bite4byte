@@ -133,7 +133,7 @@ app.post('/food_preferences', (req, res) => {
 			res.json({});
 		} else {
 			console.log("Account saved correctly");
-			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies, "orders":newAccount.orders, "rating":newAccount.rating, "numRatedBy":newAccount.numRatedBy, "friends":newAccount.friends, "friend_requests":newAccount.friend_requests}, "groupNames":newAccount.groupNames);
+			res.json({"username": newAccount.username, "firstname": newAccount.firstname, "lastname": newAccount.lastname, "restrictions": newAccount.restrictions, "allergies": newAccount.allergies, "orders":newAccount.orders, "rating":newAccount.rating, "numRatedBy":newAccount.numRatedBy, "friends":newAccount.friends, "friend_requests":newAccount.friend_requests, "groupNames":newAccount.groupNames});
 		}
 	});
 	/*Account.findOne({username: name}, function (err, account) {
