@@ -103,7 +103,8 @@ public interface IMyService {
                                   @Field("picturePath") String picPath,
                                   @Field("isAvailable") boolean isAvailable,
                                   @Field("location") String location,
-                                  @Field("postDate") Date date);
+                                  @Field("postDate") Date date,
+                                  @Field("groupBool") boolean groupBool);
 
     @GET("get_foods")
     Call<List<FoodContents>> getFoods();

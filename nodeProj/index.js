@@ -286,7 +286,8 @@ app.use('/post_food', (req, res) => {
 		picturePath: req.body.picturePath,
 		isAvailable: req.body.isAvailable,
 		location: req.body.location,
-		postDate: req.body.postDate
+		postDate: req.body.postDate,
+		group: req.body.groupBool
 	});
 
 	newFood.save((err) => {
@@ -317,7 +318,7 @@ app.use('/get_foods', (req, res) => {
 				returnArr.push({"id":food.id, "quantity":food.quantity, "foodName":food.foodName,
 					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
 					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
-					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
+					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate, "group":food.group});
 			});
 
 			res.json(returnArr);
@@ -337,7 +338,7 @@ app.use('/req_food', (req, res) => {
 			res.json({"id":food.id, "quantity":food.quantity, "foodName":food.foodName,
 					"sellerUserName":food.sellerUserName, "description":food.description, "ingredients":food.ingredients,
 					"restrictions":food.restrictions, "cuisines":food.cuisines, "picture":food.picture, "picturePath":food.picturePath,
-					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate});
+					"isAvailable":food.isAvailable, "location":food.location, "date":food.postDate, "group":food.group});
 		}
 	});
 });

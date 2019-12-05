@@ -183,29 +183,36 @@ public class UserFeedActivity extends Activity {
 
     public Set<FoodContents> filterByParam(Set<FoodContents> set) {
         Set<FoodContents> results = set;
-        Set<FoodContents> usersPost = new HashSet<FoodContents>();
-        Set<FoodContents> notAvailable = new HashSet<FoodContents>();
-        Set<FoodContents> containAllergy = new HashSet<FoodContents>();
-        Set<FoodContents> meetRestrict = new HashSet<FoodContents>();
-        Set<FoodContents> inCuisine = new HashSet<FoodContents>();
+        Set<FoodContents> toRemove = new HashSet<FoodContents>();
+
+        for (FoodContents item : results) {
+            if (item.isInGroup()) {
+                toRemove.add(item);
+            }
+        }
+
+        results.removeAll(toRemove);
+        toRemove.clear();
 
         for (FoodContents item : results) {
             String seller = item.getSellerUserName();
 
             if (seller.equals(user.getUsername())) {
-                usersPost.add(item);
+                toRemove.add(item);
             }
         }
 
-        results.removeAll(usersPost);
+        results.removeAll(toRemove);
+        toRemove.clear();
 
         for (FoodContents item : results) {
             if (!item.isAvailable()) {
-                notAvailable.add(item);
+                toRemove.add(item);
             }
         }
 
-        results.removeAll(notAvailable);
+        results.removeAll(toRemove);
+        toRemove.clear();
 
         for (FoodContents item : results) {
             String[] ingreds = item.getIngredients();
@@ -214,14 +221,15 @@ public class UserFeedActivity extends Activity {
 
                 for (String a : allergies) {
                     if (ingredient.equals(a)) {
-                        containAllergy.add(item);
+                        toRemove.add(item);
                         break;
                     }
                 }
             }
         }
 
-        results.removeAll(containAllergy);
+        results.removeAll(toRemove);
+        toRemove.clear();
 
         if (!restrictions.isEmpty()) {
             for (FoodContents item : results) {
@@ -230,14 +238,15 @@ public class UserFeedActivity extends Activity {
 
                     for (String res : restrictions) {
                         if (r.equals(res)) {
-                            meetRestrict.add(item);
+                            toRemove.add(item);
                             break;
                         }
                     }
                 }
             }
 
-            results = meetRestrict;
+            results = toRemove;
+            toRemove.clear();
         }
 
         if (!cuisines.isEmpty()) {
@@ -248,14 +257,15 @@ public class UserFeedActivity extends Activity {
 
                     for (String cuis : cuisines) {
                         if (cuisine.equals(cuis)) {
-                            inCuisine.add(item);
+                            toRemove.add(item);
                             break;
                         }
                     }
                 }
             }
 
-            results = inCuisine;
+            results = toRemove;
+            toRemove.clear();
         }
 
         return results;
