@@ -4,6 +4,40 @@
 <html lang="en">
 <head>
     <% include ../partials/head %>
+
+    <script>
+        function filterFunction() {
+            var input, filter, a, i;
+
+            // this maps the options to their locations in the table
+            var textToNumMap = {
+                'Food name': '0',
+                'Seller': '1',
+                'Quantity': '2',
+                'Availability': '3',
+                'Location': '4',
+                'Restriction': '5'
+            };
+
+            category = document.getElementById("inputState");
+            input = document.getElementById("searchBar");
+            filter = input.value.toLowerCase();
+            table = document.getElementById("foodTable");
+            rows = table.getElementsByClassName("customTableRow");
+
+            for (i = 0; i < rows.length; i++) {
+                tableCell = rows[i].cells[parseInt(textToNumMap[category.value])];
+
+                txtValue = tableCell.textContent || tableCell.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+
 </head>
 <body class="container">
 
@@ -13,13 +47,28 @@
 
 <main>
     <div class="jumbotron">
-    	<table class="table">
+    	<form id="myForm" class="form-inline mb-lg-3">
+            <div class="form-group col-md-4">
+                <select id="inputState" class="form-control">
+                    <option disabled selected value>-- Choose a search parameter --</option>
+                    <option>Food name</option>
+                    <option>Seller</option>
+                    <option>Quantity</option>
+                    <option>Availability</option>
+                    <option>Location</option>
+                    <option>Restriction</option>
+                </select>
+            </div>
+            <input id="searchBar" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onkeyup="filterFunction()">
+        </form>
+
+        <table id="foodTable" class="table">
     	   	<tr>
     	      	<th>Food name</th><th>Seller</th><th>Quantity</th><th>Availability</th><th>Location</th><th>Restriction</th>
     	   	</tr>
 
     	   	<% foods.forEach((food) => { %>
-    	   		<tr>
+    	   		<tr class="customTableRow">
     	   			<td><%= food.foodName %></td>
     	   			<td><%= food.sellerUserName %></td>
     	   			<td><%= food.quantity %></td>
@@ -50,6 +99,18 @@
 <footer>
     <% include ../partials/footer %>
 </footer>
+
+<!-- JQuery Code that disables the enter key -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+ <script>
+    $('#myForm').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) { 
+            e.preventDefault();
+            return false;
+        }
+    });
+ </script>
 
 </body>
 </html>

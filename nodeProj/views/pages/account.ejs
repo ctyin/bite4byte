@@ -4,6 +4,37 @@
 <html lang="en">
 <head>
     <% include ../partials/head %>
+
+    <script>
+        function filterFunction() {
+            var input, filter, a, i;
+
+            // this maps the options to their locations in the table
+            var textToNumMap = {
+                'Username': '0',
+                'First name': '1',
+                'Last name': '2',
+                'Restrictions': '3'
+            };
+
+            category = document.getElementById("inputState");
+            input = document.getElementById("searchBar");
+            filter = input.value.toLowerCase();
+            table = document.getElementById("accountTable");
+            rows = table.getElementsByClassName("customTableRow");
+
+            for (i = 0; i < rows.length; i++) {
+                tableCell = rows[i].cells[parseInt(textToNumMap[category.value])];
+
+                txtValue = tableCell.textContent || tableCell.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </head>
 <body class="container">
 
@@ -13,13 +44,26 @@
 
 <main>
     <div class="jumbotron">
-    	<table class="table">
+    	<form id="myForm" class="form-inline mb-lg-3">
+            <div class="form-group col-md-4">
+                <select id="inputState" class="form-control">
+                    <option disabled selected value>-- Choose a search parameter --</option>
+                    <option>Username</option>
+                    <option>First name</option>
+                    <option>Last name</option>
+                    <option>Restrictions</option>
+                </select>
+            </div>
+            <input id="searchBar" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onkeyup="filterFunction()">
+        </form>
+ 
+        <table id="accountTable" class="table">
     	   	<tr>
-    	      	<th>Usernames</th><th>First names</th><th>Lastnames</th><th>Restrictions</th>
+    	      	<th>Usernames</th><th>First names</th><th>Lastnames</th><th>Restrictions</th><th>Modify account</th>
     	   	</tr>
 
     	   	<% accounts.forEach((acct) => { %>
-    	   		<tr>
+    	   		<tr class="customTableRow">
     	   			<td><%= acct.username %></td>
     	   			<td><%= acct.firstname %></td>
     	   			<td><%= acct.lastname %></td>
@@ -54,5 +98,16 @@
     <% include ../partials/footer %>
 </footer>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+ <script>
+    $('#myForm').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) { 
+            e.preventDefault();
+            return false;
+        }
+    });
+ </script>
 </body>
 </html>
