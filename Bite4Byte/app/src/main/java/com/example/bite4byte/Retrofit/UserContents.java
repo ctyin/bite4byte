@@ -15,6 +15,7 @@ public class UserContents implements Serializable {
     protected String[] orders;
     protected String[] friend_requests;
     protected String[] groupNames;
+    protected boolean banned;
 
     public String getUsername() {
         return username;
@@ -45,4 +46,6 @@ public class UserContents implements Serializable {
     public void setName(String name) {
         username = name;
     }
+
+    public boolean isBanned() { return banned; };
 }

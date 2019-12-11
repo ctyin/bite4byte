@@ -37,6 +37,11 @@
     	   					}%>
     	   			</td>
     	   			<td>
+                        <% if (acct.banned) { %>
+                                <a href="/unbanAccount/<%= acct._id %>" role="button" class="btn btn-outline-danger">Unban</a>
+                        <% } else { %>
+                                <a href="/banAccount/<%= acct._id %>" role="button" class="btn btn-outline-danger">Ban</a>
+                        <%}%>
     	   				<a href="/deleteAccount/<%= acct._id %>" role="button" class="btn btn-outline-danger">Delete account</a>
     	   			</td>
     	   			<% }) %>

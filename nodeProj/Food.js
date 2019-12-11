@@ -14,7 +14,7 @@ var foodSchema = new Schema({
 	restrictions: {type:[String], required:true, unique:false},
 	cuisines: {type:[String], required:true, unique:false},
 	picture: {type:String, required:false, unique:true},
-	picturePath: {type:String, required:false, unique:true},
+	picturePath: {type:String, required:false, unique:false},
 	isAvailable: {type:Boolean, required:true, unique:false},
 	location: {type:String, required:true, unique:false},
 	postDate: {type:Date, required:true, unique:false},

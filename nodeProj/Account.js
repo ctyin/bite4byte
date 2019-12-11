@@ -18,7 +18,8 @@ var accountSchema = new Schema({
 	numRatedBy: {type: Number, required: false, unique: false},
 	friends: {type: [String], required: true, unique: false},
 	friend_requests: {type: [String], required: true, unique: false},
-	groupNames: {type: [String], required: true, unique: false}
+	groupNames: {type: [String], required: true, unique: false},
+	banned: {type: Boolean, required: true, unique: false}
     });
 
 // export personSchema as a class called Person
