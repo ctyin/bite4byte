@@ -78,6 +78,24 @@ app.post('/login', (req, res) => {
 
 app.use('/deleteacc', (req, res) => {
 	username = req.body.username;
+	Account.find({}, function (err, accounts) {
+		if (err) {
+			console.log("Error getting all accounts to delete friend(requests)");
+			//console.log(err);
+		} else {
+			accounts.map(account => {
+				if (account.friends.includes(username)) {
+					account.friends.pull(username);
+				}
+				if (account.friend_requests.includes(username)) {
+					account.friend_requests.pull(username);
+				}
+				account.save();
+			});
+		}
+	});
+
+
 	Account.remove({username : username}, function(err) {
 		if (err) {
 			console.log(err);
@@ -89,7 +107,7 @@ app.use('/deleteacc', (req, res) => {
 		}
 	});
 
-	Group.find({}, function (groups, err) {
+	Group.find({}, function (err, groups) {
 		if (err) {
 			console.log(err);
 			console.log("Error getting all groups while deleting account");
@@ -763,7 +781,9 @@ app.use('/getGroup', (req, res) => {
 });*/
 
 app.use('/leaveGroup', (req, res) => {
+	
 	Group.findOne({name:req.body.groupName}, function (err, group) {
+		console.log("Reached this");
 		if (err) {
 			console.log("Could not get group to leave");
 			res.json({});
@@ -782,24 +802,28 @@ app.use('/leaveGroup', (req, res) => {
 					}
 				});
 			});
-			toRemove.forEach(id => {
-				group.posts.pull(id);
+			
+			Account.findOne({username:req.body.username}, function (err, account) {
+				if (err) {
+					console.log("Could not get account leaving group");
+					res.json({});
+				} else {
+					account.groupNames.pull(req.body.groupName);
+					account.save();
+					toRemove.forEach(id => {
+						console.log("reached this2");
+						group.posts.pull(id);
+					});
+					group.save();
+					res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames, "banned": account.banned});
+				}
 			});
-			group.save();
+			
 		}
 	});
 
-	Account.findOne({username:req.body.username}, function (err, account) {
-		if (err) {
-			console.log("Could not get account leaving group");
-			res.json({});
-		} else {
-			account.groupNames.pull(req.body.groupName);
-			account.save();
-			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames, "banned": account.banned});
-		}
-	})
-})
+	
+});
 
 
 // route for accessing data via the web api
