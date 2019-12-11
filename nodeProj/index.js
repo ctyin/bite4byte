@@ -107,6 +107,15 @@ app.use('/deleteacc', (req, res) => {
 		}
 	});
 
+	Food.remove({sellerUserName:username, group:false}, function(err) {
+		if (err) {
+			console.log(err);
+			console.log("Error deleting all associated posts");
+		} else {
+			console.log("Deleted all associated posts");
+		}
+	});
+
 	Group.find({}, function (err, groups) {
 		if (err) {
 			console.log(err);
@@ -115,18 +124,32 @@ app.use('/deleteacc', (req, res) => {
 			groups.map(group => {
 				if (group.users.includes(username)) {
 					group.users.pull(username);
+
+					var toRemove = [];
+					group.posts.forEach((postID) => {
+						Food.findOne({id:postID}, function (err, food) {
+							if (err) {
+								console.log("Could not remove food after leaving group");
+							} else {
+								console.log("Reached toRemove population");
+								if (food.sellerUserName == username) {
+									toRemove.push(food.id);
+								}
+							}
+						});
+					});
+
+					if (toRemove.length > 0) {
+						toRemove.forEach(id => {
+							console.log("reached this2");
+							group.posts.pull(id);
+						});
+						group.save();
+					}
+
 					group.save();
 				}
 			});
-		}
-	});
-
-	Food.remove({sellerUserName:username}, function(err) {
-		if (err) {
-			console.log(err);
-			console.log("Error deleting all associated posts");
-		} else {
-			console.log("Deleted all associated posts");
 		}
 	});
 
@@ -939,7 +962,7 @@ app.get('/deleteAccount/:id', (req, res) => {
 			} else {
 				res.redirect('/account');
 			}
-		});	
+		});
 	} else {
 		res.write('<h1>Please login first.</h1>');
         res.end('<a href='+'/'+'>Login</a>');
