@@ -769,18 +769,21 @@ app.use('/leaveGroup', (req, res) => {
 			res.json({});
 		} else {
 			group.users.pull(req.body.username);
+			var toRemove = [];
 			group.posts.forEach((postID) => {
 				Food.findOne({id:postID}, function (err, food) {
 					if (err) {
 						console.log("Could not remove food after leaving group");
 					} else {
 						if (food.sellerUserName == req.body.username) {
-							group.posts.pull(food.id);
-							Food.deleteOne(food.id);
-							group.save();
+							toRemove.push(food.id);
+							Food.remove({id : food.id});
 						}
 					}
 				});
+			});
+			toRemove.forEach(id => {
+				group.posts.pull(id);
 			});
 			group.save();
 		}
