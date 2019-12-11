@@ -674,7 +674,6 @@ app.use('/createGroup', (req, res) => {
 												}
 											});
 										}
->>>>>>> f49cc8626fa2d976771a2152ea1241c374139a0d
 									}
 								});
 							}
