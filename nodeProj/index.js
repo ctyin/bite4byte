@@ -826,50 +826,8 @@ app.use('/leaveGroup', (req, res) => {
 });
 
 
-// route for accessing data via the web api
-// to use this, make a request for /api to get an array of all Person objects
-// or /api?name=[whatever] to get a single object
-app.use('/api', (req, res) => {
-	console.log("LOOKING FOR SOMETHING?");
-
-	// construct the query object
-	var queryObject = {};
-	if (req.query.username) {
-	    // if there's a name in the query parameter, use it here
-	    queryObject = { "username" : req.query.username };
-	}
-    
-	Account.find( queryObject, (err, accounts) => {
-		console.log(accounts);
-		if (err) {
-		    console.log('uh oh' + err);
-		    res.json({});
-		}
-		else if (accounts.length == 0) {
-		    // no objects found, so send back empty json
-		    res.json({});
-		}
-		else if (accounts.length == 1 ) {
-		    var account = accounts[0];
-		    // send back a single JSON object
-		    res.json( { "username" : person.name , "firstname" : account.firstname, "lastname" : account.lastname } );
-		}
-		else {
-		    // construct an array out of the result
-		    var returnArray = [];
-		    accounts.forEach( (account) => {
-			    returnArray.push( { "username" : person.name , "firstname" : account.firstname, "lastname" : account.lastname } );
-			});
-		    // send it back as JSON Array
-		    res.json(returnArray);
-		}
-		
-	});
-});
-
-
-
-
+/*************************************************/
+/* Start the web app end points                  */
 /*************************************************/
 
 app.use('/public', express.static('public'));
@@ -947,6 +905,18 @@ app.post('/createAccount', (req, res) => {
 	}
 
 })
+
+app.use('/account/:id', (req, res) => {
+	sess = req.session;
+	if (sess.username) {
+		Account.find({username:req.params.id}, (err, accounts) => {
+			res.render('./pages/account', {accounts: accounts, title: "Reported Account Data"});
+		});
+	} else {
+		res.write('<h1>Please login first.</h1>');
+        res.end('<a href='+'/'+'>Login</a>');
+	}
+});
 
 app.use('/account', (req, res) => {
 	sess = req.session;
@@ -1039,6 +1009,19 @@ app.get('/deleteFood/:id', (req, res) => {
 		res.write('<h1>Please login first.</h1>');
         res.end('<a href='+'/'+'>Login</a>');
 	}
+});
+
+app.use('/reports', (req, res) => {
+	sess = req.session;
+	if (!sess.username) {
+		res.write('<h1>Please login first.</h1>');
+        res.end('<a href='+'/'+'>Login</a>');
+        return;
+	}
+
+	Report.find({}, (err, reports) => {
+		res.render('./pages/reports', {reports: reports, title: "Report Data"})
+	});
 });
 
 app.use('/home', (req, res) => {

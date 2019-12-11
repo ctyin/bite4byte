@@ -11,16 +11,15 @@
 
             // this maps the options to their locations in the table
             var textToNumMap = {
-                'Username': '0',
-                'First name': '1',
-                'Last name': '2',
-                'Restrictions': '3'
+                'Filing User': '0',
+                'Reported User': '1',
+                'Reason': '2'
             };
 
             category = document.getElementById("inputState");
             input = document.getElementById("searchBar");
             filter = input.value.toLowerCase();
-            table = document.getElementById("accountTable");
+            table = document.getElementById("reportTable");
             rows = table.getElementsByClassName("customTableRow");
 
             for (i = 0; i < rows.length; i++) {
@@ -48,45 +47,26 @@
             <div class="form-group col-md-4">
                 <select id="inputState" class="form-control">
                     <option disabled selected value>-- Choose a search parameter --</option>
-                    <option>Username</option>
-                    <option>First name</option>
-                    <option>Last name</option>
-                    <option>Restrictions</option>
+                    <option>Filing User</option>
+                    <option>Reported User</option>
+                    <option>Reason</option>
                 </select>
             </div>
             <input id="searchBar" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" onkeyup="filterFunction()">
         </form>
  
-        <table id="accountTable" class="table">
+        <table id="reportTable" class="table">
     	   	<tr>
-    	      	<th>Usernames</th><th>First names</th><th>Lastnames</th><th>Restrictions</th><th>Modify account</th>
+    	      	<th>Filing User</th><th>Reported User</th><th>Reason</th><th>Actions</th>
     	   	</tr>
 
-    	   	<% accounts.forEach((acct) => { %>
+    	   	<% reports.forEach((report) => { %>
     	   		<tr class="customTableRow">
-    	   			<td><%= acct.username %></td>
-    	   			<td><%= acct.firstname %></td>
-    	   			<td><%= acct.lastname %></td>
+    	   			<td><%= report.filingUser %></td>
+    	   			<td><%= report.reportedUser %></td>
+    	   			<td><%= report.reason %></td>
     	   			<td>
-    	   				<% if (acct.restrictions.length == 1) { %>
-    	   					<%= acct.restrictions[0] %>
-    	   				<% } else {
-    	   					for (var i=0; i < acct.restrictions.length; i++) {
-    	   						if (i == acct.restrictions.length - 1) { %>
-    	   							<%= acct.restrictions[i] %>
-    	   						<% } else { %>
-    	   							<%= acct.restrictions[i] %>, 
-    	   						<% }
-    	   					}
-    	   					}%>
-    	   			</td>
-    	   			<td>
-                        <% if (acct.banned) { %>
-                                <a href="/unbanAccount/<%= acct._id %>" role="button" class="btn btn-outline-danger">Unban</a>
-                        <% } else { %>
-                                <a href="/banAccount/<%= acct._id %>" role="button" class="btn btn-outline-danger">Ban</a>
-                        <%}%>
-    	   				<a href="/deleteAccount/<%= acct._id %>" role="button" class="btn btn-outline-danger">Delete account</a>
+                        <a href="/account/<%= report.reportedUser %>" role="button" class="btn btn-outline-info">View reported account</a>
     	   			</td>
     	   			<% }) %>
     	   		</tr>
