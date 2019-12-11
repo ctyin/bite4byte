@@ -244,6 +244,23 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
+    public void onLeaveGroupClick(View view) {
+        Call<UserContents> call = iMyService.leaveGroup(groupName, user.getUsername());
+        call.enqueue(new Callback<UserContents>() {
+            @Override
+            public void onResponse(Call<UserContents> call, Response<UserContents> response) {
+                Intent i = new Intent(GroupActivity.this, GroupListActivity.class);
+                i.putExtra("user", response.body());
+                startActivity(i);
+            }
+
+            @Override
+            public void onFailure(Call<UserContents> call, Throwable t) {
+                Toast.makeText(GroupActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void onFeedBtnClick(View view) {
         Intent intent = new Intent(this, UserFeedActivity.class);
         intent.putExtra("user", user);
