@@ -89,6 +89,20 @@ app.use('/deleteacc', (req, res) => {
 		}
 	});
 
+	Group.find({}, function (groups, err) {
+		if (err) {
+			console.log(err);
+			console.log("Error getting all groups while deleting account");
+		} else {
+			groups.map(group => {
+				if (group.users.includes(username)) {
+					group.users.pull(username);
+					group.save();
+				}
+			});
+		}
+	});
+
 	Food.remove({sellerUserName:username}, function(err) {
 		if (err) {
 			console.log(err);
@@ -97,6 +111,33 @@ app.use('/deleteacc', (req, res) => {
 			console.log("Deleted all associated posts");
 		}
 	});
+
+	Convo.find({}, function(err, convos) {
+		if (err) {
+			console.log(err);
+			console.log("Error getting all convos.");
+		} else {
+			var toRemove = [];
+			convos.map(convo => {
+				if (convo.participants.includes(username)) {
+					toRemove.push(convo.convo_id);
+				}
+				toRemove.forEach(function (convo_id) {
+					Convo.remove({convo_id : convo_id}, function(err) {
+						if (err) {
+							console.log(err);
+							console.log("Error removing convo with convo_id " + convo_id);
+						} else {
+							console.log("Convo removed with id " + convo_id);
+						}
+					});
+				});
+			});
+		}
+	});
+
+
+
 });
 
 // route for creating a new person
@@ -206,7 +247,7 @@ app.use('/search_account', (req, res) => {
 					matching_accounts.push(account.username + " " + account.firstname + " " + account.lastname);
 					console.log(account.username);
 				}
-			})
+			});
 			res.send(matching_accounts);
 		}
 	});
@@ -639,7 +680,7 @@ app.use('/createGroup', (req, res) => {
 			});
 
 		}
-	});00
+	});
 });
 
 app.use('/postToGroup', (req, res) => {
@@ -695,6 +736,28 @@ app.use('/getGroup', (req, res) => {
 	});
 });
 
+/*app.use('/leaveGroup', (req, res) => {
+	var username = req.body.username;
+	var groupName = req.body.groupName;
+	Group.findOne({name : groupName}, function (err, group) {
+		if (err) {
+			console.log(err);
+			console.log("Could not find group");
+		} else {
+			group.users.pull(username);
+		}
+	});
+	Account.findOne({username : username}, function (err, account) {
+		if (err) {
+			console.log(err);
+			console.log("Could not find account");
+		} else {
+			account.groupNames.pull(groupName);
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames});
+		}
+	});
+
+});*/
 
 
 
