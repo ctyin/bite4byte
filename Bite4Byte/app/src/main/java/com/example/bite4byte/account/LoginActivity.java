@@ -56,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UserContents> call, Response<UserContents> response) {
                 if (response.body().getUsername() == null) {
                     Toast.makeText(LoginActivity.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                } else if (response.body().isBanned()) {
+                    Toast.makeText(LoginActivity.this, "You have been banned, please contact the administrators", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(LoginActivity.this, "Welcome" + " " + response.body().getUsername() + "!", Toast.LENGTH_LONG).show();
 
