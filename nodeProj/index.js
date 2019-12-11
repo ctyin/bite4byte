@@ -696,7 +696,41 @@ app.use('/getGroup', (req, res) => {
 	});
 });
 
+app.use('/leaveGroup', (req, res) => {
+	Group.findOne({name:req.body.groupName}, function (err, group) {
+		if (err) {
+			console.log("Could not get group to leave");
+			res.json({});
+		} else {
+			group.users.pull(req.body.username);
+			group.posts.forEach((postID) => {
+				Food.findOne({id:postID}, function (err, food) {
+					if (err) {
+						console.log("Could not remove food after leaving group");
+					} else {
+						if (food.sellerUserName == req.body.username) {
+							group.posts.pull(food.id);
+							Food.deleteOne(food.id);
+							group.save();
+						}
+					}
+				});
+			});
+			group.save();
+		}
+	});
 
+	Account.findOne({username:req.body.username}, function (err, account) {
+		if (err) {
+			console.log("Could not get account leaving group");
+			res.json({});
+		} else {
+			account.groupNames.pull(req.body.groupName);
+			account.save();
+			res.json({"username":account.username, "firstname":account.firstname, "lastname":account.lastname, "restrictions":account.restrictions, "allergies":account.allergies, "orders":account.orders, "rating":account.rating, "numRatedBy":account.numRatedBy, "friends":account.friends, "friend_requests":account.friend_requests, "groupNames":account.groupNames, "banned": account.banned});
+		}
+	})
+})
 
 
 // route for accessing data via the web api
