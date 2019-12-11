@@ -170,4 +170,9 @@ public interface IMyService {
                                      @Field("postDate") Date date,
                                      @Field("groupBool") boolean groupBool);
 
+    @POST("leaveGroup")
+    @FormUrlEncoded
+    Call<UserContents> leaveGroup(@Field("groupName") String groupName,
+                                  @Field("username") String username);
+
 }
